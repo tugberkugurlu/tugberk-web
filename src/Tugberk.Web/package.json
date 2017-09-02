@@ -1,0 +1,9 @@
+{
+    "name": "tugberk.web",
+    "version": "0.0.0",
+    "description": "Tugberk's Official Web Site",
+    "scripts": {},
+    "author": "Tugberk Ugurlu",
+    "license": "MIT",
+    "private": true
+}
