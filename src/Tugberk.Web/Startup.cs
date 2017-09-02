@@ -5,14 +5,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Tugberk.Web
 {
+    public class HomeController : Controller
+    {
+        public IActionResult Index() => View();
+    }
+
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -22,10 +29,8 @@ namespace Tugberk.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
