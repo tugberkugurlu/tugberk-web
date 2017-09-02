@@ -1,0 +1,15 @@
+div[role=main] {
+    margin-top: 20px;
+}
+
+.right-side-holder {
+    text-align: center;
+}
+
+.right-side-holder div.row {
+    margin-top: 10px;
+}
+
+.right-side-holder div.row:first-of-type {
+    margin-top: 0;
+}
