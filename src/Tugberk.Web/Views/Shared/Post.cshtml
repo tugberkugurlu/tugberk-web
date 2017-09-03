@@ -1,0 +1,45 @@
+@using Tugberk.Domain
+@model Post
+
+<div class="post-holder">
+    <div class="row">
+        <div class="col-sm-12">
+            <a href="@Url.Action("Index", "Posts", new { slug = Model.DefaultSlug.Path })">
+                <h2>@Model.Title</h2>
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="text-info">@Model.Abstract</div>
+        </div>
+        <div class="col-sm-3">
+            <div class="row">
+                <div class="col-sm-12">
+                    @@ <span title="@Model.CreationRecord.RecordedOn.ToLongDateString() @Model.CreationRecord.RecordedOn.ToLongTimeString() (UTC)">@Model.CreationRecord.RecordedOn.ToString("MM-dd-yyyy")</span>
+                </div>
+                <div class="col-sm-12">
+                    by @Model.Authors.First().Name
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            @foreach(var tag in Model.Tags) 
+            {
+                <span class="badge badge-primary">@tag.Name</span>
+            }
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+        <div class="col-sm-12">
+            @Html.Raw(@Model.Content)
+        </div>
+    </div>
+</div>

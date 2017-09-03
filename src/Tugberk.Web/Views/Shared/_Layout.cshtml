@@ -1,9 +1,10 @@
 @{
     var currentController = ViewContext.RouteData.Values["controller"].ToString();
-    var isUnderBlogSection = currentController.Equals("home", StringComparison.OrdinalIgnoreCase);
     var isUnderAboutSection = currentController.Equals("about", StringComparison.OrdinalIgnoreCase);
     var isUnderSpeakingSection = currentController.Equals("speaking", StringComparison.OrdinalIgnoreCase);
     var isUnderContactSection = currentController.Equals("contact", StringComparison.OrdinalIgnoreCase);
+    var isUnderBlogSection = currentController.Equals("home", StringComparison.OrdinalIgnoreCase) || 
+        currentController.Equals("posts", StringComparison.OrdinalIgnoreCase);
 }
 <!DOCTYPE html>
 <html lang="en">
