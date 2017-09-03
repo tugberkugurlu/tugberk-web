@@ -18,9 +18,29 @@ namespace Tugberk.Persistance.InMemory
             return Task.FromResult(PostFindResult.Success(post));
         }
 
-        public Task<PostFindResult> FindApprovedPostBySlug(string postSlug) 
+        public async Task<PostFindResult> FindApprovedPostBySlug(string postSlug) 
         {
-            throw new NotImplementedException();
+            var post = (await GetLatestApprovedPosts(0, Int32.MaxValue))
+                .FirstOrDefault(x => x.Slugs.Any(s => s.Path.Equals(postSlug, StringComparison.OrdinalIgnoreCase)));
+
+            PostFindResult result;
+            if(post != null) 
+            {
+                if(post.IsApproved) 
+                {
+                    result = PostFindResult.Success(post));
+                }
+                else 
+                {
+                    result = PostFindResult.Fail(PostFindFailureReason.NotApproved);
+                }
+            }
+            else 
+            {
+                result = PostFindResult.Fail(PostFindFailureReason.DoesNotExist);
+            }
+
+            return result;
         }
 
         public Task<IReadOnlyCollection<Post>> GetApprovedPostsByTag(string tagSlug, int skip, int take) 
