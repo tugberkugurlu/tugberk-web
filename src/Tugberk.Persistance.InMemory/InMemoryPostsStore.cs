@@ -28,7 +28,7 @@ namespace Tugberk.Persistance.InMemory
             {
                 if(post.IsApproved) 
                 {
-                    result = PostFindResult.Success(post));
+                    result = PostFindResult.Success(post);
                 }
                 else 
                 {
