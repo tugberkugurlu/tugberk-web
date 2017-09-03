@@ -1,3 +1,7 @@
+.btn {
+    border-radius: 0;
+}
+
 div[role=main] {
     margin-top: 20px;
 }
@@ -12,4 +16,17 @@ div[role=main] {
 
 .right-side-holder div.row:first-of-type {
     margin-top: 0;
+}
+
+.right-side-holder ul.badge-list {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.right-side-holder ul.badge-list li {
+    padding: 0;
+    list-style-type: none;
+    margin-bottom: 5px;
+    display: inline-block;
 }
