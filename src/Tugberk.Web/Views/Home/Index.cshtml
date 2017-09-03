@@ -8,5 +8,44 @@
 
 @foreach(var post in Model) 
 {
-    <h2>@post.Title</h2>
+    <div class="post-holder">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>@post.Title</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="text-info">@post.Abstract</div>
+            </div>
+            <div class="col-sm-3">
+                <div class="row">
+                    <div class="col-sm-12">
+                        @@ <span title="@post.CreationRecord.RecordedOn.ToLongDateString() @post.CreationRecord.RecordedOn.ToLongTimeString() (UTC)">@post.CreationRecord.RecordedOn.ToString("MM-dd-yyyy")</span>
+                    </div>
+                    <div class="col-sm-12">
+                        by @post.Authors.First().Name
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                @foreach(var tag in post.Tags) 
+                {
+                    <span class="badge badge-primary">@tag.Name</span>
+                }
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-sm-12">
+                @Html.Raw(@post.Content)
+            </div>
+        </div>
+    </div>
 }

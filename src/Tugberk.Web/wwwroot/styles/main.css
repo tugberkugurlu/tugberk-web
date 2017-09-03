@@ -30,3 +30,11 @@ div[role=main] {
     margin-bottom: 5px;
     display: inline-block;
 }
+
+.post-holder div.row {
+    margin-top: 10px;
+}
+
+.post-holder div.row:first-of-type {
+    margin-top: 0;
+}
