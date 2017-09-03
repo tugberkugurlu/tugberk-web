@@ -1,3 +1,6 @@
+@{
+    var currentController = ViewContext.RouteData.Values["controller"].ToString();
+}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,17 +19,17 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Blog <span class="sr-only">(current)</span></a>
+                <li class="nav-item @(currentController == "Home" ? "active" : "")">
+                    <a class="nav-link" href="@Url.Action("Index", "Home")">Blog @if(currentController == "Home") { <span class="sr-only">(current)</span> }</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Speaking</a>
+                <li class="nav-item @(currentController == "Speaking" ? "active" : "")">
+                    <a class="nav-link" href="@Url.Action("Index", "Speaking")">Speaking @if(currentController == "Speaking") { <span class="sr-only">(current)</span> }</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                <li class="nav-item @(currentController == "About" ? "active" : "")">
+                    <a class="nav-link" href="@Url.Action("Index", "About")">About @if(currentController == "About") { <span class="sr-only">(current)</span> }</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                <li class="nav-item @(currentController == "Contact" ? "active" : "")">
+                    <a class="nav-link" href="@Url.Action("Index", "Contact")">Contact @if(currentController == "Contact") { <span class="sr-only">(current)</span> }</a>
                 </li>
             </ul>
         </div>
