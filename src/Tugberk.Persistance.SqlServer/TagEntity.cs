@@ -5,28 +5,22 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Tugberk.Persistance.SqlServer
 {
-    public class PostEntity
+    public class TagEntity
     {
-        public Guid Id { get; set; }
+        [Required]
+        [StringLength(100)]
+        public string Name { get; set; }
 
         [Required]
-        public string Language { get; set; }
+        [StringLength(200)]
+        public string Slug { get; set; }
 
         [Required]
-        public string Title { get; set; }
-
-        [Required]
-        public string Abstract { get; set; }
-
-        [Required]
-        public string Content { get; set; }
-
-        public PostFormatEntity Format { get; set; }
         public IdentityUser CreatedBy { get; set; }
         public DateTime CreatedOnUtc { get; set; }
 
         [Required]
         public string CreationIpAddress { get; set; }
-        public ICollection<PostTagEntity> Tags { get; set; }
+        public ICollection<PostTagEntity> Posts { get; set; }
     }
 }
