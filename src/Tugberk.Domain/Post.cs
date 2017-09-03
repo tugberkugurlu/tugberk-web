@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Tugberk.Domain
@@ -20,6 +20,11 @@ namespace Tugberk.Domain
         public IReadOnlyCollection<Tag> Tags { get; set; }
         public IReadOnlyCollection<CommentStatusActionRecord> CommentStatusActions { get; set; }
         public IReadOnlyCollection<ApprovalStatusActionRecord> ApprovaleStatusActions { get; set; }
+
+        public Slug DefaultSlug => Slugs.Where(x => x.IsDefault)
+            .OrderByDescending(x => x.CreatedOn)
+            .First();
+
         public bool IsApproved => ApprovaleStatusActions
             .OrderByDescending(x => x.RecordedOn)
             .First().Status == ApprovalStatus.Approved;
