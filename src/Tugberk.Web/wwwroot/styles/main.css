@@ -36,6 +36,14 @@ div[role=main] {
     display: inline-block;
 }
 
+.post-holder {
+    margin-top: 20px;
+}
+
+.post-holder:first-of-type {
+    margin-top: 0;
+}
+
 .post-holder div.row {
     margin-top: 10px;
 }

@@ -10,7 +10,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="sampe-post-html.txt">
+    <None Update="sample-post-html-1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="sample-post-html-2.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
