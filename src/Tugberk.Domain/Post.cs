@@ -15,6 +15,8 @@ namespace Tugberk.Domain
         public IReadOnlyCollection<ChangeRecord> UpdateRecords { get; set; }
 
         public IReadOnlyCollection<User> Authors { get; set; }
+        public IReadOnlyCollection<Slug> Slugs { get; set; }
+        public IReadOnlyCollection<Tag> Tags { get; set; }
         public IReadOnlyCollection<CommentStatusActionRecord> CommentStatusActions { get; set; }
         public IReadOnlyCollection<ApprovalStatusActionRecord> ApprovaleStatusActions { get; set; }
     }

@@ -6,6 +6,6 @@ namespace Tugberk.Domain
     {
         public string Path { get; set; }
         public bool IsDefault { get; set; }
-        public DateTimeOffset CreatedOn { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 }

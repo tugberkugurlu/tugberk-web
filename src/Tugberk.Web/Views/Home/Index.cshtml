@@ -1,5 +1,12 @@
+@using System.Collections.Generic
+@using Tugberk.Domain
+@model IReadOnlyCollection<Post>
+
 @{
     Layout = "_Layout";
 }
 
-<h1>Hello World!</h1>
+@foreach(var post in Model) 
+{
+    <h2>@post.Title</h2>
+}
