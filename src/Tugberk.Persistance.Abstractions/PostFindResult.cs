@@ -1,3 +1,4 @@
+using System;
 using Tugberk.Domain;
 
 namespace Tugberk.Persistance.Abstractions
@@ -6,14 +7,14 @@ namespace Tugberk.Persistance.Abstractions
     {
         private PostFindResult(Post post)
         {
+            Post = post ?? throw new ArgumentNullException(nameof(post));
             IsSuccess = true;
-            Post = post;
         }
 
         private PostFindResult(PostFindFailureReason failureReason)
         {
-            IsSuccess = false;
             FailureReason = failureReason;
+            IsSuccess = false;
         }
 
         public bool IsSuccess { get; }
