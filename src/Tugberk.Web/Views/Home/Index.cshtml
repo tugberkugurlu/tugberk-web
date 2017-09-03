@@ -11,7 +11,9 @@
     <div class="post-holder">
         <div class="row">
             <div class="col-sm-12">
-                <h2>@post.Title</h2>
+                <a href="@Url.Action("Index", "Posts", new { slug = post.DefaultSlug.Path })">
+                    <h2>@post.Title</h2>
+                </a>
             </div>
         </div>
 
