@@ -17,16 +17,34 @@
                     callbacks: {
                         onImageUpload: function(files) {
                             $summernote.summernote('disable');
-                            
-                            // TODO: Upload image here...
-                            
-                            setTimeout(function() {
-                                var $uploadedImage = $('<img>')
-                                    .attr('src', 'https://tugberkugurlu.blob.core.windows.net/bloggyimages/640px-Coding_Shots_Annual_Plan_high_res-5.jpg');
 
+                            var data = new FormData();
+                            for (var i = 0; i < files.length ; i++) {
+                                data.append(files[i].name, files[i]);
+                            }
+
+                            fetch('/portal/images/upload', {
+                                method: 'POST',
+                                body: data
+                            }).then(function(res) {
+                                if(res.status === 201) {
+                                    res.json().then(function(responseData) {
+                                        var $uploadedImage = $('<img>')
+                                            .attr('src', responseData.imageUrl);
+
+                                        $summernote.summernote('enable');
+                                        $summernote.summernote('insertNode', $uploadedImage[0]);
+                                    });
+                                } else {
+                                    throw {
+                                        message: 'image upload failed: ' + res.statusText,
+                                        statusCode: res.status
+                                    };
+                                }
+                            }).catch(x => {
+                                console.error(x);
                                 $summernote.summernote('enable');
-                                $summernote.summernote('insertNode', $uploadedImage[0]);
-                            }, 3000);
+                            });
                         }
                     }
                 });
