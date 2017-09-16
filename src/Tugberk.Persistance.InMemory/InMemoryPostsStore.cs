@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Tugberk.Domain;
+using Tugberk.Domain.Commands;
 using Tugberk.Persistance.Abstractions;
 
 namespace Tugberk.Persistance.InMemory
@@ -288,6 +289,11 @@ namespace Tugberk.Persistance.InMemory
             var fullPath = Path.Combine(directory, path);
 
             return File.ReadAllText(fullPath, Encoding.UTF8);
+        }
+
+        public Task<Post> CreatePost(NewPostCommand newPostCommand)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Tugberk.Domain;
+using Tugberk.Domain.Commands;
 using Tugberk.Persistance.Abstractions;
 
 namespace Tugberk.Persistance.SqlServer.Posts
@@ -36,28 +39,7 @@ namespace Tugberk.Persistance.SqlServer.Posts
             else 
             {
                 // TODO: Check for confirmation case
-
-                // TODO: Add authors projection
-                // TODO: Add slugs projection
-                // TODO: Add CommentStatusActionRecord projection
-                // TODO: Add ApprovalStatusActionRecord projection
-
-                var post = new Post 
-                {
-                    Id = postEntity.Id.ToString(),
-                    Language = postEntity.Language,
-                    Title = postEntity.Title,
-                    Abstract = postEntity.Abstract,
-                    Content = postEntity.Content,
-                    Format = postEntity.Format.ToDomainModel(),
-                    CreationRecord = new ChangeRecord 
-                    {
-                        RecordedBy = postEntity.CreatedBy.ToDomainModel(),
-                        RecordedOn = postEntity.CreatedOnUtc,
-                        IpAddress = postEntity.CreationIpAddress
-                    }
-                };
-
+                var post = postEntity.ToDomainModel();
                 result = PostFindResult.Success(post);
             }
 
@@ -77,6 +59,30 @@ namespace Tugberk.Persistance.SqlServer.Posts
         public Task<IReadOnlyCollection<Post>> GetLatestApprovedPosts(int skip, int take)
         {
             throw new System.NotImplementedException();
+        }
+
+        public async Task<Post> CreatePost(NewPostCommand newPostCommand)
+        {
+            var createdBy = new IdentityUser { Id = newPostCommand.CreatedBy.Id };
+            var postEntity = new PostEntity
+            {
+                Title = newPostCommand.Title,
+                Abstract = newPostCommand.Abstract,
+                Content = newPostCommand.Title,            
+                Format = newPostCommand.Format.ToEntityModel(),
+                CreatedBy = createdBy,
+                CreatedOnUtc = DateTime.UtcNow,
+                CreationIpAddress = newPostCommand.IPAddress,
+                Tags = new Collection<PostTagEntity>(newPostCommand.Tags.Select(t => new PostTagEntity
+                {
+                    Tag = new TagEntity { Name = t }
+                }).ToList())
+            };
+
+            await _blogDbContext.AddAsync(postEntity);
+            await _blogDbContext.SaveChangesAsync();
+
+            return postEntity.ToDomainModel();
         }
     }
 }

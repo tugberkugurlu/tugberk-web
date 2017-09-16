@@ -1,8 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tugberk.Domain;
+using Tugberk.Domain.Commands;
+using Tugberk.Persistance.Abstractions;
 using Tugberk.Web.Models;
 
 namespace Tugberk.Web.Controllers
@@ -11,10 +15,12 @@ namespace Tugberk.Web.Controllers
     public class PortalController : Controller
     {
         private readonly IImageStorage _imageStorage;
+        private readonly IPostsStore _postsStore;
 
-        public PortalController(IImageStorage imageStorage)
+        public PortalController(IImageStorage imageStorage, IPostsStore postsStore)
         {
             _imageStorage = imageStorage ?? throw new System.ArgumentNullException(nameof(imageStorage));
+            _postsStore = postsStore ?? throw new System.ArgumentNullException(nameof(postsStore));
         }
 
         public IActionResult Index() => View();
@@ -24,11 +30,23 @@ namespace Tugberk.Web.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost("posts/create")]
-        public IActionResult CreatePost(NewPostRequestModel requestModel)
+        public async Task<IActionResult> CreatePost(NewPostRequestModel requestModel)
         {
-            if(ModelState.IsValid) 
+            if(ModelState.IsValid)
             {
-                // TODO: try to save blog post here
+                User currentUser = GetCurrentUser();
+
+                var command = new NewPostCommand(requestModel.Title,
+                    requestModel.Abstract,
+                    requestModel.Content,
+                    PostFormat.Html,
+                    HttpContext.Connection?.RemoteIpAddress?.ToString() ?? "127.0.0.1",
+                    currentUser,
+                    Enumerable.Empty<string>().ToList().AsReadOnly());
+
+                await _postsStore.CreatePost(command);
+
+                return RedirectToAction("Index", "Home");
             }
 
             return View(requestModel);
@@ -62,6 +80,15 @@ namespace Tugberk.Web.Controllers
                     ImageUrl = result.Url
                 });
             }
+        }
+
+        private static User GetCurrentUser()
+        {
+            return new User
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = Guid.NewGuid().ToString()
+            };
         }
     }
 }

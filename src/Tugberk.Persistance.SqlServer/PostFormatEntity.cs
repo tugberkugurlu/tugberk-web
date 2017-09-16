@@ -12,6 +12,24 @@ namespace Tugberk.Persistance.SqlServer
 
     public static class PostFormatEntityExtensions 
     {
+        public static PostFormatEntity ToEntityModel(this PostFormat postFormat) 
+        {
+            switch (postFormat)
+            {
+                case PostFormat.Html:
+                    return PostFormatEntity.Html;
+
+                case PostFormat.Markdown:
+                    return PostFormatEntity.Markdown;
+
+                case PostFormat.PlainText:
+                    return PostFormatEntity.PlainText;
+
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
         public static PostFormat ToDomainModel(this PostFormatEntity postFormatEntity) 
         {
             switch (postFormatEntity)

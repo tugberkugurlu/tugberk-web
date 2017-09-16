@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tugberk.Domain;
+using Tugberk.Domain.Commands;
 
 namespace Tugberk.Persistance.Abstractions
 {
@@ -11,5 +12,7 @@ namespace Tugberk.Persistance.Abstractions
         Task<PostFindResult> FindApprovedPostBySlug(string postSlug);
         Task<IReadOnlyCollection<Post>> GetApprovedPostsByTag(string tagSlug, int skip, int take);
         Task<IReadOnlyCollection<Post>> GetLatestApprovedPosts(int skip, int take);
+
+        Task<Post> CreatePost(NewPostCommand newPostCommand);
     }
 }
