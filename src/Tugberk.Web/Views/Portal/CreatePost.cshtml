@@ -1,3 +1,5 @@
+@model NewPostRequestModel
+
 @{
     Layout = "_Layout";
 }
@@ -62,6 +64,22 @@
 
 <h2>Create a New Post</h2>
 
-<form asp-controller="Portal" asp-action="Posts" method="POST"> 
-    <textarea id="summernote" name="content"></textarea>
+<form asp-controller="Portal" asp-action="CreatePost" method="POST">
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" type="text" class="form-control" placeholder="Enter a post title" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Abstract"></label>
+        <textarea asp-for="Abstract" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Abstract" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Content"></label>
+        <textarea asp-for="Content" id="summernote"></textarea>
+        <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Create Post</button>
 </form>
