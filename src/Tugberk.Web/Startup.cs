@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Tugberk.Persistance.Abstractions;
 using Tugberk.Persistance.InMemory;
 using Tugberk.Persistance.SqlServer;
+using Tugberk.Web.Controllers;
 
 namespace Tugberk.Web
 {
@@ -22,6 +23,8 @@ namespace Tugberk.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IImageStorage, LocalImageStorage>();
+
             services.AddMvc();
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddScoped<IPostsStore, InMemoryPostsStore>();
