@@ -1,4 +1,4 @@
-# Tugberk Ugurlu's Web Site
+# Tugberk Ugurlu's Web Site [![Build Status](https://travis-ci.com/tugberkugurlu/tugberk-web.svg?token=bSbyNzszQnYLxQxRyPu1&branch=master)](https://travis-ci.com/tugberkugurlu/tugberk-web)
 
 ## Main Focus of Improvment
 
