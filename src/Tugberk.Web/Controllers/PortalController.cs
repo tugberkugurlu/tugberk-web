@@ -18,7 +18,7 @@ namespace Tugberk.Web.Controllers
 
         public IActionResult Index() => View();
 
-        [HttpGet("posts")]
+        [HttpGet("posts/create")]
         public IActionResult CreatePost() => View();
 
         [HttpGet("posts/{postId}")]
