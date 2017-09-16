@@ -23,11 +23,14 @@
                                 data.append(files[i].name, files[i]);
                             }
 
+                            data.append('__RequestVerificationToken', getRequestVerificationToken());
+
                             fetch('/portal/images/upload', {
                                 method: 'POST',
+                                credentials: 'same-origin',
                                 body: data
                             }).then(function(res) {
-                                if(res.status === 201) {
+                                if(res.status === 200) {
                                     res.json().then(function(responseData) {
                                         var $uploadedImage = $('<img>')
                                             .attr('src', responseData.imageUrl);
@@ -48,6 +51,10 @@
                         }
                     }
                 });
+
+                var getRequestVerificationToken = function() {
+                    return $('form').first().find('input[name=__RequestVerificationToken]').val();
+                };
             });
         }());
     </script>
@@ -55,4 +62,6 @@
 
 <h1>Hello...</h1>
 
-<textarea id="summernote" name="content">Hello Summernote...</textarea>
+<form asp-controller="Portal" asp-action="Posts" method="POST"> 
+    <textarea id="summernote" name="content">Hello Summernote...</textarea>
+</form>
