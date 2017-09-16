@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tugberk.Web.Models;
 
 namespace Tugberk.Web.Controllers
 {
@@ -20,6 +21,18 @@ namespace Tugberk.Web.Controllers
 
         [HttpGet("posts/create")]
         public IActionResult CreatePost() => View();
+
+        [ValidateAntiForgeryToken]
+        [HttpPost("posts/create")]
+        public IActionResult CreatePost(NewPostRequestModel requestModel)
+        {
+            if(ModelState.IsValid) 
+            {
+                // TODO: try to save blog post here
+            }
+
+            return View(requestModel);
+        }
 
         [HttpGet("posts/{postId}")]
         public IActionResult EditPost(string postId) => View();
