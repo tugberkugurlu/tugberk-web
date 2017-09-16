@@ -11,7 +11,25 @@
     <script>
         (function() {
             $(document).ready(function() {
-                $('#summernote').summernote();
+                var $summernote = $('#summernote');
+                $summernote.summernote({
+                    height: 400,
+                    callbacks: {
+                        onImageUpload: function(files) {
+                            $summernote.summernote('disable');
+                            
+                            // TODO: Upload image here...
+                            
+                            setTimeout(function() {
+                                var $uploadedImage = $('<img>')
+                                    .attr('src', 'https://tugberkugurlu.blob.core.windows.net/bloggyimages/640px-Coding_Shots_Annual_Plan_high_res-5.jpg');
+
+                                $summernote.summernote('enable');
+                                $summernote.summernote('insertNode', $uploadedImage[0]);
+                            }, 3000);
+                        }
+                    }
+                });
             });
         }());
     </script>
@@ -19,4 +37,4 @@
 
 <h1>Hello...</h1>
 
-<div id="summernote">Hello Summernote</div>
+<textarea id="summernote" name="content">Hello Summernote...</textarea>
