@@ -9,6 +9,7 @@
     "dependencies": {
         "bootstrap": "4.0.0-alpha.6",
         "font-awesome": "4.7.0",
+        "jquery-validation-unobtrusive": "3.2.6",
         "summernote": "0.8.8"
     }
 }
