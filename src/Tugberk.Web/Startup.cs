@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -24,13 +24,18 @@ namespace Tugberk.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<BlogDbContext>(options => 
+                options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<BlogDbContext>()
+                .AddDefaultTokenProviders();
+
             services.AddSingleton<IImageStorage, LocalImageStorage>();
+            services.AddScoped<IPostsStore, InMemoryPostsStore>();
 
             services.AddMvc();
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-            services.AddScoped<IPostsStore, InMemoryPostsStore>();
-            services.AddDbContext<BlogDbContext>(options => 
-                options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -41,6 +46,7 @@ namespace Tugberk.Web
             }
 
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseMvcWithDefaultRoute();
 
             MigrateAndEnsureDataIsSeeded(app);
@@ -57,23 +63,6 @@ namespace Tugberk.Web
 
                 context.Database.Migrate();
                 context.EnsureSeedData(userManager);
-            }
-        }
-    }
-
-    public static class BlogDbContextExtensions 
-    {
-        public static void EnsureSeedData(this BlogDbContext context, UserManager<IdentityUser> userManager)
-        {
-            if(!context.Users.AnyAsync().Result)
-            {
-                var defaultUser = new IdentityUser 
-                {
-                    UserName = "default",
-                    Email = "foo@example.com"
-                };
-
-                userManager.CreateAsync(defaultUser, "P@asW0rd").Wait();
             }
         }
     }
