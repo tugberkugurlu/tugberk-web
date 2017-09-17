@@ -229,6 +229,7 @@ namespace Tugberk.Web.Controllers
                         new Claim(ClaimTypes.Surname, model.Surname)
                     };
 
+                    // TODO: This is not great and not an atomic transaction. Fix this.
                     var claimsResult = await _userManager.AddClaimsAsync(user, claims);
                     if (claimsResult.Succeeded)
                     {
