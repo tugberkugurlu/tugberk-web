@@ -10,6 +10,7 @@ using Tugberk.Persistance.Abstractions;
 using Tugberk.Persistance.InMemory;
 using Tugberk.Persistance.SqlServer;
 using Tugberk.Web.Controllers;
+using Tugberk.Web.Services;
 
 namespace Tugberk.Web
 {
@@ -31,6 +32,14 @@ namespace Tugberk.Web
                 .AddEntityFrameworkStores<BlogDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.ConfigureApplicationCookie(options => 
+            {
+                options.LoginPath = "/portal/account/login";
+                options.LogoutPath = "/portal/account/logout";
+                options.AccessDeniedPath = "/portal/account/accessDenied";
+            });
+
+            services.AddSingleton<IEmailSender, NoOpEmailSender>();
             services.AddSingleton<IImageStorage, LocalImageStorage>();
             services.AddScoped<IPostsStore, InMemoryPostsStore>();
 

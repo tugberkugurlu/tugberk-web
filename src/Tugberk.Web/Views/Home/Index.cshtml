@@ -2,10 +2,6 @@
 @using Tugberk.Domain
 @model IReadOnlyCollection<Post>
 
-@{
-    Layout = "_Layout";
-}
-
 @foreach(var post in Model) 
 {
     @Html.Partial("Post", post)

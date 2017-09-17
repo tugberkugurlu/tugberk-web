@@ -1,14 +1,11 @@
 @model NewPostRequestModel
 
-@{
-    Layout = "_Layout";
-}
-
 @section styles {
     <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.css">
 }
 
 @section scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
     <script src="/node_modules/summernote/dist/summernote-bs4.min.js"></script>
     <script>
         (function() {
