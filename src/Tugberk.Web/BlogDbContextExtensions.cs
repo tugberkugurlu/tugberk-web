@@ -12,8 +12,8 @@ namespace Tugberk.Web
             {
                 var defaultUser = new IdentityUser 
                 {
-                    UserName = "default",
-                    Email = "foo@example.com"
+                    UserName = "default@example.com",
+                    Email = "default@example.com"
                 };
 
                 userManager.CreateAsync(defaultUser, "P@asW0rd").Wait();
