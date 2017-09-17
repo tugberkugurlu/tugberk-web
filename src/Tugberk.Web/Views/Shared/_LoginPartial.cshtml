@@ -1,0 +1,18 @@
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <form class="form-inline my-2 my-lg-0" asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">@UserManager.GetUserName(User)</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="document.getElementById('logoutForm').submit();">Log out</a>
+            </li>
+        </ul>
+    </form>
+}
