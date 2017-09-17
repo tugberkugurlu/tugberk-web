@@ -1,4 +1,6 @@
-# Tugberk Ugurlu's Web Site [![Build Status](https://travis-ci.com/tugberkugurlu/tugberk-web.svg?token=bSbyNzszQnYLxQxRyPu1&branch=master)](https://travis-ci.com/tugberkugurlu/tugberk-web)
+# Tugberk.Web [![Build Status](https://travis-ci.com/tugberkugurlu/tugberk-web.svg?token=bSbyNzszQnYLxQxRyPu1&branch=master)](https://travis-ci.com/tugberkugurlu/tugberk-web)
+
+This is yet another blog engine. I mainly use this as an excuse to try out new technologies by improving my blog platform.
 
 ## Main Focus of Improvment
 
