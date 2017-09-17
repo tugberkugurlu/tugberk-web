@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -41,6 +42,39 @@ namespace Tugberk.Web
 
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
+
+            MigrateAndEnsureDataIsSeeded(app);
+        }
+
+        private void MigrateAndEnsureDataIsSeeded(IApplicationBuilder app)
+        {
+            // https://blogs.msdn.microsoft.com/dotnet/2016/09/29/implementing-seeding-custom-conventions-and-interceptors-in-ef-core-1-0/
+
+            using(var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope()) 
+            {
+                var context = serviceScope.ServiceProvider.GetService<BlogDbContext>();
+                var userManager = serviceScope.ServiceProvider.GetService<UserManager<IdentityUser>>();
+
+                context.Database.Migrate();
+                context.EnsureSeedData(userManager);
+            }
+        }
+    }
+
+    public static class BlogDbContextExtensions 
+    {
+        public static void EnsureSeedData(this BlogDbContext context, UserManager<IdentityUser> userManager)
+        {
+            if(!context.Users.AnyAsync().Result)
+            {
+                var defaultUser = new IdentityUser 
+                {
+                    UserName = "default",
+                    Email = "foo@example.com"
+                };
+
+                userManager.CreateAsync(defaultUser, "P@asW0rd").Wait();
+            }
         }
     }
 }
