@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -28,8 +29,10 @@ namespace Tugberk.Web
             services.AddDbContext<BlogDbContext>(options => 
                 options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<BlogDbContext>()
+            services.AddIdentity<IdentityUser, IdentityRole>(options => 
+                {
+                    options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Email;
+                }).AddEntityFrameworkStores<BlogDbContext>()
                 .AddDefaultTokenProviders();
 
             services.ConfigureApplicationCookie(options => 

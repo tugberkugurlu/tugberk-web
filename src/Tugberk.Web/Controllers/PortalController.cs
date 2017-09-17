@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -84,12 +85,16 @@ namespace Tugberk.Web.Controllers
             }
         }
 
-        private static User GetCurrentUser()
+        private User GetCurrentUser()
         {
+            var id = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var name = User.Claims.First(x => x.Type == ClaimTypes.Name).Value;
+            var surname = User.Claims.First(x => x.Type == ClaimTypes.Surname).Value;
+
             return new User
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = Guid.NewGuid().ToString()
+                Name = $"{name} {surname}"
             };
         }
     }
