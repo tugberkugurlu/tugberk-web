@@ -11,3 +11,9 @@ dotnet ef migrations add {NAME-MIGRATION} --project ../Tugberk.Persistance.SqlSe
 ```
 dotnet ef database update --project ../Tugberk.Persistance.SqlServer/Tugberk.Persistance.SqlServer.csproj
 ```
+
+## Drop the Database
+
+```
+dotnet ef database drop --project ../Tugberk.Persistance.SqlServer/Tugberk.Persistance.SqlServer.csproj
+```
