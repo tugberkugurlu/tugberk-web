@@ -56,9 +56,17 @@ namespace Tugberk.Persistance.SqlServer.Stores
             throw new System.NotImplementedException();
         }
 
-        public Task<IReadOnlyCollection<Post>> GetLatestApprovedPosts(int skip, int take)
+        public async Task<IReadOnlyCollection<Post>> GetLatestApprovedPosts(int skip, int take)
         {
-            throw new System.NotImplementedException();
+            var posts = await _blogDbContext.Posts
+                .Include(x => x.Tags)
+                .ThenInclude((PostTagEntity x) => x.Tag)
+                .Include(x => x.CreatedBy)
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
+
+            return new ReadOnlyCollection<Post>(posts.Select(x => x.ToDomainModel()).ToList());
         }
 
         public async Task<Post> CreatePost(NewPostCommand newPostCommand)
@@ -68,7 +76,8 @@ namespace Tugberk.Persistance.SqlServer.Stores
             {
                 Title = newPostCommand.Title,
                 Abstract = newPostCommand.Abstract,
-                Content = newPostCommand.Title,            
+                Content = newPostCommand.Title,
+                Language = newPostCommand.Language,
                 Format = newPostCommand.Format.ToEntityModel(),
                 CreatedBy = createdBy,
                 CreatedOnUtc = DateTime.UtcNow,

@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tugberk.Persistance.Abstractions;
-using Tugberk.Persistance.InMemory;
 using Tugberk.Persistance.SqlServer;
+using Tugberk.Persistance.SqlServer.Stores;
 using Tugberk.Web.Controllers;
 using Tugberk.Web.Services;
 
@@ -44,7 +44,7 @@ namespace Tugberk.Web
 
             services.AddSingleton<IEmailSender, NoOpEmailSender>();
             services.AddSingleton<IImageStorage, LocalImageStorage>();
-            services.AddScoped<IPostsStore, InMemoryPostsStore>();
+            services.AddScoped<IPostsStore, PostsSqlServerStore>();
 
             services.AddMvc();
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
