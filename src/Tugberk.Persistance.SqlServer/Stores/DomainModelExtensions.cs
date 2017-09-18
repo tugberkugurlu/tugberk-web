@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Tugberk.Domain;
 
-namespace Tugberk.Persistance.SqlServer.Posts
+namespace Tugberk.Persistance.SqlServer.Stores
 {
     public static class DomainModelExtensions 
     {

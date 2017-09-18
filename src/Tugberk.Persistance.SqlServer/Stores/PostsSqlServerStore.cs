@@ -9,7 +9,7 @@ using Tugberk.Domain;
 using Tugberk.Domain.Commands;
 using Tugberk.Persistance.Abstractions;
 
-namespace Tugberk.Persistance.SqlServer.Posts
+namespace Tugberk.Persistance.SqlServer.Stores
 {
     public class PostsSqlServerStore : IPostsStore
     {
