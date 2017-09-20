@@ -6,18 +6,11 @@ namespace Tugberk.Domain
 {
     public static class StringExtensions
     {
-        /// <summary>
-        /// A regular expression for validating slugs.
+        /// <remarks>
         /// Does not allow leading or trailing hypens or whitespace.
-        /// </summary>
+        /// </remarks>
         public static readonly Regex SlugRegex = new Regex(@"(^[a-z0-9])([a-z0-9_-]+)*([a-z0-9])$", RegexOptions.Compiled);
 
-        /// <summary>
-        /// Slugifies a string
-        /// </summary>
-        /// <param name="value">The string value to slugify</param>
-        /// <param name="maxLength">An optional maximum length of the generated slug</param>
-        /// <returns>A URL safe slug representation of the input <paramref name="value"/>.</returns>
         public static string ToSlug(this string value)
         {
             if (value == null)
