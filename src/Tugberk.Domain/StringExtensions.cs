@@ -44,9 +44,7 @@ namespace Tugberk.Domain
 
         private static string RemoveAccent(string txt)
         {
-            // broken on rc2, see: https://github.com/dotnet/corefx/issues/9158
-            // byte[] bytes = Encoding.GetEncoding("Cyrillic").GetBytes(txt);
-            byte[] bytes = Encoding.UTF8.GetBytes(txt);
+            var bytes = Encoding.GetEncoding("Cyrillic").GetBytes(txt);
             return Encoding.ASCII.GetString(bytes);
         }
     }
