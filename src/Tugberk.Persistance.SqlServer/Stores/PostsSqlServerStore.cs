@@ -25,18 +25,15 @@ namespace Tugberk.Persistance.SqlServer.Stores
             if (id == null) throw new ArgumentNullException(nameof(id));
 
             var guid = Guid.Parse(id);
-            var postEntity = await _blogDbContext.Posts
-                .Include(x => x.Tags)
-                .ThenInclude((PostTagEntity x) => x.Tag)
-                .Include(x => x.CreatedBy)
+            var postEntity = await CreateBasePostQuery()
                 .FirstOrDefaultAsync(x => x.Id == guid);
 
             PostFindResult result;
-            if(postEntity == null) 
+            if (postEntity == null)
             {
                 result = PostFindResult.Fail(PostFindFailureReason.DoesNotExist);
             }
-            else 
+            else
             {
                 // TODO: Check for confirmation case
                 var post = postEntity.ToDomainModel();
@@ -58,10 +55,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
 
         public async Task<IReadOnlyCollection<Post>> GetLatestApprovedPosts(int skip, int take)
         {
-            var posts = await _blogDbContext.Posts
-                .Include(x => x.Tags)
-                .ThenInclude((PostTagEntity x) => x.Tag)
-                .Include(x => x.CreatedBy)
+            var posts = await CreateBasePostQuery()
                 .Skip(skip)
                 .Take(take)
                 .ToListAsync();
@@ -72,6 +66,14 @@ namespace Tugberk.Persistance.SqlServer.Stores
         public async Task<Post> CreatePost(NewPostCommand newPostCommand)
         {
             var createdBy = new IdentityUser { Id = newPostCommand.CreatedBy.Id };
+            var slug = new PostSlugEntity
+            {
+                Path = newPostCommand.Slug,
+                IsDefault = true,
+                CreatedBy = createdBy,
+                CreatedOnUtc = DateTime.UtcNow
+            };
+
             var postEntity = new PostEntity
             {
                 Title = newPostCommand.Title,
@@ -82,6 +84,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
                 CreatedBy = createdBy,
                 CreatedOnUtc = DateTime.UtcNow,
                 CreationIpAddress = newPostCommand.IPAddress,
+                Slugs = new List<PostSlugEntity> { slug },
                 Tags = new Collection<PostTagEntity>(newPostCommand.Tags.Select(t => new PostTagEntity
                 {
                     Tag = new TagEntity { Name = t }
@@ -93,5 +96,11 @@ namespace Tugberk.Persistance.SqlServer.Stores
 
             return postEntity.ToDomainModel();
         }
+
+        private IQueryable<PostEntity> CreateBasePostQuery() => _blogDbContext.Posts
+            .Include(x => x.Slugs)
+            .Include(x => x.Tags)
+            .ThenInclude((PostTagEntity x) => x.Tag)
+            .Include(x => x.CreatedBy);
     }
 }
