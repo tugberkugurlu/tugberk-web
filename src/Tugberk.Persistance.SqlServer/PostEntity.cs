@@ -28,5 +28,6 @@ namespace Tugberk.Persistance.SqlServer
         [Required]
         public string CreationIpAddress { get; set; }
         public ICollection<PostTagEntity> Tags { get; set; }
+        public ICollection<PostSlugEntity> Slugs { get; set; }
     }
 }
