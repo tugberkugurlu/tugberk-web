@@ -36,7 +36,8 @@ namespace Tugberk.Persistance.SqlServer.Stores
             else
             {
                 // TODO: Check for confirmation case
-                var post = postEntity.ToDomainModel();
+                var claims = await GetCreatorClaims(postEntity);
+                var post = postEntity.ToDomainModel(claims);
                 result = PostFindResult.Success(post);
             }
 
@@ -60,7 +61,14 @@ namespace Tugberk.Persistance.SqlServer.Stores
                 .Take(take)
                 .ToListAsync();
 
-            return new ReadOnlyCollection<Post>(posts.Select(x => x.ToDomainModel()).ToList());
+            // TODO: This is obviously not great but EF sucks and was not able to generate the correct query to get this out from SQL Server. Fix this or cache.
+            var userIds = posts.Select(x => x.CreatedBy.Id).Distinct(StringComparer.InvariantCultureIgnoreCase);
+            var claims = await _blogDbContext.UserClaims
+                .Where(x => userIds.Any(id => x.UserId == id))
+                .ToListAsync();
+
+            return new ReadOnlyCollection<Post>(posts.Select(x => 
+                x.ToDomainModel(claims.Where(c => c.UserId.Equals(x.CreatedBy.Id, StringComparison.InvariantCultureIgnoreCase)))).ToList());
         }
 
         public async Task<Post> CreatePost(NewPostCommand newPostCommand)
@@ -78,7 +86,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
             {
                 Title = newPostCommand.Title,
                 Abstract = newPostCommand.Abstract,
-                Content = newPostCommand.Title,
+                Content = newPostCommand.Content,
                 Language = newPostCommand.Language,
                 Format = newPostCommand.Format.ToEntityModel(),
                 CreatedBy = createdBy,
@@ -94,7 +102,16 @@ namespace Tugberk.Persistance.SqlServer.Stores
             await _blogDbContext.AddAsync(postEntity);
             await _blogDbContext.SaveChangesAsync();
 
-            return postEntity.ToDomainModel();
+            var claims = await GetCreatorClaims(postEntity);
+
+            return postEntity.ToDomainModel(claims);
+        }
+
+        private Task<List<IdentityUserClaim<string>>> GetCreatorClaims(PostEntity postEntity)
+        {
+            return _blogDbContext.UserClaims
+                .Where(x => x.UserId == postEntity.CreatedBy.Id)
+                .ToListAsync();
         }
 
         private IQueryable<PostEntity> CreateBasePostQuery() => _blogDbContext.Posts
