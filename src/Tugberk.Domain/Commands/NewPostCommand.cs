@@ -25,6 +25,8 @@ namespace Tugberk.Domain.Commands
          public PostFormat Format { get; }
          public string IPAddress { get; }
          public User CreatedBy { get; }
+         
+         public string Slug => Title.ToSlug();
 
          public IReadOnlyCollection<string> Tags { get; }
      }
