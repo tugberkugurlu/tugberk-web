@@ -36,7 +36,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
             else
             {
                 // TODO: Check for confirmation case
-                var claims = await GetCreatorClaims(postEntity);
+                var claims = await GetCreatorClaims(postEntity.CreatedBy.Id);
                 var post = postEntity.ToDomainModel(claims);
                 result = PostFindResult.Success(post);
             }
@@ -73,7 +73,10 @@ namespace Tugberk.Persistance.SqlServer.Stores
 
         public async Task<Post> CreatePost(NewPostCommand newPostCommand)
         {
-            var createdBy = new IdentityUser { Id = newPostCommand.CreatedBy.Id };
+            var authorId = newPostCommand.CreatedBy.Id;
+            var createdBy = new IdentityUser { Id = authorId };
+            var claims = await GetCreatorClaims(authorId);
+
             var slug = new PostSlugEntity
             {
                 Path = newPostCommand.Slug,
@@ -102,15 +105,13 @@ namespace Tugberk.Persistance.SqlServer.Stores
             await _blogDbContext.AddAsync(postEntity);
             await _blogDbContext.SaveChangesAsync();
 
-            var claims = await GetCreatorClaims(postEntity);
-
             return postEntity.ToDomainModel(claims);
         }
 
-        private Task<List<IdentityUserClaim<string>>> GetCreatorClaims(PostEntity postEntity)
+        private Task<List<IdentityUserClaim<string>>> GetCreatorClaims(string userId)
         {
             return _blogDbContext.UserClaims
-                .Where(x => x.UserId == postEntity.CreatedBy.Id)
+                .Where(x => x.UserId == userId)
                 .ToListAsync();
         }
 
