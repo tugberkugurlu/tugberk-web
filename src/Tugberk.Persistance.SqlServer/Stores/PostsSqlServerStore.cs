@@ -119,6 +119,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
             .Include(x => x.Slugs)
             .Include(x => x.Tags)
             .ThenInclude((PostTagEntity x) => x.Tag)
-            .Include(x => x.CreatedBy);
+            .Include(x => x.CreatedBy)
+            .OrderByDescending(x => x.CreatedOnUtc);
     }
 }
