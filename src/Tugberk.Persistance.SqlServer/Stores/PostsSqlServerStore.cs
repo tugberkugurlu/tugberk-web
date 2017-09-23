@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,33 +21,20 @@ namespace Tugberk.Persistance.SqlServer.Stores
             _blogDbContext = blogDbContext ?? throw new System.ArgumentNullException(nameof(blogDbContext));
         }
 
-        public async Task<PostFindResult> FindApprovedPostById(string id)
+        public Task<PostFindResult> FindApprovedPostById(string id)
         {
             if (id == null) throw new ArgumentNullException(nameof(id));
 
             var guid = Guid.Parse(id);
-            var postEntity = await CreateBasePostQuery()
-                .FirstOrDefaultAsync(x => x.Id == guid);
 
-            PostFindResult result;
-            if (postEntity == null)
-            {
-                result = PostFindResult.Fail(PostFindFailureReason.DoesNotExist);
-            }
-            else
-            {
-                // TODO: Check for confirmation case
-                var claims = await GetCreatorClaims(postEntity.CreatedBy.Id);
-                var post = postEntity.ToDomainModel(claims);
-                result = PostFindResult.Success(post);
-            }
-
-            return result;
+            return FindApprovedPost(x => x.Id == guid);
         }
 
         public Task<PostFindResult> FindApprovedPostBySlug(string postSlug)
         {
-            throw new System.NotImplementedException();
+            if (postSlug == null) throw new ArgumentNullException(nameof(postSlug));
+            
+            return FindApprovedPost(x => x.Slugs.Any(s => s.Path == postSlug));
         }
 
         public Task<IReadOnlyCollection<Post>> GetApprovedPostsByTag(string tagSlug, int skip, int take)
@@ -106,6 +94,26 @@ namespace Tugberk.Persistance.SqlServer.Stores
             await _blogDbContext.SaveChangesAsync();
 
             return postEntity.ToDomainModel(claims);
+        }
+
+        private async Task<PostFindResult> FindApprovedPost(Expression<Func<PostEntity, bool>> predicate)
+        {            
+            var postEntity = await CreateBasePostQuery().FirstOrDefaultAsync(predicate);
+
+            PostFindResult result;
+            if (postEntity == null)
+            {
+                result = PostFindResult.Fail(PostFindFailureReason.DoesNotExist);
+            }
+            else
+            {
+                // TODO: Check for confirmation case
+                var claims = await GetCreatorClaims(postEntity.CreatedBy.Id);
+                var post = postEntity.ToDomainModel(claims);
+                result = PostFindResult.Success(post);
+            }
+
+            return result;
         }
 
         private Task<List<IdentityUserClaim<string>>> GetCreatorClaims(string userId)
