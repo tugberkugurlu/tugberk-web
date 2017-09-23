@@ -74,7 +74,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
         public async Task<Post> CreatePost(NewPostCommand newPostCommand)
         {
             var authorId = newPostCommand.CreatedBy.Id;
-            var createdBy = new IdentityUser { Id = authorId };
+            var createdBy = await _blogDbContext.Users.SingleOrDefaultAsync(x => x.Id == authorId);
             var claims = await GetCreatorClaims(authorId);
 
             var slug = new PostSlugEntity
