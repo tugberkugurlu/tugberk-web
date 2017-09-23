@@ -94,7 +94,7 @@ namespace Tugberk.Web.Controllers
 
             return new User
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = id,
                 Name = $"{name} {surname}"
             };
         }
