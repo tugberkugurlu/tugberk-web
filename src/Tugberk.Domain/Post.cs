@@ -25,8 +25,19 @@ namespace Tugberk.Domain
             .OrderByDescending(x => x.CreatedOn)
             .First();
 
-        public bool IsApproved => ApprovaleStatusActions
-            .OrderByDescending(x => x.RecordedOn)
-            .First().Status == ApprovalStatus.Approved;
+        public bool IsApproved 
+        {
+            get 
+            {
+                if(ApprovaleStatusActions.Count < 1) 
+                {
+                    return false;
+                }
+
+                return ApprovaleStatusActions
+                    .OrderByDescending(x => x.RecordedOn)
+                    .First().Status == ApprovalStatus.Approved;
+            }
+        }
     }
 }
