@@ -45,6 +45,9 @@ namespace Tugberk.Persistance.SqlServer.Stores
         public async Task<IReadOnlyCollection<Post>> GetLatestApprovedPosts(int skip, int take)
         {
             var posts = await CreateBasePostQuery()
+                .Where(x => 
+                    x.ApprovalStatusActions.Any(a => a.Status == ApprovalStatusEntity.Approved) && 
+                    x.ApprovalStatusActions.OrderByDescending(a => a.RecordedOnUtc).First().Status == ApprovalStatusEntity.Approved)
                 .Skip(skip)
                 .Take(take)
                 .ToListAsync();
@@ -97,7 +100,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
         }
 
         private async Task<Result> FindApprovedPost(Expression<Func<PostEntity, bool>> predicate)
-        {            
+        {        
             var postEntity = await CreateBasePostQuery().FirstOrDefaultAsync(predicate);
 
             Result result;
@@ -107,10 +110,12 @@ namespace Tugberk.Persistance.SqlServer.Stores
             }
             else
             {
-                // TODO: Check for confirmation case
                 var claims = await GetCreatorClaims(postEntity.CreatedBy.Id);
                 var post = postEntity.ToDomainModel(claims);
-                result = new FoundResult<Post>(post);
+
+                result = post.IsApproved ? 
+                    new FoundResult<Post>(post) :
+                    new NotApprovedResult<Post>(post);
             }
 
             return result;
@@ -125,6 +130,8 @@ namespace Tugberk.Persistance.SqlServer.Stores
 
         private IQueryable<PostEntity> CreateBasePostQuery() => _blogDbContext.Posts
             .Include(x => x.Slugs)
+            .Include(x => x.ApprovalStatusActions)
+            .ThenInclude((PostApprovalStatusActionEntity x) => x.RecordedBy)
             .Include(x => x.Tags)
             .ThenInclude((PostTagEntity x) => x.Tag)
             .Include(x => x.CreatedBy)
