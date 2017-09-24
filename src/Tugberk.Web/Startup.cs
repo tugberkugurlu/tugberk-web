@@ -45,6 +45,7 @@ namespace Tugberk.Web
             services.AddSingleton<IEmailSender, NoOpEmailSender>();
             services.AddSingleton<IImageStorage, LocalImageStorage>();
             services.AddScoped<IPostsStore, PostsSqlServerStore>();
+            services.Configure<BlogSettings>(_configuration.GetSection("BlogSettings"));
 
             services.AddMvc();
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
