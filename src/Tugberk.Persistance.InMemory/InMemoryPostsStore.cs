@@ -13,32 +13,32 @@ namespace Tugberk.Persistance.InMemory
 {
     public class InMemoryPostsStore : IPostsStore
     {
-        public Task<PostFindResult> FindApprovedPostById(string id) 
+        public Task<Result> FindApprovedPostById(string id) 
         {
             var post = GetSamplePost1();
-            return Task.FromResult(PostFindResult.Success(post));
+            return Task.FromResult<Result>(new FoundResult<Post>(post));
         }
 
-        public async Task<PostFindResult> FindApprovedPostBySlug(string postSlug) 
+        public async Task<Result> FindApprovedPostBySlug(string postSlug) 
         {
             var post = (await GetLatestApprovedPosts(0, Int32.MaxValue))
                 .FirstOrDefault(x => x.Slugs.Any(s => s.Path.Equals(postSlug, StringComparison.OrdinalIgnoreCase)));
 
-            PostFindResult result;
+            Result result;
             if(post != null) 
             {
                 if(post.IsApproved) 
                 {
-                    result = PostFindResult.Success(post);
+                    result = new FoundResult<Post>(post);
                 }
                 else 
                 {
-                    result = PostFindResult.Fail(PostFindFailureReason.NotApproved);
+                    result = new NotApprovedResult<Post>(post);
                 }
             }
             else 
             {
-                result = PostFindResult.Fail(PostFindFailureReason.DoesNotExist);
+                result = new NotFoundResult();
             }
 
             return result;

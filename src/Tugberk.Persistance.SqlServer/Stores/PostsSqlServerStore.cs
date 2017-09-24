@@ -21,7 +21,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
             _blogDbContext = blogDbContext ?? throw new System.ArgumentNullException(nameof(blogDbContext));
         }
 
-        public Task<PostFindResult> FindApprovedPostById(string id)
+        public Task<Result> FindApprovedPostById(string id)
         {
             if (id == null) throw new ArgumentNullException(nameof(id));
 
@@ -30,10 +30,10 @@ namespace Tugberk.Persistance.SqlServer.Stores
             return FindApprovedPost(x => x.Id == guid);
         }
 
-        public Task<PostFindResult> FindApprovedPostBySlug(string postSlug)
+        public Task<Result> FindApprovedPostBySlug(string postSlug)
         {
             if (postSlug == null) throw new ArgumentNullException(nameof(postSlug));
-            
+
             return FindApprovedPost(x => x.Slugs.Any(s => s.Path == postSlug));
         }
 
@@ -96,21 +96,21 @@ namespace Tugberk.Persistance.SqlServer.Stores
             return postEntity.ToDomainModel(claims);
         }
 
-        private async Task<PostFindResult> FindApprovedPost(Expression<Func<PostEntity, bool>> predicate)
+        private async Task<Result> FindApprovedPost(Expression<Func<PostEntity, bool>> predicate)
         {            
             var postEntity = await CreateBasePostQuery().FirstOrDefaultAsync(predicate);
 
-            PostFindResult result;
+            Result result;
             if (postEntity == null)
             {
-                result = PostFindResult.Fail(PostFindFailureReason.DoesNotExist);
+                result = new NotFoundResult();
             }
             else
             {
                 // TODO: Check for confirmation case
                 var claims = await GetCreatorClaims(postEntity.CreatedBy.Id);
                 var post = postEntity.ToDomainModel(claims);
-                result = PostFindResult.Success(post);
+                result = new FoundResult<Post>(post);
             }
 
             return result;

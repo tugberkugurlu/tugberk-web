@@ -7,9 +7,11 @@ namespace Tugberk.Web.Controllers
     public class PostsController : Controller 
     {
         private readonly IPostsStore _postsStore;
+        private readonly PostResultHttpHandleStragety _postResultHttpHandleStragety;
 
         public PostsController(IPostsStore postsStore)
         {
+            _postResultHttpHandleStragety = new PostResultHttpHandleStragety(this);
             _postsStore = postsStore;
         }
 
@@ -17,13 +19,7 @@ namespace Tugberk.Web.Controllers
         public async Task<IActionResult> Index(string slug)
         {
             var result = await _postsStore.FindApprovedPostBySlug(slug);
-            if(result.IsSuccess) 
-            {
-                // TODO: Convert to ViewModel here
-                return View(result.Post);
-            }
-
-            return NotFound();
+            return _postResultHttpHandleStragety.HandleResult(result);
         }
     }
 }
