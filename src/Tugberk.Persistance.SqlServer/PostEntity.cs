@@ -29,5 +29,6 @@ namespace Tugberk.Persistance.SqlServer
         public string CreationIpAddress { get; set; }
         public ICollection<PostTagEntity> Tags { get; set; }
         public ICollection<PostSlugEntity> Slugs { get; set; }
+        public ICollection<PostApprovalStatusActionEntity> ApprovalStatusActions { get; set; }
     }
 }

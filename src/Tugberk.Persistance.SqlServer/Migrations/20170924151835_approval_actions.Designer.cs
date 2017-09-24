@@ -11,9 +11,10 @@ using Tugberk.Persistance.SqlServer;
 namespace Tugberk.Persistance.SqlServer.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    partial class BlogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170924151835_approval_actions")]
+    partial class approval_actions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
