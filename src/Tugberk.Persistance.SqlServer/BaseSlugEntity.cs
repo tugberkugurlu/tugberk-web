@@ -8,7 +8,11 @@ namespace Tugberk.Persistance.SqlServer
     {
         [Key]
         public string Path { get; set; }
+
+        [Required]
         public bool IsDefault { get; set; }
+
+        [Required]
         public DateTime CreatedOnUtc { get; set; }
 
         [Required]

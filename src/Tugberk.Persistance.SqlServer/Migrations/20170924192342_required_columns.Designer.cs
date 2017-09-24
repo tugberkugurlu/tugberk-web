@@ -11,9 +11,10 @@ using Tugberk.Persistance.SqlServer;
 namespace Tugberk.Persistance.SqlServer.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    partial class BlogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170924192342_required_columns")]
+    partial class required_columns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -21,12 +21,18 @@ namespace Tugberk.Persistance.SqlServer
         [Required]
         public string Content { get; set; }
 
+        [Required]
         public PostFormatEntity Format { get; set; }
+
+        [Required]
         public IdentityUser CreatedBy { get; set; }
+
+        [Required]
         public DateTime CreatedOnUtc { get; set; }
 
         [Required]
         public string CreationIpAddress { get; set; }
+        
         public ICollection<PostTagEntity> Tags { get; set; }
         public ICollection<PostSlugEntity> Slugs { get; set; }
         public ICollection<PostApprovalStatusActionEntity> ApprovalStatusActions { get; set; }

@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,12 @@ namespace Tugberk.Persistance.SqlServer
                 .HasOne(pt => pt.Tag)
                 .WithMany(t => t.Posts)
                 .HasForeignKey(pt => pt.TagName);
+
+            // https://stackoverflow.com/a/33954705/463785
+            foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
 
             base.OnModelCreating(builder);
         }

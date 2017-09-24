@@ -17,10 +17,13 @@ namespace Tugberk.Persistance.SqlServer
 
         [Required]
         public IdentityUser CreatedBy { get; set; }
+
+        [Required]
         public DateTime CreatedOnUtc { get; set; }
 
         [Required]
         public string CreationIpAddress { get; set; }
+        
         public ICollection<PostTagEntity> Posts { get; set; }
     }
 }
