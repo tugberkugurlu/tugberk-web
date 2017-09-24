@@ -25,6 +25,15 @@ namespace Tugberk.Persistance.SqlServer.Stores
                 Slugs = postEntity.Slugs.Select(x => x.ToDomainModel()).ToList().AsReadOnly(),
                 Tags = postEntity.Tags.Select(x => x.ToDomainModel()).ToList().AsReadOnly(),
                 Authors = new List<User> { createdBy }.AsReadOnly(),
+                ApprovaleStatusActions = postEntity.ApprovalStatusActions.Select(x => new ApprovalStatusActionRecord 
+                {
+                    Status = x.Status.ToDomainModel(),
+                    RecordedOn = x.RecordedOnUtc,
+                    RecordedBy = new User 
+                    {
+                        Id = x.RecordedBy.Id
+                    }
+                }).ToList().AsReadOnly(),
                 CreationRecord = new ChangeRecord 
                 {
                     RecordedBy = createdBy,
