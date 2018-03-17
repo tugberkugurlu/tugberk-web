@@ -1,0 +1,8 @@
+tugberk_web:
+    build: .
+    dockerfile: docker-tugberk-web.dockerfile
+    container_name: tugberk-web
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80:5000"
