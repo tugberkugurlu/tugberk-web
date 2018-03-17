@@ -9,7 +9,7 @@ services:
             - ASPNETCORE_ENVIRONMENT=Development
             - ConnectionStrings__DefaultConnection=Server=sqlserver_db;Database=TugberkWeb;User ID=sa;Password=Passw0rd;MultipleActiveResultSets=true
         ports:
-            - '80:5000'
+            - '5000:5000'
         depends_on:
             - sqlserver_db
             
