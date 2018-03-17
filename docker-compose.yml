@@ -1,8 +1,20 @@
-tugberk_web:
-    build: .
-    dockerfile: docker-tugberk-web.dockerfile
-    container_name: tugberk-web
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80:5000"
+version: '3'
+services:
+    tugberk_web:
+        build: 
+            context: .
+            dockerfile: docker-tugberk-web.dockerfile
+        container_name: tugberk-web
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__DefaultConnection=Server=sqlserver_db;Database=TugberkWeb;User ID=sa;Password=Passw0rd;MultipleActiveResultSets=true
+        ports:
+            - '80:5000'
+        depends_on:
+            - sqlserver_db
+            
+    sqlserver_db:
+        image: 'microsoft/mssql-server-linux:2017-latest'
+        environment:
+            MSSQL_SA_PASSWORD: 'Passw0rd'
+            ACCEPT_EULA: 'Y'
