@@ -8,6 +8,7 @@ services:
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             - ConnectionStrings__DefaultConnection=Server=sqlserver_db;Database=TugberkWeb;User ID=sa;Password=Passw0rd;MultipleActiveResultSets=true
+            - ASPNETCORE_URLS=http://0.0.0.0:5000
         ports:
             - '5000:5000'
         depends_on:
