@@ -18,7 +18,7 @@ spec:
         run: tugberk-web
     spec:
       containers:
-      - name: sqlserver_db
+      - name: tugberk-web-sqlserver
         image: microsoft/mssql-server-linux:2017-latest
         imagePullPolicy: IfNotPresent
         ports:
@@ -28,13 +28,16 @@ spec:
           value: "Y"
         - name: MSSQL_SA_PASSWORD
           value: Passw0rd
-      - name: tugberk_web
-        image: tugberk_web
+      - name: tugberk-web-app
+        image: tugberk-web-app
+        imagePullPolicy: IfNotPresent
         env:
           - name: ASPNETCORE_ENVIRONMENT
             value: Development
           - name: ConnectionStrings__DefaultConnection
-            value: Server=sqlserver_db;Database=TugberkWeb;User ID=sa;Password=Passw0rd;MultipleActiveResultSets=true
+            value: Server=localhost;Database=TugberkWeb;User ID=sa;Password=Passw0rd;MultipleActiveResultSets=true
+          - name: ASPNETCORE_URLS
+            value: http://0.0.0.0:5000
         ports:
           - containerPort: 5000
 status: {}
