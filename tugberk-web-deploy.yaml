@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: tugberk-web
+  labels:
+    run: tugberk-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: tugberk-web
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: tugberk-web
+    spec:
+      containers:
+      - name: sqlserver_db
+        image: microsoft/mssql-server-linux:2017-latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 1433
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: MSSQL_SA_PASSWORD
+          value: Passw0rd
+      - name: tugberk_web
+        image: tugberk_web
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ConnectionStrings__DefaultConnection
+            value: Server=sqlserver_db;Database=TugberkWeb;User ID=sa;Password=Passw0rd;MultipleActiveResultSets=true
+        ports:
+          - containerPort: 5000
+status: {}
