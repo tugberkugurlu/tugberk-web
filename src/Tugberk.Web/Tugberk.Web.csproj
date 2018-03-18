@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" PrivateAssets="All" />
+    <PackageReference Include="OneOf" Version="2.1.117" />
     <PackageReference Include="Optional" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup>

@@ -71,7 +71,7 @@ namespace Tugberk.Persistance.SqlServer.Tests
                     result.Match(
                         some => 
                         {
-                            some.Match(
+                            some.Switch(
                                 found => 
                                 {
                                     var post = found;

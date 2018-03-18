@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using OneOf;
 using Optional;
 using Tugberk.Domain;
 using Tugberk.Domain.Commands;
@@ -14,16 +15,16 @@ namespace Tugberk.Persistance.InMemory
 {
     public class InMemoryPostsStore : IPostsStore
     {
-        public Task<Option<Either<Post, NotApprovedResult<Post>>>> FindApprovedPostById(string id) 
+        public Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostById(string id) 
         {
             var post = GetSamplePost1();
 
             return Task.FromResult(
-                Option.Some(new Either<Post, NotApprovedResult<Post>>(post))
+                Option.Some<OneOf<Post, NotApprovedResult<Post>>>(post)
             );
         }
 
-        public async Task<Option<Either<Post, NotApprovedResult<Post>>>> FindApprovedPostBySlug(string postSlug) 
+        public async Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostBySlug(string postSlug) 
         {
             var post = (await GetLatestApprovedPosts(0, Int32.MaxValue))
                 .FirstOrDefault(x => x.Slugs.Any(s => s.Path.Equals(postSlug, StringComparison.OrdinalIgnoreCase)));
@@ -31,14 +32,14 @@ namespace Tugberk.Persistance.InMemory
             if(post != null) 
             {
                 var result = post.IsApproved ? 
-                    new Either<Post, NotApprovedResult<Post>>(post) :
-                    new Either<Post, NotApprovedResult<Post>>(new NotApprovedResult<Post>(post));
+                    OneOf<Post, NotApprovedResult<Post>>.FromT0(post) :
+                    OneOf<Post, NotApprovedResult<Post>>.FromT1(new NotApprovedResult<Post>(post));
 
-                return Option.Some(result);
+                return Option.Some<OneOf<Post, NotApprovedResult<Post>>>(result);
             }
             else 
             {
-                return Option.None<Either<Post, NotApprovedResult<Post>>>();
+                return Option.None<OneOf<Post, NotApprovedResult<Post>>>();
             }
         }
 

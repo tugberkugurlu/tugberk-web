@@ -17,6 +17,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="OneOf" Version="2.1.117" />
     <PackageReference Include="Optional" Version="4.0.0" />
   </ItemGroup>
 </Project>

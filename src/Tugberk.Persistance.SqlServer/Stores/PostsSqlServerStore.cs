@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OneOf;
 using Optional;
 using Tugberk.Domain;
 using Tugberk.Domain.Commands;
@@ -22,7 +23,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
             _blogDbContext = blogDbContext ?? throw new System.ArgumentNullException(nameof(blogDbContext));
         }
 
-        public Task<Option<Either<Post, NotApprovedResult<Post>>>> FindApprovedPostById(string id)
+        public Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostById(string id)
         {
             if (id == null) throw new ArgumentNullException(nameof(id));
 
@@ -31,7 +32,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
             return FindApprovedPost(x => x.Id == guid);
         }
 
-        public Task<Option<Either<Post, NotApprovedResult<Post>>>> FindApprovedPostBySlug(string postSlug)
+        public Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostBySlug(string postSlug)
         {
             if (postSlug == null) throw new ArgumentNullException(nameof(postSlug));
 
@@ -100,21 +101,21 @@ namespace Tugberk.Persistance.SqlServer.Stores
             return postEntity.ToDomainModel(claims);
         }
 
-        private async Task<Option<Either<Post, NotApprovedResult<Post>>>> FindApprovedPost(Expression<Func<PostEntity, bool>> predicate)
+        private async Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPost(Expression<Func<PostEntity, bool>> predicate)
         {        
             var postEntity = await CreateBasePostQuery().FirstOrDefaultAsync(predicate);
 
             if (postEntity == null)
             {
-                return Option.None<Either<Post, NotApprovedResult<Post>>>();
+                return Option.None<OneOf<Post, NotApprovedResult<Post>>>();
             }
             else
             {
                 var claims = await GetCreatorClaims(postEntity.CreatedBy.Id);
                 var post = postEntity.ToDomainModel(claims);
                 var result = post.IsApproved ? 
-                    new Either<Post, NotApprovedResult<Post>>(post) :
-                    new Either<Post, NotApprovedResult<Post>>(new NotApprovedResult<Post>(post));
+                    OneOf<Post, NotApprovedResult<Post>>.FromT0(post) :
+                    OneOf<Post, NotApprovedResult<Post>>.FromT1(new NotApprovedResult<Post>(post));
 
                 return Option.Some(result);
             }
