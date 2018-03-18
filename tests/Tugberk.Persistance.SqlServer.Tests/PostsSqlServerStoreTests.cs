@@ -66,12 +66,29 @@ namespace Tugberk.Persistance.SqlServer.Tests
                 using (var context = provider.CreateContext())
                 {
                     var store = new PostsSqlServerStore(context);
-                    var postFindResult = await store.FindApprovedPostById(postId.ToString());
+                    var result = await store.FindApprovedPostById(postId.ToString());
 
-                    Assert.True(postFindResult.IsSuccess);
-                    Assert.Equal(postId.ToString(), postFindResult.Post.Id);
-                    Assert.Equal(expectedTitle, postFindResult.Post.Title);
-                    Assert.Equal(expectedAbstract, postFindResult.Post.Abstract);
+                    result.Match(
+                        some => 
+                        {
+                            some.Match(
+                                found => 
+                                {
+                                    var post = found.Model;
+                                    Assert.Equal(postId.ToString(), post.Id);
+                                    Assert.Equal(expectedTitle, post.Title);
+                                    Assert.Equal(expectedAbstract, post.Abstract);
+                                },
+                                
+                                notApproved => 
+                                {
+                                    Assert.True(false, $"Result shouldn't be {notApproved.GetType().ToString()}");
+                                });
+                        },
+                        notFound => 
+                        {
+                            Assert.True(false, $"Result shouldn't be {notFound.GetType().ToString()}");
+                        });
                 }
             }
         }

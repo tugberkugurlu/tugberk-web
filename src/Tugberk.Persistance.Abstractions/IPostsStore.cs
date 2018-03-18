@@ -8,8 +8,8 @@ namespace Tugberk.Persistance.Abstractions
 {
     public interface IPostsStore
     {
-        Task<Result> FindApprovedPostById(string id);
-        Task<Result> FindApprovedPostBySlug(string postSlug);
+        Task<Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>> FindApprovedPostById(string id);
+        Task<Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>> FindApprovedPostBySlug(string postSlug);
         Task<IReadOnlyCollection<Post>> GetApprovedPostsByTag(string tagSlug, int skip, int take);
         Task<IReadOnlyCollection<Post>> GetLatestApprovedPosts(int skip, int take);
 

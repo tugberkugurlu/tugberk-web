@@ -19,7 +19,25 @@ namespace Tugberk.Web.Controllers
         public async Task<IActionResult> Index(string slug)
         {
             var result = await _postsStore.FindApprovedPostBySlug(slug);
-            return _postResultHttpHandleStragety.HandleResult(result);
+
+            return result.Match<IActionResult>(
+                some => 
+                {
+                    return some.Match<IActionResult>(
+                        found => 
+                        {
+                            return View(found.Model);
+                        },
+                        notApproved => 
+                        {
+                            return NotFound();
+                        });
+                },
+                
+                notFound => 
+                {
+                    return NotFound();
+                });
         }
     }
 }

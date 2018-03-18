@@ -21,7 +21,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
             _blogDbContext = blogDbContext ?? throw new System.ArgumentNullException(nameof(blogDbContext));
         }
 
-        public Task<Result> FindApprovedPostById(string id)
+        public Task<Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>> FindApprovedPostById(string id)
         {
             if (id == null) throw new ArgumentNullException(nameof(id));
 
@@ -30,7 +30,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
             return FindApprovedPost(x => x.Id == guid);
         }
 
-        public Task<Result> FindApprovedPostBySlug(string postSlug)
+        public Task<Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>> FindApprovedPostBySlug(string postSlug)
         {
             if (postSlug == null) throw new ArgumentNullException(nameof(postSlug));
 
@@ -99,26 +99,28 @@ namespace Tugberk.Persistance.SqlServer.Stores
             return postEntity.ToDomainModel(claims);
         }
 
-        private async Task<Result> FindApprovedPost(Expression<Func<PostEntity, bool>> predicate)
+        private async Task<Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>> FindApprovedPost(Expression<Func<PostEntity, bool>> predicate)
         {        
             var postEntity = await CreateBasePostQuery().FirstOrDefaultAsync(predicate);
 
-            Result result;
             if (postEntity == null)
             {
-                result = new NotFoundResult();
+                return new Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>(
+                    new NotFoundResult()
+                );
             }
             else
             {
                 var claims = await GetCreatorClaims(postEntity.CreatedBy.Id);
                 var post = postEntity.ToDomainModel(claims);
+                var result = post.IsApproved ? 
+                    new Either<FoundResult<Post>, NotApprovedResult<Post>>(new FoundResult<Post>(post)) :
+                    new Either<FoundResult<Post>, NotApprovedResult<Post>>(new NotApprovedResult<Post>(post));
 
-                result = post.IsApproved ? 
-                    new FoundResult<Post>(post) :
-                    new NotApprovedResult<Post>(post);
+                return new Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>(
+                    result
+                );
             }
-
-            return result;
         }
 
         private Task<List<IdentityUserClaim<string>>> GetCreatorClaims(string userId)

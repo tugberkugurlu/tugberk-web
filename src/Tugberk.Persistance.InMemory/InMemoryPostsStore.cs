@@ -13,35 +13,36 @@ namespace Tugberk.Persistance.InMemory
 {
     public class InMemoryPostsStore : IPostsStore
     {
-        public Task<Result> FindApprovedPostById(string id) 
+        public Task<Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>> FindApprovedPostById(string id) 
         {
             var post = GetSamplePost1();
-            return Task.FromResult<Result>(new FoundResult<Post>(post));
+
+            return Task.FromResult(
+                new Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>(
+                    new Either<FoundResult<Post>, NotApprovedResult<Post>>(new FoundResult<Post>(post))
+                )
+            );
         }
 
-        public async Task<Result> FindApprovedPostBySlug(string postSlug) 
+        public async Task<Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>> FindApprovedPostBySlug(string postSlug) 
         {
             var post = (await GetLatestApprovedPosts(0, Int32.MaxValue))
                 .FirstOrDefault(x => x.Slugs.Any(s => s.Path.Equals(postSlug, StringComparison.OrdinalIgnoreCase)));
 
-            Result result;
             if(post != null) 
             {
-                if(post.IsApproved) 
-                {
-                    result = new FoundResult<Post>(post);
-                }
-                else 
-                {
-                    result = new NotApprovedResult<Post>(post);
-                }
+                var result = post.IsApproved ? 
+                    new Either<FoundResult<Post>, NotApprovedResult<Post>>(new FoundResult<Post>(post)) :
+                    new Either<FoundResult<Post>, NotApprovedResult<Post>>(new NotApprovedResult<Post>(post));
+
+                return result;
             }
             else 
             {
-                result = new NotFoundResult();
+                return new Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>(
+                    new NotFoundResult()
+                );
             }
-
-            return result;
         }
 
         public Task<IReadOnlyCollection<Post>> GetApprovedPostsByTag(string tagSlug, int skip, int take) 
