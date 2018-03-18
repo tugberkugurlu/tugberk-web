@@ -1,24 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Tugberk.Persistance.Abstractions\Tugberk.Persistance.Abstractions.csproj" />
     <ProjectReference Include="..\Tugberk.Domain\Tugberk.Domain.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="sample-post-html-1.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
   <ItemGroup>
     <None Update="sample-post-html-2.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
+  <ItemGroup>
+    <PackageReference Include="Optional" Version="4.0.0" />
+  </ItemGroup>
 </Project>

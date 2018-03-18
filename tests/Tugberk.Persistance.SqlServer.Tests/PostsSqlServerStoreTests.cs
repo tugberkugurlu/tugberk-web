@@ -74,7 +74,7 @@ namespace Tugberk.Persistance.SqlServer.Tests
                             some.Match(
                                 found => 
                                 {
-                                    var post = found.Model;
+                                    var post = found;
                                     Assert.Equal(postId.ToString(), post.Id);
                                     Assert.Equal(expectedTitle, post.Title);
                                     Assert.Equal(expectedAbstract, post.Abstract);
@@ -85,9 +85,9 @@ namespace Tugberk.Persistance.SqlServer.Tests
                                     Assert.True(false, $"Result shouldn't be {notApproved.GetType().ToString()}");
                                 });
                         },
-                        notFound => 
+                        () => 
                         {
-                            Assert.True(false, $"Result shouldn't be {notFound.GetType().ToString()}");
+                            Assert.True(false, $"Result shouldn't be Option.None");
                         });
                 }
             }

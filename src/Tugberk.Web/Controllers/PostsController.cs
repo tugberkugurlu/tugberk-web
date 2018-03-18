@@ -7,11 +7,9 @@ namespace Tugberk.Web.Controllers
     public class PostsController : Controller 
     {
         private readonly IPostsStore _postsStore;
-        private readonly PostResultHttpHandleStragety _postResultHttpHandleStragety;
 
         public PostsController(IPostsStore postsStore)
         {
-            _postResultHttpHandleStragety = new PostResultHttpHandleStragety(this);
             _postsStore = postsStore;
         }
 
@@ -24,9 +22,9 @@ namespace Tugberk.Web.Controllers
                 some => 
                 {
                     return some.Match<IActionResult>(
-                        found => 
+                        foundPost => 
                         {
-                            return View(found.Model);
+                            return View(foundPost);
                         },
                         notApproved => 
                         {
@@ -34,7 +32,7 @@ namespace Tugberk.Web.Controllers
                         });
                 },
                 
-                notFound => 
+                () => 
                 {
                     return NotFound();
                 });

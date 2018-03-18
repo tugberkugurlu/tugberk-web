@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Optional;
 using Tugberk.Domain;
 using Tugberk.Domain.Commands;
 using Tugberk.Persistance.Abstractions;
@@ -13,18 +14,16 @@ namespace Tugberk.Persistance.InMemory
 {
     public class InMemoryPostsStore : IPostsStore
     {
-        public Task<Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>> FindApprovedPostById(string id) 
+        public Task<Option<Either<Post, NotApprovedResult<Post>>>> FindApprovedPostById(string id) 
         {
             var post = GetSamplePost1();
 
             return Task.FromResult(
-                new Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>(
-                    new Either<FoundResult<Post>, NotApprovedResult<Post>>(new FoundResult<Post>(post))
-                )
+                Option.Some(new Either<Post, NotApprovedResult<Post>>(post))
             );
         }
 
-        public async Task<Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>> FindApprovedPostBySlug(string postSlug) 
+        public async Task<Option<Either<Post, NotApprovedResult<Post>>>> FindApprovedPostBySlug(string postSlug) 
         {
             var post = (await GetLatestApprovedPosts(0, Int32.MaxValue))
                 .FirstOrDefault(x => x.Slugs.Any(s => s.Path.Equals(postSlug, StringComparison.OrdinalIgnoreCase)));
@@ -32,16 +31,14 @@ namespace Tugberk.Persistance.InMemory
             if(post != null) 
             {
                 var result = post.IsApproved ? 
-                    new Either<FoundResult<Post>, NotApprovedResult<Post>>(new FoundResult<Post>(post)) :
-                    new Either<FoundResult<Post>, NotApprovedResult<Post>>(new NotApprovedResult<Post>(post));
+                    new Either<Post, NotApprovedResult<Post>>(post) :
+                    new Either<Post, NotApprovedResult<Post>>(new NotApprovedResult<Post>(post));
 
-                return result;
+                return Option.Some(result);
             }
             else 
             {
-                return new Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>(
-                    new NotFoundResult()
-                );
+                return Option.None<Either<Post, NotApprovedResult<Post>>>();
             }
         }
 

@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Optional;
 using Tugberk.Domain;
 using Tugberk.Domain.Commands;
 using Tugberk.Persistance.Abstractions;
@@ -21,7 +22,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
             _blogDbContext = blogDbContext ?? throw new System.ArgumentNullException(nameof(blogDbContext));
         }
 
-        public Task<Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>> FindApprovedPostById(string id)
+        public Task<Option<Either<Post, NotApprovedResult<Post>>>> FindApprovedPostById(string id)
         {
             if (id == null) throw new ArgumentNullException(nameof(id));
 
@@ -30,7 +31,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
             return FindApprovedPost(x => x.Id == guid);
         }
 
-        public Task<Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>> FindApprovedPostBySlug(string postSlug)
+        public Task<Option<Either<Post, NotApprovedResult<Post>>>> FindApprovedPostBySlug(string postSlug)
         {
             if (postSlug == null) throw new ArgumentNullException(nameof(postSlug));
 
@@ -99,27 +100,23 @@ namespace Tugberk.Persistance.SqlServer.Stores
             return postEntity.ToDomainModel(claims);
         }
 
-        private async Task<Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>> FindApprovedPost(Expression<Func<PostEntity, bool>> predicate)
+        private async Task<Option<Either<Post, NotApprovedResult<Post>>>> FindApprovedPost(Expression<Func<PostEntity, bool>> predicate)
         {        
             var postEntity = await CreateBasePostQuery().FirstOrDefaultAsync(predicate);
 
             if (postEntity == null)
             {
-                return new Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>(
-                    new NotFoundResult()
-                );
+                return Option.None<Either<Post, NotApprovedResult<Post>>>();
             }
             else
             {
                 var claims = await GetCreatorClaims(postEntity.CreatedBy.Id);
                 var post = postEntity.ToDomainModel(claims);
                 var result = post.IsApproved ? 
-                    new Either<FoundResult<Post>, NotApprovedResult<Post>>(new FoundResult<Post>(post)) :
-                    new Either<FoundResult<Post>, NotApprovedResult<Post>>(new NotApprovedResult<Post>(post));
+                    new Either<Post, NotApprovedResult<Post>>(post) :
+                    new Either<Post, NotApprovedResult<Post>>(new NotApprovedResult<Post>(post));
 
-                return new Either<Either<FoundResult<Post>, NotApprovedResult<Post>>, NotFoundResult>(
-                    result
-                );
+                return Option.Some(result);
             }
         }
 

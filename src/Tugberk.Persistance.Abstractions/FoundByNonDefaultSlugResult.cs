@@ -7,9 +7,7 @@ namespace Tugberk.Persistance.Abstractions
     {
         public FoundByNonDefaultSlugResult(TModel model, Slug defaultSlug) : base(model)
         {
-            if (defaultSlug == null) throw new ArgumentNullException(nameof(defaultSlug));
-
-            DefaultSlug = defaultSlug;
+            DefaultSlug = defaultSlug ?? throw new ArgumentNullException(nameof(defaultSlug));
         }
 
         public Slug DefaultSlug { get; }
