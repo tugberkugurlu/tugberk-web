@@ -78,6 +78,17 @@ namespace Tugberk.Persistance.SqlServer.Stores
                 CreatedOnUtc = DateTime.UtcNow
             };
 
+            var approvalStatusActions = new Collection<PostApprovalStatusActionEntity>();
+            if(newPostCommand.Approved) 
+            {
+                approvalStatusActions.Add(new PostApprovalStatusActionEntity 
+                {
+                    Status = ApprovalStatusEntity.Approved,
+                    RecordedOnUtc = DateTime.UtcNow,
+                    RecordedBy = createdBy
+                });
+            }
+
             var postEntity = new PostEntity
             {
                 Title = newPostCommand.Title,
@@ -93,7 +104,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
                 {
                     Tag = new TagEntity { Name = t }
                 }).ToList()),
-                ApprovalStatusActions = new Collection<PostApprovalStatusActionEntity>()
+                ApprovalStatusActions = approvalStatusActions 
             };
 
             await _blogDbContext.AddAsync(postEntity);

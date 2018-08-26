@@ -46,7 +46,8 @@ namespace Tugberk.Web.Controllers
                     PostFormat.Html,
                     HttpContext.Connection?.RemoteIpAddress?.ToString() ?? "127.0.0.1",
                     currentUser,
-                    Enumerable.Empty<string>().ToList().AsReadOnly());
+                    Enumerable.Empty<string>().ToList().AsReadOnly(),
+                    false);
 
                 await _postsStore.CreatePost(command);
 

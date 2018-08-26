@@ -6,7 +6,7 @@ namespace Tugberk.Domain.Commands
  {
      public class NewPostCommand 
      {
-         public NewPostCommand(string title, string @abstract, string content, string language, PostFormat format, string ipAddress, User createdBy, IReadOnlyCollection<string> tags)
+         public NewPostCommand(string title, string @abstract, string content, string language, PostFormat format, string ipAddress, User createdBy, IReadOnlyCollection<string> tags, bool approved)
          {
             Title = title ?? throw new System.ArgumentNullException(nameof(title));
             Abstract = @abstract ?? throw new System.ArgumentNullException(nameof(@abstract));
@@ -15,6 +15,7 @@ namespace Tugberk.Domain.Commands
             IPAddress = ipAddress ?? throw new System.ArgumentNullException(nameof(ipAddress));
             CreatedBy = createdBy ?? throw new System.ArgumentNullException(nameof(createdBy));
             Tags = tags ?? throw new System.ArgumentNullException(nameof(tags));
+            Approved = approved;
             Format = format;
         }
 
@@ -25,9 +26,10 @@ namespace Tugberk.Domain.Commands
          public PostFormat Format { get; }
          public string IPAddress { get; }
          public User CreatedBy { get; }
-         
+         public bool Approved { get; }
+
          public string Slug => Title.ToSlug();
 
          public IReadOnlyCollection<string> Tags { get; }
-     }
+    }
  }

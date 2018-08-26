@@ -24,7 +24,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
                         Id = x.RecordedBy.Id
                     }
                 }).ToList().AsReadOnly();
-                
+
             return new Post 
             {
                 Id = postEntity.Id.ToString(),

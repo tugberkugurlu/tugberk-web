@@ -58,9 +58,10 @@ namespace Tugberk.Web
                         post.Format,
                         post.CreationRecord.IpAddress,
                         new User { Id = defaultUser.Id, Name = defaultUser.UserName },
-                        post.Tags.Select(x => x.Name).ToList().AsReadOnly());
+                        post.Tags.Select(x => x.Name).ToList().AsReadOnly(),
+                        true);
                     
-                    store.CreatePost(newPostCommand).Wait();
+                    store.CreatePost(newPostCommand).Wait();                    
                 }
             }
         }
