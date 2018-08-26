@@ -13,7 +13,18 @@ namespace Tugberk.Persistance.SqlServer.Stores
         public static Post ToDomainModel(this PostEntity postEntity, IEnumerable<IdentityUserClaim<string>> authorClaims) 
         {
             var createdBy = postEntity.CreatedBy.ToDomainModel(authorClaims);
-
+            var slugs = postEntity.Slugs.Select(x => x.ToDomainModel()).ToList().AsReadOnly();
+            var tags = postEntity.Tags.Select(x => x.ToDomainModel()).ToList().AsReadOnly();
+            var approvalStatusActions = postEntity.ApprovalStatusActions.Select(x => new ApprovalStatusActionRecord 
+                {
+                    Status = x.Status.ToDomainModel(),
+                    RecordedOn = x.RecordedOnUtc,
+                    RecordedBy = new User 
+                    {
+                        Id = x.RecordedBy.Id
+                    }
+                }).ToList().AsReadOnly();
+                
             return new Post 
             {
                 Id = postEntity.Id.ToString(),
@@ -22,18 +33,10 @@ namespace Tugberk.Persistance.SqlServer.Stores
                 Abstract = postEntity.Abstract,
                 Content = postEntity.Content,
                 Format = postEntity.Format.ToDomainModel(),
-                Slugs = postEntity.Slugs.Select(x => x.ToDomainModel()).ToList().AsReadOnly(),
-                Tags = postEntity.Tags.Select(x => x.ToDomainModel()).ToList().AsReadOnly(),
+                Slugs = slugs,
+                Tags = tags,
                 Authors = new List<User> { createdBy }.AsReadOnly(),
-                ApprovaleStatusActions = postEntity.ApprovalStatusActions.Select(x => new ApprovalStatusActionRecord 
-                {
-                    Status = x.Status.ToDomainModel(),
-                    RecordedOn = x.RecordedOnUtc,
-                    RecordedBy = new User 
-                    {
-                        Id = x.RecordedBy.Id
-                    }
-                }).ToList().AsReadOnly(),
+                ApprovaleStatusActions = approvalStatusActions,
                 CreationRecord = new ChangeRecord 
                 {
                     RecordedBy = createdBy,
