@@ -1,3 +1,13 @@
+# Stage 1 - the build process
+FROM node:8 as build-deps
+
+COPY ./src/Tugberk.Web/wwwroot/package.json /app-temp/wwwroot/
+COPY ./src/Tugberk.Web/wwwroot/package-lock.json /app-temp/wwwroot/
+
+WORKDIR /app-temp/wwwroot
+RUN npm install
+
+# Stage 2 - the production environment
 FROM microsoft/dotnet:2-sdk
 
 ARG BUILDCONFIG=DEBUG
@@ -12,6 +22,7 @@ WORKDIR /app/
 RUN dotnet --info
 RUN dotnet restore Tugberk.Web/Tugberk.Web.csproj
 ADD ./src/ /app/
+COPY --from=build-deps /app-temp/wwwroot/node_modules /app/Tugberk.Web/wwwroot/node_modules
 
 WORKDIR /app/Tugberk.Web/
 RUN dotnet publish -c $BUILDCONFIG -o out
