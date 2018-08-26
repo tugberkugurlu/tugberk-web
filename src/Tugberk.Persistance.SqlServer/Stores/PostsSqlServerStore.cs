@@ -92,7 +92,8 @@ namespace Tugberk.Persistance.SqlServer.Stores
                 Tags = new Collection<PostTagEntity>(newPostCommand.Tags.Select(t => new PostTagEntity
                 {
                     Tag = new TagEntity { Name = t }
-                }).ToList())
+                }).ToList()),
+                ApprovalStatusActions = new Collection<PostApprovalStatusActionEntity>()
             };
 
             await _blogDbContext.AddAsync(postEntity);
