@@ -34,7 +34,7 @@ spec:
         env:
           - name: ASPNETCORE_ENVIRONMENT
             value: Development
-          - name: ConnectionStrings__DefaultConnection
+          - name: TUGBERKWEB_ConnectionStrings__DefaultConnection
             value: Server=localhost;Database=TugberkWeb;User ID=sa;Password=Passw0rd;MultipleActiveResultSets=true
           - name: ASPNETCORE_URLS
             value: http://0.0.0.0:5000
