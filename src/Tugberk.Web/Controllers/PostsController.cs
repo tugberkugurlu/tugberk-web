@@ -22,8 +22,11 @@ namespace Tugberk.Web.Controllers
                 some => 
                 {
                     return some.Match<IActionResult>(
-                        foundPost => 
+                        foundPost =>
                         {
+                            ViewBag.PageTitle = foundPost.Title;
+                            ViewBag.PageDescription = foundPost.Abstract;
+
                             return View(foundPost);
                         },
                         notApproved => 

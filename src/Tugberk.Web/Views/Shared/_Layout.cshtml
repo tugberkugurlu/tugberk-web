@@ -8,15 +8,23 @@
 }
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/styles/main.css">
     @RenderSection("styles", false)
-    <title>Official Web Site and Blog of Tugberk Ugurlu</title>
-  </head>
+    <title>@(ViewBag.PageTitle)@(string.IsNullOrWhiteSpace(ViewBag.PageTitle) ? "" : " | ")@("Tugberk Ugurlu @ the Heart of Software")</title>
+    @if (!string.IsNullOrWhiteSpace(ViewBag.PageDescription))
+    {
+        <meta name="description" content="@ViewBag.PageDescription" />
+    }
+    else
+    {
+        <meta name="description" content="Welcome to Technical Leader and Software Engineer Tugberk Ugurlu's home on the interwebs! Here, you can find out about Tugberk's conference talks, books and blog posts on software development techniques and practices." />
+    }
+</head>
   <body>    
     <nav class="navbar navbar-expand-lg navbar-light navbar-dark bg-primary">
         <a class="navbar-brand" href="/">Tugberk @@ the Heart of Software</a>
