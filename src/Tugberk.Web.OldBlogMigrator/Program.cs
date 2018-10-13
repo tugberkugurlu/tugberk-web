@@ -74,7 +74,7 @@ namespace Tugberk.Web.OldBlogMigrator
                 cmd.Parameters.AddWithValue("Content", blogPost.Content);
                 cmd.Parameters.AddWithValue("CreatedById", userId);
                 cmd.Parameters.AddWithValue("CreatedOnUtc", blogPost.CreatedOn.UtcDateTime);
-                cmd.Parameters.AddWithValue("CreationIpAddress", blogPost.CreationIp);
+                cmd.Parameters.AddWithValue("CreationIpAddress", blogPost.CreationIp ?? "127.0.0.1");
                 cmd.Parameters.AddWithValue("Format", 2);
                 cmd.Parameters.AddWithValue("Language", "en-US");
                 cmd.Parameters.AddWithValue("Title", blogPost.Title);
