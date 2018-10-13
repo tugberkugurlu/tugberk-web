@@ -70,7 +70,7 @@ namespace Tugberk.Web.OldBlogMigrator
                 // TODO: Last updated date?
                 
                 cmd.Parameters.AddWithValue("Id", blogPostNewId);
-                cmd.Parameters.AddWithValue("Abstract", blogPost.BriefInfo);
+                cmd.Parameters.AddWithValue("Abstract", blogPost.BriefInfo ?? string.Empty);
                 cmd.Parameters.AddWithValue("Content", blogPost.Content);
                 cmd.Parameters.AddWithValue("CreatedById", userId);
                 cmd.Parameters.AddWithValue("CreatedOnUtc", blogPost.CreatedOn.UtcDateTime);
