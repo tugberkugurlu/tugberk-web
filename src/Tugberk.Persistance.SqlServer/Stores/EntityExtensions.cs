@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 using Tugberk.Domain;
 
 namespace Tugberk.Persistance.SqlServer.Stores
@@ -10,7 +10,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
         // TODO: Add authors projection in its real form, not just out of createdby
         // TODO: Add CommentStatusActionRecord projection
         // TODO: Add ApprovalStatusActionRecord projection
-        public static Post ToDomainModel(this PostEntity postEntity, IEnumerable<IdentityUserClaim<string>> authorClaims) 
+        public static Post ToDomainModel(this PostEntity postEntity, IEnumerable<Claim> authorClaims) 
         {
             var createdBy = postEntity.CreatedBy.ToDomainModel(authorClaims);
             var slugs = postEntity.Slugs.Select(x => x.ToDomainModel()).ToList().AsReadOnly();

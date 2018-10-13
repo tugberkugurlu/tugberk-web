@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OneOf;
 using Optional;
@@ -41,7 +41,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
 
         public Task<IReadOnlyCollection<Post>> GetApprovedPostsByTag(string tagSlug, int skip, int take)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public async Task<IReadOnlyCollection<Post>> GetLatestApprovedPosts(int skip, int take)
@@ -54,14 +54,19 @@ namespace Tugberk.Persistance.SqlServer.Stores
                 .Take(take)
                 .ToListAsync();
 
-            // TODO: This is obviously not great but EF sucks and was not able to generate the correct query to get this out from SQL Server. Fix this or cache.
-            var userIds = posts.Select(x => x.CreatedBy.Id).Distinct(StringComparer.InvariantCultureIgnoreCase);
-            var claims = await _blogDbContext.UserClaims
-                .Where(x => userIds.Any(id => x.UserId == id))
-                .ToListAsync();
+            //// TODO: This is obviously not great but EF sucks and was not able to generate the correct query to get this out from SQL Server. Fix this or cache.
+            //var userIds = posts.Select(x => x.CreatedBy.Id).Distinct(StringComparer.InvariantCultureIgnoreCase);
+            //var claims = await _blogDbContext.UserClaims
+            //    .Where(x => userIds.Any(id => x.UserId == id))
+            //    .ToListAsync();
 
-            return new ReadOnlyCollection<Post>(posts.Select(x => 
-                x.ToDomainModel(claims.Where(c => c.UserId.Equals(x.CreatedBy.Id, StringComparison.InvariantCultureIgnoreCase)))).ToList());
+            return new ReadOnlyCollection<Post>(posts.Select(x =>
+                x.ToDomainModel(new List<Claim>
+                {
+                    // TODO: Hardcode these for now as we only have one author in the system
+                    new Claim(ClaimTypes.Name, "Tugberk"),
+                    new Claim(ClaimTypes.Surname, "Ugurlu")
+                })).ToList());
         }
 
         public async Task<Post> CreatePost(NewPostCommand newPostCommand)
@@ -133,11 +138,11 @@ namespace Tugberk.Persistance.SqlServer.Stores
             }
         }
 
-        private Task<List<IdentityUserClaim<string>>> GetCreatorClaims(string userId)
+        private async Task<IReadOnlyCollection<Claim>> GetCreatorClaims(string userId)
         {
-            return _blogDbContext.UserClaims
-                .Where(x => x.UserId == userId)
-                .ToListAsync();
+            return (await _blogDbContext.UserClaims.Where(x => x.UserId == userId).ToListAsync())
+                .Select(x => new Claim(x.ClaimType, x.ClaimValue))
+                .ToList();
         }
 
         private IQueryable<PostEntity> CreateBasePostQuery() => _blogDbContext.Posts
