@@ -6,9 +6,7 @@ namespace Tugberk.Persistance.Abstractions
     {
         public FoundResult(TModel model)
         {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-
-            Model = model;
+            Model = model ?? throw new ArgumentNullException(nameof(model));
         }
 
         public TModel Model { get; }
