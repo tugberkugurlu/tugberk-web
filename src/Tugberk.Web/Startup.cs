@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,11 +20,13 @@ namespace Tugberk.Web
     {
         private readonly IConfiguration _configuration;
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global", Justification = "Invoked by ASP.NET Core hosting layer")]
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global", Justification = "Invoked by ASP.NET Core hosting layer")]
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<BlogDbContext>(options => 
@@ -51,6 +54,7 @@ namespace Tugberk.Web
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
         }
 
+        [SuppressMessage("ReSharper", "UnusedMember.Global", Justification = "Invoked by ASP.NET Core hosting layer")]
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
