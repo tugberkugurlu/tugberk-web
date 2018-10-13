@@ -1,4 +1,4 @@
-@{
+﻿@{
     var currentController = ViewContext.RouteData.Values["controller"].ToString();
     var isUnderAboutSection = currentController.Equals("about", StringComparison.OrdinalIgnoreCase);
     var isUnderSpeakingSection = currentController.Equals("speaking", StringComparison.OrdinalIgnoreCase);
@@ -47,7 +47,7 @@
                 @RenderBody()
             </div>
             <div class="col-md-3">
-                @Html.Partial("RightSection")
+                @await Html.PartialAsync("RightSection")
             </div>
         </div>
     </div>

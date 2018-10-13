@@ -2,7 +2,7 @@
 @inject IOptions<BlogSettings> BlogSettings
 @model Post
 
-@Html.Partial("Post", Model)
+@await Html.PartialAsync("Post", Model)
 
 @if (BlogSettings.Value.IsDisqusEnabled())
 {

@@ -4,5 +4,5 @@
 
 @foreach(var post in Model) 
 {
-    @Html.Partial("Post", post)
+    @await Html.PartialAsync("Post", post)
 }
