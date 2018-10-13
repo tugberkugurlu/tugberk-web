@@ -18,27 +18,39 @@ namespace Tugberk.Web.OldBlogMigrator
             using (IDocumentSession ses = store.OpenSession())
             using (SqlConnection conn = new SqlConnection(connStr))
             {
-                conn.Open();
                 ses.Advanced.MaxNumberOfRequestsPerSession = int.MaxValue;
-
                 var allPosts = ses.Query<BlogPost>().Take(Int32.MaxValue).Where(x => x.IsApproved).ToList();
                 var allTags = allPosts.SelectMany(x => x.Tags).Distinct(new TagEquality());
-                
-                foreach (var tag in allTags)
-                {
-                    Console.WriteLine($"Inserting Tag '{tag.Name}'");
-                    InsertTag(conn, tag, userId);
-                }
 
-                foreach (var blogPost in allPosts)
+                conn.Open();
+                using (var transaction = conn.BeginTransaction()) // see https://stackoverflow.com/a/17019525/463785
                 {
-                    Console.WriteLine($"Inserting '{blogPost.Title}' post, written @ {blogPost.CreatedOn}");
-                    InsertPost(conn, blogPost, userId);
+                    try
+                    {
+                        foreach (var tag in allTags)
+                        {
+                            Console.WriteLine($"Inserting Tag '{tag.Name}'");
+                            InsertTag(conn, transaction, tag, userId);
+                        }
+
+                        foreach (var blogPost in allPosts)
+                        {
+                            Console.WriteLine($"Inserting '{blogPost.Title}' post, written @ {blogPost.CreatedOn}");
+                            InsertPost(conn, transaction, blogPost, userId);
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error while migrating data from RavenDB to SQL Server: {0}", ex);
+                        transaction.Rollback();
+                    }
                 }
             }
         }
 
-        private static void InsertPost(SqlConnection conn, BlogPost blogPost, string userId)
+        private static void InsertPost(SqlConnection conn, SqlTransaction transaction, BlogPost blogPost, string userId)
         {
             var blogPostNewId = Guid.NewGuid().ToString();
             using (var cmd = new SqlCommand(@"INSERT INTO [dbo].[Posts]
@@ -52,7 +64,7 @@ namespace Tugberk.Web.OldBlogMigrator
            ,[Language]
            ,[Title])
      VALUES (@Id, @Abstract, @Content, @CreatedById, @CreatedOnUtc, @CreationIpAddress, @Format, @Language, @Title)",
-                conn))
+                conn, transaction))
             {
                 // TODO: Old Identifier?
                 // TODO: Last updated date?
@@ -75,7 +87,7 @@ namespace Tugberk.Web.OldBlogMigrator
                 using (var cmd = new SqlCommand(@"INSERT INTO [dbo].[PostTagEntity]
            ([PostId]
            ,[TagName])
-     VALUES (@PostId, @TagName)", conn))
+     VALUES (@PostId, @TagName)", conn, transaction))
                 {
                     cmd.Parameters.AddWithValue("PostId", blogPostNewId);
                     cmd.Parameters.AddWithValue("TagName", blogPostTag.Name);
@@ -92,7 +104,7 @@ namespace Tugberk.Web.OldBlogMigrator
            ,[CreatedOnUtc]
            ,[IsDefault]
            ,[OwnedById])
-     VALUES (@Path, @CreatedById, @CreatedOnUtc, @IsDefault, @OwnedById)", conn))
+     VALUES (@Path, @CreatedById, @CreatedOnUtc, @IsDefault, @OwnedById)", conn, transaction))
                 {
                     cmd.Parameters.AddWithValue("Path", blogPostSlug.Path);
                     cmd.Parameters.AddWithValue("CreatedById", userId);
@@ -112,7 +124,7 @@ namespace Tugberk.Web.OldBlogMigrator
            ,[RecordedById]
            ,[RecordedOnUtc]
            ,[Status])
-     VALUES (@Id, @PostId, @RecordedById, @RecordedOnUtc, @Status)", conn))
+     VALUES (@Id, @PostId, @RecordedById, @RecordedOnUtc, @Status)", conn, transaction))
                 {
                     cmd.Parameters.AddWithValue("Id", Guid.NewGuid().ToString());
                     cmd.Parameters.AddWithValue("PostId", blogPostNewId);
@@ -125,14 +137,14 @@ namespace Tugberk.Web.OldBlogMigrator
             }
         }
 
-        private static void InsertTag(SqlConnection conn, Tag tag, string userId)
+        private static void InsertTag(SqlConnection conn, SqlTransaction transaction, Tag tag, string userId)
         {
             using (var cmd = new SqlCommand(@"INSERT INTO [dbo].[Tags]
            ([Name]
            ,[CreatedById]
            ,[CreatedOnUtc]
            ,[CreationIpAddress]
-           ,[Slug]) VALUES(@Name, @CreatedById, @CreatedOnUtc, @CreationIpAddress, @Slug)", conn))
+           ,[Slug]) VALUES(@Name, @CreatedById, @CreatedOnUtc, @CreationIpAddress, @Slug)", conn, transaction))
             {
                 cmd.Parameters.AddWithValue("Name", tag.Name);
                 cmd.Parameters.AddWithValue("CreatedById", userId);
