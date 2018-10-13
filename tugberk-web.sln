@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tugberk.Persistance.Abstrac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tugberk.Persistance.InMemory", "src\Tugberk.Persistance.InMemory\Tugberk.Persistance.InMemory.csproj", "{588A1CB8-4765-45B6-B17D-619872B1E696}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tugberk.Web.OldBlogMigrator", "src\Tugberk.Web.OldBlogMigrator\Tugberk.Web.OldBlogMigrator.csproj", "{6D14C263-6825-4034-90AD-95790D491692}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,18 @@ Global
 		{588A1CB8-4765-45B6-B17D-619872B1E696}.Release|x64.Build.0 = Release|Any CPU
 		{588A1CB8-4765-45B6-B17D-619872B1E696}.Release|x86.ActiveCfg = Release|Any CPU
 		{588A1CB8-4765-45B6-B17D-619872B1E696}.Release|x86.Build.0 = Release|Any CPU
+		{6D14C263-6825-4034-90AD-95790D491692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D14C263-6825-4034-90AD-95790D491692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D14C263-6825-4034-90AD-95790D491692}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6D14C263-6825-4034-90AD-95790D491692}.Debug|x64.Build.0 = Debug|Any CPU
+		{6D14C263-6825-4034-90AD-95790D491692}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6D14C263-6825-4034-90AD-95790D491692}.Debug|x86.Build.0 = Debug|Any CPU
+		{6D14C263-6825-4034-90AD-95790D491692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D14C263-6825-4034-90AD-95790D491692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D14C263-6825-4034-90AD-95790D491692}.Release|x64.ActiveCfg = Release|Any CPU
+		{6D14C263-6825-4034-90AD-95790D491692}.Release|x64.Build.0 = Release|Any CPU
+		{6D14C263-6825-4034-90AD-95790D491692}.Release|x86.ActiveCfg = Release|Any CPU
+		{6D14C263-6825-4034-90AD-95790D491692}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
