@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Tugberk.Persistance.Abstractions
+namespace Tugberk.Domain
 {
     public class Paginated<T>
     {
