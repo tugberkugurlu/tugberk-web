@@ -36,6 +36,7 @@ Idea is to replicate what I current have and then build on top of that. A few im
 
  - [x] Create blog post page
  - [ ] Ads
+ - [ ] Sort out relative images which came from old blog (e.g. `../Content/Images/BlogUploadedPics/tourism-heighlights-2010-edition-pdf-donwload-free.png`)
 
 ### Sidebar
 
