@@ -29,7 +29,7 @@ Idea is to replicate what I current have and then build on top of that. A few im
 ### Home Page
 
  - [x] List last 5 blog posts on the home page
- - [ ] Pagination on the home page
+ - [x] Pagination on the home page
  - [ ] Ads
 
 ### Blog Post Page

@@ -1,7 +1,50 @@
-@using Tugberk.Domain
-@model IReadOnlyCollection<Post>
+@model HomePageViewModel
 
-@foreach(var post in Model) 
+@foreach(var post in Model.PaginatedPostsResult.Items) 
 {
     @await Html.PartialAsync("Post", post)
 }
+
+<hr />
+
+<div>
+    <div class="pull-left">
+        <nav aria-label="...">
+            <ul class="pagination">
+                @if (Model.PaginatedPostsResult.HasPrevious)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index", "Home", new { page = Model.CurrentPage - 1 })">Previous</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+
+    <div class="pull-right">
+        <nav aria-label="...">
+            <ul class="pagination">
+                @if (Model.PaginatedPostsResult.HasNext)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index", "Home", new { page = Model.CurrentPage + 1 })">Next</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Next</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+
+    <div class="clearfix"></div>
+</div>

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Tugberk.Persistance.Abstractions;
+using Tugberk.Web.Models;
 
 namespace Tugberk.Web.Controllers
 {
@@ -25,7 +26,12 @@ namespace Tugberk.Web.Controllers
 
             var result = await _postsStore.GetLatestApprovedPosts(skip, take);
 
-            return View(result.Items);
+            if (page > 0 && result.Items.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return View(new HomePageViewModel(page, result));
         }
     }
 }
