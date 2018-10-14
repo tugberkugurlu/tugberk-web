@@ -1,7 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Http;
 
-namespace Tugberk.Web.Controllers
+namespace Tugberk.Web
 {
     /// <seealso href="https://www.strathweb.com/2016/04/request-islocal-in-asp-net-core/" />
     public static class HttpRequestExtensions

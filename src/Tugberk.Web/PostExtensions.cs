@@ -1,7 +1,7 @@
 using System;
 using Tugberk.Domain;
 
-namespace Tugberk.Web.Controllers
+namespace Tugberk.Web
 {
     internal static class PostExtensions
     {

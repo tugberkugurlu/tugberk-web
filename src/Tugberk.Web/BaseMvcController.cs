@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Tugberk.Web.Controllers
+namespace Tugberk.Web
 {
     public abstract class BaseMvcController : Controller
     {
