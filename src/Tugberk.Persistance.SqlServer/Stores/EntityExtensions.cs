@@ -14,7 +14,9 @@ namespace Tugberk.Persistance.SqlServer.Stores
         {
             var createdBy = postEntity.CreatedBy.ToDomainModel(authorClaims);
             var slugs = postEntity.Slugs.Select(x => x.ToDomainModel()).ToList().AsReadOnly();
-            var tags = postEntity.Tags.Select(x => x.ToDomainModel()).ToList().AsReadOnly();
+            var tags = postEntity.Tags
+                .Where(x => x.Tag != null) // it comes up null sometimes, no clue why as it's 'ThenInclude'd
+                .Select(x => x.ToDomainModel()).ToList().AsReadOnly();
             var approvalStatusActions = postEntity.ApprovalStatusActions.Select(x => new ApprovalStatusActionRecord 
                 {
                     Status = x.Status.ToDomainModel(),
@@ -46,12 +48,17 @@ namespace Tugberk.Persistance.SqlServer.Stores
             };
         }
         
-        public static Tag ToDomainModel(this PostTagEntity tagEntity) =>
-            new Tag 
+        public static Tag ToDomainModel(this PostTagEntity tagEntity)
+        {
+            var tagName = tagEntity.Tag.Name;
+            var tagSlug = tagEntity.Tag.Slug;
+
+            return new Tag
             {
-                Name = tagEntity.Tag.Name,
-                Slugs = new List<Slug> { new Slug { Path = tagEntity.Tag.Slug, IsDefault = true } }
+                Name = tagName,
+                Slugs = new List<Slug> {new Slug {Path = tagSlug, IsDefault = true}}
             };
+        }
 
         public static Slug ToDomainModel(this PostSlugEntity slugEntity) =>
             new Slug 
