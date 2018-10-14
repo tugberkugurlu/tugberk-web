@@ -20,12 +20,12 @@ namespace Tugberk.Web.Controllers
                 return NotFound();
             }
 
-            int skip = 0 + (5 * page);
+            int skip = 5 * page;
             int take = 5;
 
-            var posts = await _postsStore.GetLatestApprovedPosts(skip, take);
+            var result = await _postsStore.GetLatestApprovedPosts(skip, take);
 
-            return View(posts);
+            return View(result.Items);
         }
     }
 }

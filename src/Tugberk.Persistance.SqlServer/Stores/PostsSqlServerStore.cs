@@ -44,7 +44,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
             throw new NotImplementedException();
         }
 
-        public async Task<IReadOnlyCollection<Post>> GetLatestApprovedPosts(int skip, int take)
+        public async Task<Paginated<Post>> GetLatestApprovedPosts(int skip, int take)
         {
             // TODO: This query sucks, most of this query is evaluated locally and performance is at the bottom!
             var postsQuery = CreateBasePostQuery()
@@ -59,16 +59,20 @@ namespace Tugberk.Persistance.SqlServer.Stores
                 .Take(take)
                 .ToListAsync();
 
+            var totalCount = await postsQuery.CountAsync();
+
             // TODO: This is obviously not great but EF sucks and was not able to generate the correct query to get this out from SQL Server. Fix this or cache.
             var userIds = posts.Select(x => x.CreatedBy.Id).Distinct(StringComparer.InvariantCultureIgnoreCase);
             var claims = await _blogDbContext.UserClaims
                 .Where(x => userIds.Any(id => x.UserId == id))
                 .ToListAsync();
 
-            return new ReadOnlyCollection<Post>(posts.Select(x =>
+            var result = new ReadOnlyCollection<Post>(posts.Select(x =>
                 x.ToDomainModel(claims
                     .Where(c => c.UserId.Equals(x.CreatedBy.Id, StringComparison.InvariantCultureIgnoreCase))
                     .Select(cl => new Claim(cl.ClaimType, cl.ClaimValue)))).ToList());
+
+            return new Paginated<Post>(result, skip, totalCount);
         }
 
         public async Task<Post> CreatePost(NewPostCommand newPostCommand)

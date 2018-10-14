@@ -48,7 +48,7 @@ namespace Tugberk.Web.Controllers
                     Title = "Tugberk Ugurlu @ the Heart of Software",
                     Description = "Welcome to Technical Leader and Software Engineer Tugberk Ugurlu's home on the interwebs! Here, you can find out about Tugberk's conference talks, books and blog posts on software development techniques and practices.",
                     Link = new Uri(HardcodedConstants.BlogPostHostUrl),
-                    Items = posts.Select(post =>
+                    Items = posts.Items.Select(post =>
                     {
                         var postUrl = post.GeneratePostAbsoluteUrl();
                         return new Item

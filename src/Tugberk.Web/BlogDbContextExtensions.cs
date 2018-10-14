@@ -35,8 +35,8 @@ namespace Tugberk.Web
             {
                 var inMemoryPostStore = new InMemoryPostsStore();
                 var store = new PostsSqlServerStore(context);
-                var posts = inMemoryPostStore.GetLatestApprovedPosts(0, 100).Result;
-                var tags = posts.SelectMany(x => x.Tags);
+                var result = inMemoryPostStore.GetLatestApprovedPosts(0, 100).Result;
+                var tags = result.Items.SelectMany(x => x.Tags);
 
                 context.AddRange(tags.Select(tag => new TagEntity 
                     {
@@ -49,7 +49,7 @@ namespace Tugberk.Web
 
                 context.SaveChanges();
 
-                foreach (var post in posts)
+                foreach (var post in result.Items)
                 {
                     var newPostCommand = new NewPostCommand(post.Title,
                         post.Abstract,

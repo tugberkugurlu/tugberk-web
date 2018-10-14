@@ -27,6 +27,7 @@ namespace Tugberk.Persistance.InMemory
         public async Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostBySlug(string postSlug) 
         {
             var post = (await GetLatestApprovedPosts(0, Int32.MaxValue))
+                .Items
                 .FirstOrDefault(x => x.Slugs.Any(s => s.Path.Equals(postSlug, StringComparison.OrdinalIgnoreCase)));
 
             if(post != null) 
@@ -48,13 +49,13 @@ namespace Tugberk.Persistance.InMemory
             throw new NotImplementedException();
         }
 
-        public Task<IReadOnlyCollection<Post>> GetLatestApprovedPosts(int skip, int take)
+        public Task<Paginated<Post>> GetLatestApprovedPosts(int skip, int take)
         {
-            return Task.FromResult<IReadOnlyCollection<Post>>(new [] 
-            { 
+            return Task.FromResult(new Paginated<Post>(new[]
+            {
                 GetSamplePost1(),
                 GetSamplePost2()
-            });
+            }, skip, 2));
         }
 
         private static Post GetSamplePost1()
