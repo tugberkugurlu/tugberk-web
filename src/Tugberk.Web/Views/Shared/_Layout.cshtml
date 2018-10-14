@@ -1,4 +1,4 @@
-﻿@{
+@{
     var currentController = ViewContext.RouteData.Values["controller"].ToString();
     var isUnderAboutSection = currentController.Equals("about", StringComparison.OrdinalIgnoreCase);
     var isUnderSpeakingSection = currentController.Equals("speaking", StringComparison.OrdinalIgnoreCase);
@@ -18,7 +18,7 @@
     <title>@(ViewBag.PageTitle)@(string.IsNullOrWhiteSpace(ViewBag.PageTitle) ? "" : " | ")@("Tugberk Ugurlu @ the Heart of Software")</title>
     @if (!string.IsNullOrWhiteSpace(ViewBag.PageDescription))
     {
-        <meta name="description" content="@ViewBag.PageDescription" />
+        <meta name="description" content="@Html.Raw(ViewBag.PageDescription)" />
     }
     else
     {
