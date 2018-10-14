@@ -17,17 +17,18 @@ Idea is to replicate what I current have and then build on top of that. A few im
  - [x] Bring down Bootstrap 4.0
  - [x] Create home page strcuture
  - [x] Create domain layer
- - [ ] Create persistance interfaces
+ - [x] Create persistance interfaces
  - [ ] Create in-memory persistance implementation
- - [ ] Create SQL Server persistance implementation based on EF
+ - [x] Create SQL Server persistance implementation based on EF
  - [ ] Handle google analytics on prod
  - [ ] Decide on prod logging
  - [ ] Twitter cards
- - [ ] RSS Feed
+ - [x] RSS Feed for main
+ - [ ] RSS Feed for tags
 
 ### Home Page
 
- - [ ] List last 5 blog posts on the home page
+ - [x] List last 5 blog posts on the home page
  - [ ] Pagination on the home page
  - [ ] Ads
 
@@ -55,8 +56,7 @@ Idea is to replicate what I current have and then build on top of that. A few im
 ### Migration
 
  - [ ] Migrate comments to disqus
- - [ ] Migrate blog posts to Azure SQL Database based on the SQL Structure
- - [ ] 
+ - [x] Migrate blog posts to Azure SQL Database based on the SQL Structure
 
 Now at this point, release!
 
