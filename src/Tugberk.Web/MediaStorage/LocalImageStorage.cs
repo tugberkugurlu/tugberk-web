@@ -2,7 +2,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace Tugberk.Web.Controllers
+namespace Tugberk.Web.MediaStorage
 {
     public class LocalImageStorage : IImageStorage
     {

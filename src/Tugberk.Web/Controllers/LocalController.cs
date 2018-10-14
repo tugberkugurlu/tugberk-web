@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.StaticFiles;
+using Tugberk.Web.MediaStorage;
 
 namespace Tugberk.Web.Controllers
 {

@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Tugberk.Web.Controllers
+namespace Tugberk.Web.MediaStorage
 {
     public static class LocalImagesPathProvider 
     {

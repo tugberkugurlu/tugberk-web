@@ -1,4 +1,4 @@
-namespace Tugberk.Web.Controllers
+namespace Tugberk.Web.MediaStorage
 {
     public class ImageSaveResult 
     {

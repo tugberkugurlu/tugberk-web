@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Builder;
@@ -12,6 +12,7 @@ using Tugberk.Persistance.Abstractions;
 using Tugberk.Persistance.SqlServer;
 using Tugberk.Persistance.SqlServer.Stores;
 using Tugberk.Web.Controllers;
+using Tugberk.Web.MediaStorage;
 using Tugberk.Web.Services;
 
 namespace Tugberk.Web
