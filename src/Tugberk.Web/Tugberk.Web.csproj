@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.2" />
     <PackageReference Include="OneOf" Version="2.1.117" />
     <PackageReference Include="Optional" Version="4.0.0" />
+    <PackageReference Include="WilderMinds.RssSyndication" Version="1.3.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tugberk.Domain\Tugberk.Domain.csproj" />

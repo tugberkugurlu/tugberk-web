@@ -148,9 +148,9 @@ namespace Tugberk.Persistance.SqlServer.Stores
         private IQueryable<PostEntity> CreateBasePostQuery() => _blogDbContext.Posts
             .Include(x => x.Slugs)
             .Include(x => x.ApprovalStatusActions)
-            .ThenInclude((PostApprovalStatusActionEntity x) => x.RecordedBy)
+            .ThenInclude(x => x.RecordedBy)
             .Include(x => x.Tags)
-            .ThenInclude((PostTagEntity x) => x.Tag)
+            .ThenInclude(x => x.Tag)
             .Include(x => x.CreatedBy)
             .OrderByDescending(x => x.CreatedOnUtc);
     }
