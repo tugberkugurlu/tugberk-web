@@ -47,11 +47,14 @@ namespace Tugberk.Persistance.SqlServer.Stores
         public async Task<IReadOnlyCollection<Post>> GetLatestApprovedPosts(int skip, int take)
         {
             // TODO: This query sucks, most of this query is evaluated locally and performance is at the bottom!
-            // TODO: This mosly because of the way we evaluate approval.
-            var posts = await CreateBasePostQuery()
-                .Where(x => 
-                    x.ApprovalStatusActions.Any(a => a.Status == ApprovalStatusEntity.Approved) && 
-                    x.ApprovalStatusActions.OrderByDescending(a => a.RecordedOnUtc).First().Status == ApprovalStatusEntity.Approved)
+            var postsQuery = CreateBasePostQuery()
+                // TODO: The performance issue is related to the way we evaluate approval. Skip this for now till we fixed the modal.
+                //.Where(x => 
+                //    x.ApprovalStatusActions.Any(a => a.Status == ApprovalStatusEntity.Approved) && 
+                //    x.ApprovalStatusActions.OrderByDescending(a => a.RecordedOnUtc).First().Status == ApprovalStatusEntity.Approved)
+                ;
+
+            var posts = await postsQuery
                 .Skip(skip)
                 .Take(take)
                 .ToListAsync();
