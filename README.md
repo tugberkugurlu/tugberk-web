@@ -65,7 +65,7 @@ Now at this point, release!
 
 Theme here is to provide the management portal.
 
-### Authentication
+### Portal (Authentication, Admin, etc.)
 
  - [ ] Enable authentication through Twitter
  - [ ] Lock management part with authorization
@@ -73,6 +73,7 @@ Theme here is to provide the management portal.
  - [ ] Provide a page to edit the content of a blog post: HTML content, title, abstract and tags
  - [ ] Provide a facility to approve and disaprove a blog post.
  - [ ] Provide a facility to allow and disallow comments on a blog post.
+ - [ ] Upload images to Azure Blob Storage
 
 ## Further TODOs
 
