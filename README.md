@@ -22,7 +22,7 @@ Idea is to replicate what I current have and then build on top of that. A few im
  - [x] Create SQL Server persistance implementation based on EF
  - [ ] Handle google analytics on prod
  - [ ] Decide on prod logging
- - [ ] Twitter cards
+ - [x] Twitter cards
  - [x] RSS Feed for main
  - [ ] RSS Feed for tags
 

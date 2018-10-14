@@ -7,6 +7,7 @@
     <Watch Include="*.json" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.8.9" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.2" />
     <PackageReference Include="OneOf" Version="2.1.117" />
     <PackageReference Include="Optional" Version="4.0.0" />

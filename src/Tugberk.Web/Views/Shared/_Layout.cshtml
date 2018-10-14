@@ -1,4 +1,4 @@
-@{
+﻿@{
     var currentController = ViewContext.RouteData.Values["controller"].ToString();
     var isUnderAboutSection = currentController.Equals("about", StringComparison.OrdinalIgnoreCase);
     var isUnderSpeakingSection = currentController.Equals("speaking", StringComparison.OrdinalIgnoreCase);
@@ -23,6 +23,19 @@
     else
     {
         <meta name="description" content="Welcome to Technical Leader and Software Engineer Tugberk Ugurlu's home on the interwebs! Here, you can find out about Tugberk's conference talks, books and blog posts on software development techniques and practices." />
+    }
+
+    @if (ViewBag.TwitterCard != null && ViewBag.TwitterCard is TwitterCardContent)
+    {
+        var twitterCard = (TwitterCardContent)ViewBag.TwitterCard;
+
+        <meta name="twitter:card" content="summary" />
+        <meta property="og:url" content="@twitterCard.ContentAbsoluteUrl" />
+        <meta property="og:title" content="@twitterCard.Title" />
+        if (!string.IsNullOrWhiteSpace(twitterCard.Description)) { <meta property="og:description" content="@Html.Raw(twitterCard.Description)" /> }
+        if (!string.IsNullOrWhiteSpace(twitterCard.ImageAbsoluteUrl)) { <meta property="og:image" content="@twitterCard.ImageAbsoluteUrl" /> }
+        if (!string.IsNullOrWhiteSpace(twitterCard.SiteTwitterHandle)) { <meta name="twitter:site" content="@twitterCard.SiteTwitterHandle" /> }
+        if (!string.IsNullOrWhiteSpace(twitterCard.AuthorTwitterHandle)) { <meta name="twitter:creator" content="@twitterCard.AuthorTwitterHandle" /> }
     }
 </head>
   <body>    
