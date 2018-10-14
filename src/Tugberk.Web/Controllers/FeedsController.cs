@@ -14,8 +14,6 @@ namespace Tugberk.Web.Controllers
     public class FeedsController : Controller
     {
         const string MainRssFeedCacheKey = "main-rss";
-        private const string BlogPostHostUri = "http://www.tugberkugurlu.com/";
-        private const string BlogPostUriFormat = BlogPostHostUri + "archive/{0}";
         private readonly IPostsStore _postsStore;
         private readonly IMemoryCache _cache;
         private readonly ILogger<FeedsController> _logger;
@@ -49,10 +47,10 @@ namespace Tugberk.Web.Controllers
                 {
                     Title = "Tugberk Ugurlu @ the Heart of Software",
                     Description = "Welcome to Technical Leader and Software Engineer Tugberk Ugurlu's home on the interwebs! Here, you can find out about Tugberk's conference talks, books and blog posts on software development techniques and practices.",
-                    Link = new Uri(BlogPostHostUri),
+                    Link = new Uri(HardcodedConstants.BlogPostHostUrl),
                     Items = posts.Select(post =>
                     {
-                        var postUrl = string.Format(BlogPostUriFormat, post.DefaultSlug.Path);
+                        var postUrl = post.GeneratePostAbsoluteUrl();
                         return new Item
                         {
                             Title = post.Title,
