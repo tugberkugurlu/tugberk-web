@@ -20,7 +20,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
 
         public PostsSqlServerStore(BlogDbContext blogDbContext)
         {
-            _blogDbContext = blogDbContext ?? throw new System.ArgumentNullException(nameof(blogDbContext));
+            _blogDbContext = blogDbContext ?? throw new ArgumentNullException(nameof(blogDbContext));
         }
 
         public Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostById(string id)
