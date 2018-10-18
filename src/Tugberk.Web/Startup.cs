@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Tugberk.Persistance.Abstractions;
 using Tugberk.Persistance.SqlServer;
 using Tugberk.Persistance.SqlServer.Stores;
-using Tugberk.Web.Controllers;
 using Tugberk.Web.MediaStorage;
 using Tugberk.Web.Services;
 
@@ -49,6 +48,7 @@ namespace Tugberk.Web
             services.AddSingleton<IEmailSender, NoOpEmailSender>();
             services.AddSingleton<IImageStorage, LocalImageStorage>();
             services.AddScoped<IPostsStore, PostsSqlServerStore>();
+            services.AddScoped<ITagsStore, TagsSqlServerStore>();
             services.Configure<BlogSettings>(_configuration.GetSection("BlogSettings"));
 
             services.AddMvc();

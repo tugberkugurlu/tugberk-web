@@ -6,5 +6,6 @@ namespace Tugberk.Domain
     {
         public string Name { get; set; }
         public IReadOnlyCollection<Slug> Slugs { get; set; }
+        public int PostsCount { get; set; }
     }
 }

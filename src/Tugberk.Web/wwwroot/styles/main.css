@@ -80,3 +80,37 @@ div[role=main] {
 .about-holder div.row:first-of-type {
     margin-top: 0;
 }
+
+ul.none-style-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.inline-list li {
+    display: inline;
+    margin-right: 5px;
+}
+
+ul.inline-list li:last-of-type {
+    margin-right: 0;
+}
+
+    ul.inline-list li span.label { 
+        display: inline-block; 
+    }
+
+ul.labeled-list li a {
+    font-size: 14px;
+    padding: 2px 7px;
+    background: #f7f7f7;
+    color: #333333 !important;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+    ul.labeled-list li a:hover {
+        background: #9954bb;
+        color: #fff !important;
+        text-decoration: none;
+    }

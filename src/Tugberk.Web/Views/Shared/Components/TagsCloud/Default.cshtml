@@ -1,0 +1,10 @@
+﻿@model IEnumerable<Tugberk.Web.Controllers.TagViewModel>
+
+<ul class="none-style-list inline-list labeled-list">
+    @foreach (var tag in Model)
+    {
+        <li>
+            <span class="badge badge-light">@tag.Name</span>
+        </li>
+    }
+</ul>
