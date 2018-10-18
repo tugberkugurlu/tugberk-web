@@ -1,11 +1,12 @@
-﻿@model IEnumerable<Tugberk.Web.Controllers.TagViewModel>
+﻿@using Tugberk.Web.Controllers
+@model IEnumerable<Tugberk.Web.Controllers.TagViewModel>
 
 <ul class="none-style-list inline-list labeled-list">
     @foreach (var tag in Model)
     {
         <li>
             <span class="badge badge-light">
-                <i class="fa fa-tag"></i> @tag.Name
+                <a href="@Url.Action(nameof(PostsController.GetByTag), "Posts", new { tagSlug = tag.Slug })"><i class="fa fa-tag"></i> @tag.Name</a>
             </span>
         </li>
     }

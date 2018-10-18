@@ -101,16 +101,8 @@ ul.inline-list li:last-of-type {
     }
 
 ul.labeled-list li a {
-    font-size: 14px;
     padding: 2px 7px;
     background: #f7f7f7;
     color: #333333 !important;
     display: inline-block;
-    margin-bottom: 5px;
 }
-
-    ul.labeled-list li a:hover {
-        background: #9954bb;
-        color: #fff !important;
-        text-decoration: none;
-    }

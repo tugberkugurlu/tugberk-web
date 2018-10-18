@@ -58,6 +58,11 @@ namespace Tugberk.Persistance.InMemory
             }, skip, 2));
         }
 
+        public Task<Paginated<Post>> GetLatestApprovedPosts(string tagSlug, int skip, int take)
+        {
+            throw new NotImplementedException();
+        }
+
         private static Post GetSamplePost1()
         {
             const string path = "sample-post-html-1.txt";
