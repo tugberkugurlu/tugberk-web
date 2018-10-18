@@ -4,7 +4,9 @@
     @foreach (var tag in Model)
     {
         <li>
-            <span class="badge badge-light">@tag.Name</span>
+            <span class="badge badge-light">
+                <i class="fa fa-tag"></i> @tag.Name
+            </span>
         </li>
     }
 </ul>
