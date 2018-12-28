@@ -95,3 +95,4 @@ Theme here is to provide the management portal.
 ## Help Resources
 
  - [How to add reCAPTCHA to your .NET Core MVC project](https://retifrav.github.io/blog/2017/08/23/dotnet-core-mvc-recaptcha/)
+ - [HttpClientFactory in ASP.NET Core 2.1 (Part 1)](https://www.stevejgordon.co.uk/introduction-to-httpclientfactory-aspnetcore)

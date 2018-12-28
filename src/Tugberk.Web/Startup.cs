@@ -45,6 +45,11 @@ namespace Tugberk.Web
                 options.AccessDeniedPath = "/portal/account/accessDenied";
             });
 
+            services.AddHttpClient(NamedHttpClients.GoogleReCaptchaClient, client =>
+            {
+                client.BaseAddress = new Uri("https://www.google.com/recaptcha/");
+            });
+
             services.AddSingleton<IEmailSender, NoOpEmailSender>();
             services.AddSingleton<IImageStorage, LocalImageStorage>();
             services.AddScoped<IPostsStore, PostsSqlServerStore>();

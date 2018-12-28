@@ -23,6 +23,7 @@ namespace Tugberk.Web.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly IOptions<GoogleReCaptchaSettings> _reCaptchaSettings;
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger _logger;
 
         public AccountController(
@@ -30,12 +31,14 @@ namespace Tugberk.Web.Controllers
             SignInManager<IdentityUser> signInManager,
             IEmailSender emailSender,
             IOptions<GoogleReCaptchaSettings> reCaptchaSettings,
+            IHttpClientFactory httpClientFactory,
             ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _reCaptchaSettings = reCaptchaSettings;
+            _httpClientFactory = httpClientFactory;
             _logger = logger;
         }
 
@@ -62,28 +65,25 @@ namespace Tugberk.Web.Controllers
             // see https://retifrav.github.io/blog/2017/08/23/dotnet-core-mvc-recaptcha/
             async Task<bool> ReCaptchaPassed(string gRecaptchaResponse, string secret)
             {
-                // TODO: Take this as a dependency, do not create/dispose per request
-                using (var httpClient = new HttpClient())
+                var httpClient = _httpClientFactory.CreateClient(NamedHttpClients.GoogleReCaptchaClient);
+                var urlEncodedCaptchaResponse = WebUtility.UrlEncode(gRecaptchaResponse);
+                var url = $"api/siteverify?secret={secret}&response={urlEncodedCaptchaResponse}";
+                using (var response = await httpClient.GetAsync(url))
                 {
-                    var urlEncodedCaptchaResponse = WebUtility.UrlEncode(gRecaptchaResponse);
-                    var url = $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={urlEncodedCaptchaResponse}";
-                    using (var response = await httpClient.GetAsync(url))
+                    var result = await response.Content.ReadAsStringAsync();
+                    if (!response.IsSuccessStatusCode)
                     {
-                        var result = await response.Content.ReadAsStringAsync();
-                        if (!response.IsSuccessStatusCode)
-                        {
-                            _logger.LogError("Error while sending request to ReCaptcha. The result is: {CaptchaResult}", result);
-                            return false;
-                        }
-
-                        dynamic jsonData = JObject.Parse(result);
-                        if (jsonData.success != "true")
-                        {
-                            return false;
-                        }
-
-                        return true;
+                        _logger.LogError("Error while sending request to ReCaptcha. The result is: {CaptchaResult}", result);
+                        return false;
                     }
+
+                    dynamic jsonData = JObject.Parse(result);
+                    if (jsonData.success != "true")
+                    {
+                        return false;
+                    }
+
+                    return true;
                 }
             }
             
