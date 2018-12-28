@@ -2,6 +2,18 @@
 
 This is yet another blog engine. I mainly use this as an excuse to try out new technologies by improving my blog platform.
 
+## Development Experience
+
+You can develop the software on Visual Studio, VS Code or JetBrainds Rider. If you would like to get the software up and running on a dev machibe, you first need to set up some environment variables:
+
+```bash
+export TUGBERKWEB_ConnectionStrings__DefaultConnection="<CONNECTION-STRING-HERE>"
+export TUGBERKWEB_GoogleReCaptcha__Key="<GOOGLE-RECAPTCHA-KEY-HERE>"
+export TUGBERKWEB_GoogleReCaptcha__Secret="<GOOGLE-RECAPTCHA-KEY-SECRET>"
+```
+
+Then, you can run `dotnet run` under `./src/Tugberk.Web/` folder. The software will be available on `http://localhost:5000`.
+
 ## Main Focus of Improvment
 
 Idea is to replicate what I current have and then build on top of that. A few important improvments I am looking for after this:
@@ -25,6 +37,7 @@ Idea is to replicate what I current have and then build on top of that. A few im
  - [x] Twitter cards
  - [x] RSS Feed for main
  - [ ] RSS Feed for tags
+ - [x] Captcha for login page
 
 ### Home Page
 
@@ -78,3 +91,7 @@ Theme here is to provide the management portal.
 ## Further TODOs
 
  - Would be nice to be to tell how many times a blog post has been read by looking into Google Analytics
+
+## Help Resources
+
+ - [How to add reCAPTCHA to your .NET Core MVC project](https://retifrav.github.io/blog/2017/08/23/dotnet-core-mvc-recaptcha/)
