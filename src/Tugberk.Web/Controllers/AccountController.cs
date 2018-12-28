@@ -1,15 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 using Tugberk.Web.Models;
 using Tugberk.Web.Services;
 
@@ -22,17 +22,20 @@ namespace Tugberk.Web.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly IOptions<GoogleReCaptchaSettings> _reCaptchaSettings;
         private readonly ILogger _logger;
 
         public AccountController(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             IEmailSender emailSender,
+            IOptions<GoogleReCaptchaSettings> reCaptchaSettings,
             ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _reCaptchaSettings = reCaptchaSettings;
             _logger = logger;
         }
 
@@ -46,6 +49,7 @@ namespace Tugberk.Web.Controllers
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
+            ViewData["ReCaptchaKey"] = _reCaptchaSettings.Value.Key;
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -55,35 +59,70 @@ namespace Tugberk.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
+            // see https://retifrav.github.io/blog/2017/08/23/dotnet-core-mvc-recaptcha/
+            async Task<bool> ReCaptchaPassed(string gRecaptchaResponse, string secret)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                // TODO: Take this as a dependency, do not create/dispose per request
+                using (var httpClient = new HttpClient())
                 {
-                    _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToAction(nameof(Lockout));
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
+                    var urlEncodedCaptchaResponse = WebUtility.UrlEncode(gRecaptchaResponse);
+                    var url = $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={urlEncodedCaptchaResponse}";
+                    using (var response = await httpClient.GetAsync(url))
+                    {
+                        var result = await response.Content.ReadAsStringAsync();
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            _logger.LogError("Error while sending request to ReCaptcha. The result is: {CaptchaResult}", result);
+                            return false;
+                        }
+
+                        dynamic jsonData = JObject.Parse(result);
+                        if (jsonData.success != "true")
+                        {
+                            return false;
+                        }
+
+                        return true;
+                    }
                 }
             }
+            
+            ViewData["ReturnUrl"] = returnUrl;
+            ViewData["ReCaptchaKey"] = _reCaptchaSettings.Value.Key;
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (!(await ReCaptchaPassed(Request.Form["g-recaptcha-response"], _reCaptchaSettings.Value.Secret)))
+            {
+                ModelState.AddModelError(string.Empty, "CAPTCHA validation has failed. Try again!");
+                return View(model);
+            }
+            
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+            var signInResult = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+            if (signInResult.Succeeded)
+            {
+                _logger.LogInformation("User logged in.");
+                return RedirectToLocal(returnUrl);
+            }
+            if (signInResult.RequiresTwoFactor)
+            {
+                return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
+            }
+            if (signInResult.IsLockedOut)
+            {
+                _logger.LogWarning("User account locked out.");
+                return RedirectToAction(nameof(Lockout));
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View(model);
+            }
         }
 
         [HttpGet]
@@ -411,8 +450,6 @@ namespace Tugberk.Web.Controllers
             return View();
         }
 
-        #region Helpers
-
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
@@ -432,8 +469,6 @@ namespace Tugberk.Web.Controllers
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
         }
-
-        #endregion
     }
 
     public static class UrlHelperExtensions

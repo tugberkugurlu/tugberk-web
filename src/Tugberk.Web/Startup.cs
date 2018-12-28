@@ -50,6 +50,7 @@ namespace Tugberk.Web
             services.AddScoped<IPostsStore, PostsSqlServerStore>();
             services.AddScoped<ITagsStore, TagsSqlServerStore>();
             services.Configure<BlogSettings>(_configuration.GetSection("BlogSettings"));
+            services.Configure<GoogleReCaptchaSettings>(_configuration.GetSection("GoogleReCaptcha"));
 
             services.AddMvc();
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
