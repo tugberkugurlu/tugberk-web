@@ -19,25 +19,12 @@ namespace Tugberk.Domain
         public IReadOnlyCollection<Slug> Slugs { get; set; }
         public IReadOnlyCollection<Tag> Tags { get; set; }
         public IReadOnlyCollection<CommentStatusActionRecord> CommentStatusActions { get; set; }
-        public IReadOnlyCollection<ApprovalStatusActionRecord> ApprovaleStatusActions { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
 
         public Slug DefaultSlug => Slugs.Where(x => x.IsDefault)
             .OrderByDescending(x => x.CreatedOn)
             .First();
 
-        public bool IsApproved 
-        {
-            get 
-            {
-                if(ApprovaleStatusActions.Count < 1) 
-                {
-                    return false;
-                }
-
-                return ApprovaleStatusActions
-                    .OrderByDescending(x => x.RecordedOn)
-                    .First().Status == ApprovalStatus.Approved;
-            }
-        }
+        public bool IsApproved => ApprovalStatus == ApprovalStatus.Approved;
     }
 }

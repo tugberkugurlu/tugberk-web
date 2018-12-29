@@ -17,15 +17,6 @@ namespace Tugberk.Persistance.SqlServer.Stores
             var tags = postEntity.Tags
                 .Where(x => x.Tag != null) // it comes up null sometimes, no clue why as it's 'ThenInclude'd
                 .Select(x => x.ToDomainModel()).ToList().AsReadOnly();
-            var approvalStatusActions = postEntity.ApprovalStatusActions.Select(x => new ApprovalStatusActionRecord 
-                {
-                    Status = x.Status.ToDomainModel(),
-                    RecordedOn = x.RecordedOnUtc,
-                    RecordedBy = new User 
-                    {
-                        Id = x.RecordedBy.Id
-                    }
-                }).ToList().AsReadOnly();
 
             return new Post 
             {
@@ -38,7 +29,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
                 Slugs = slugs,
                 Tags = tags,
                 Authors = new List<User> { createdBy }.AsReadOnly(),
-                ApprovaleStatusActions = approvalStatusActions,
+                ApprovalStatus = postEntity.ApprovalStatus.ToDomainModel(),
                 CreationRecord = new ChangeRecord 
                 {
                     RecordedBy = createdBy,

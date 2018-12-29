@@ -33,8 +33,10 @@ namespace Tugberk.Persistance.SqlServer
         [Required]
         public string CreationIpAddress { get; set; }
         
+        [Required]
+        public ApprovalStatusEntity ApprovalStatus { get; set; }
+        
         public ICollection<PostTagEntity> Tags { get; set; }
         public ICollection<PostSlugEntity> Slugs { get; set; }
-        public ICollection<PostApprovalStatusActionEntity> ApprovalStatusActions { get; set; }
     }
 }

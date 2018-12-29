@@ -79,10 +79,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
         {
             // TODO: This query sucks, most of this query is evaluated locally and performance is at the bottom!
             var postsQuery = CreateBasePostQuery()
-                // TODO: The performance issue is related to the way we evaluate approval. Skip this for now till we fixed the modal.
-                //.Where(x => 
-                //    x.ApprovalStatusActions.Any(a => a.Status == ApprovalStatusEntity.Approved) && 
-                //    x.ApprovalStatusActions.OrderByDescending(a => a.RecordedOnUtc).First().Status == ApprovalStatusEntity.Approved)
+                .Where(x => x.ApprovalStatus == ApprovalStatusEntity.Approved)
                 .Where(x => x.Tags.Any(t => t.Tag.Slug == tagSlug));
 
             var posts = await postsQuery
@@ -120,17 +117,6 @@ namespace Tugberk.Persistance.SqlServer.Stores
                 CreatedOnUtc = DateTime.UtcNow
             };
 
-            var approvalStatusActions = new Collection<PostApprovalStatusActionEntity>();
-            if(newPostCommand.Approved) 
-            {
-                approvalStatusActions.Add(new PostApprovalStatusActionEntity 
-                {
-                    Status = ApprovalStatusEntity.Approved,
-                    RecordedOnUtc = DateTime.UtcNow,
-                    RecordedBy = createdBy
-                });
-            }
-
             var postEntity = new PostEntity
             {
                 Title = newPostCommand.Title,
@@ -146,7 +132,9 @@ namespace Tugberk.Persistance.SqlServer.Stores
                 {
                     Tag = new TagEntity { Name = t }
                 }).ToList()),
-                ApprovalStatusActions = approvalStatusActions 
+                ApprovalStatus = newPostCommand.Approved 
+                    ? ApprovalStatusEntity.Approved
+                    : ApprovalStatusEntity.Disapproved
             };
 
             await _blogDbContext.AddAsync(postEntity);
@@ -184,8 +172,6 @@ namespace Tugberk.Persistance.SqlServer.Stores
 
         private IQueryable<PostEntity> CreateBasePostQuery() => _blogDbContext.Posts
             .Include(x => x.Slugs)
-            .Include(x => x.ApprovalStatusActions)
-            .ThenInclude(x => x.RecordedBy)
             .Include(x => x.Tags)
             .ThenInclude(x => x.Tag)
             .Include(x => x.CreatedBy)

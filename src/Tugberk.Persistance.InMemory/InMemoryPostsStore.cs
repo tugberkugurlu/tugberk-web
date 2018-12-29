@@ -93,16 +93,8 @@ namespace Tugberk.Persistance.InMemory
                 }
             };
 
-            samplePost.ApprovaleStatusActions = new[]
-            {
-                new ApprovalStatusActionRecord
-                {
-                    Status = ApprovalStatus.Approved,
-                    RecordedBy = user,
-                    RecordedOn = DateTime.UtcNow
-                }
-            };
-
+            samplePost.ApprovalStatus = ApprovalStatus.Approved;
+            
             samplePost.CreationRecord = new ChangeRecord
             {
                 RecordedBy = user,
@@ -184,15 +176,7 @@ namespace Tugberk.Persistance.InMemory
                 }
             };
 
-            samplePost.ApprovaleStatusActions = new[]
-            {
-                new ApprovalStatusActionRecord
-                {
-                    Status = ApprovalStatus.Approved,
-                    RecordedBy = user,
-                    RecordedOn = DateTime.UtcNow
-                }
-            };
+            samplePost.ApprovalStatus = ApprovalStatus.Approved;
 
             samplePost.CreationRecord = new ChangeRecord
             {
