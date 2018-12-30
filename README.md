@@ -12,6 +12,12 @@ export TUGBERKWEB_GoogleReCaptcha__Key="<GOOGLE-RECAPTCHA-KEY-HERE>"
 export TUGBERKWEB_GoogleReCaptcha__Secret="<GOOGLE-RECAPTCHA-KEY-SECRET>"
 ```
 
+Optionally, you can configure the following settings:
+
+```bash
+export TUGBERKWEB_GoogleAnalytics__TrackingId="<GOOGLE-ANALYTICS-TRACKINGID-HERE>"
+```
+
 As the next step, you need to manually install the npm dependencies:
 
 ```bash
