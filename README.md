@@ -26,7 +26,7 @@ Then, you can run `dotnet run` under `./src/Tugberk.Web/` folder. The software w
 You can build the docker image to run the software locally inside a docker container.
 
 ```bash
-docker build --tag tugberk/tugberk-web:v0.0.0 --file docker-tugberk-web.dockerfile .
+docker build --tag tugberk/tugberk-web:v0.0.0 --file docker-tugberk-web.dockerfile --build-arg BUILDCONFIG=RELEASE .
 docker run -p 5000:80 --env TUGBERKWEB_ConnectionStrings__DefaultConnection="<CONNECTION-STRING-HERE>" --env TUGBERKWEB_GoogleReCaptcha__Key="<GOOGLE-RECAPTCHA-KEY-HERE>" --env TUGBERKWEB_GoogleReCaptcha__Secret="<GOOGLE-RECAPTCHA-KEY-SECRET>" tugberk/tugberk-web:v0.0.0
 ```
 
