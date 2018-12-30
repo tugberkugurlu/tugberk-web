@@ -12,7 +12,25 @@ export TUGBERKWEB_GoogleReCaptcha__Key="<GOOGLE-RECAPTCHA-KEY-HERE>"
 export TUGBERKWEB_GoogleReCaptcha__Secret="<GOOGLE-RECAPTCHA-KEY-SECRET>"
 ```
 
+As the next step, you need to manually install the npm dependencies:
+
+```bash
+cd ./src/Tugberk.Web/wwwroot
+npm install
+```
+
 Then, you can run `dotnet run` under `./src/Tugberk.Web/` folder. The software will be available on `http://localhost:5000`.
+
+### Building and Running the Docker Image
+
+You can build the docker image to run the software locally inside a docker container.
+
+```bash
+docker build --tag tugberk/tugberk-web:v0.0.0 --file docker-tugberk-web.dockerfile .
+docker run -p 5000:80 --env TUGBERKWEB_ConnectionStrings__DefaultConnection="<CONNECTION-STRING-HERE>" --env TUGBERKWEB_GoogleReCaptcha__Key="<GOOGLE-RECAPTCHA-KEY-HERE>" --env TUGBERKWEB_GoogleReCaptcha__Secret="<GOOGLE-RECAPTCHA-KEY-SECRET>" tugberk/tugberk-web:v0.0.0
+```
+
+After that, the software will be available on `http://localhost:5000` on the host machine.
 
 ## Main Focus of Improvment
 

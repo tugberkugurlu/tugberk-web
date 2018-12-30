@@ -8,7 +8,7 @@ WORKDIR /app-temp/wwwroot
 RUN npm install
 
 # Stage 2 - the production environment
-FROM microsoft/dotnet:2-sdk
+FROM microsoft/dotnet:2.2.100-sdk
 
 ARG BUILDCONFIG=DEBUG
 
@@ -27,5 +27,5 @@ COPY --from=build-deps /app-temp/wwwroot/node_modules /app/Tugberk.Web/wwwroot/n
 WORKDIR /app/Tugberk.Web/
 RUN dotnet publish -c $BUILDCONFIG -o out
 
-EXPOSE 5000
+EXPOSE 80
 ENTRYPOINT ["dotnet", "out/Tugberk.Web.dll"]
