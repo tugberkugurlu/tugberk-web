@@ -25,7 +25,7 @@ ADD ./src/ /app/
 COPY --from=build-deps /app-temp/wwwroot/node_modules /app/Tugberk.Web/wwwroot/node_modules
 
 WORKDIR /app/Tugberk.Web/
-RUN dotnet publish -c $BUILDCONFIG -o out
+RUN dotnet publish -c $BUILDCONFIG -o out -v normal
 
 EXPOSE 80
 ENTRYPOINT ["dotnet", "out/Tugberk.Web.dll"]
