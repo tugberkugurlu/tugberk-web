@@ -78,13 +78,13 @@ Idea is to replicate what I current have and then build on top of that. A few im
 ### Sidebar
 
  - [x] Replicate the current one
- - [ ] Add youtube channel link
+ - [x] Add youtube channel link
  - [ ] Ads
 
 ### Other Pages
 
  - [x] Create about page (static for now)
- - [ ] Create speaker page (basic info for now)
+ - [x] Create speaker page (basic info for now)
 
 ### Hosting
 

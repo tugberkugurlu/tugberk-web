@@ -73,11 +73,11 @@ div[role=main] {
     margin-top: 0;
 }
 
-.about-holder div.row {
+.about-holder div.row, .speaking-holder div.row {
     margin-top: 10px;
 }
 
-.about-holder div.row:first-of-type {
+.about-holder div.row:first-of-type, .speaking-holder div.row:first-of-type {
     margin-top: 0;
 }
 
