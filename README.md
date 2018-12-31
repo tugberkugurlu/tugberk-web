@@ -56,7 +56,7 @@ Idea is to replicate what I current have and then build on top of that. A few im
  - [x] Create persistance interfaces
  - [ ] Create in-memory persistance implementation
  - [x] Create SQL Server persistance implementation based on EF
- - [ ] Handle google analytics on prod
+ - [x] Handle google analytics on prod
  - [ ] Decide on prod logging
  - [x] Twitter cards
  - [x] RSS Feed for main
@@ -67,19 +67,19 @@ Idea is to replicate what I current have and then build on top of that. A few im
 
  - [x] List last 5 blog posts on the home page
  - [x] Pagination on the home page
- - [ ] Ads
+ - [x] Ads
 
 ### Blog Post Page
 
  - [x] Create blog post page
- - [ ] Ads
+ - [x] Ads
  - [ ] Sort out relative images which came from old blog (e.g. `../Content/Images/BlogUploadedPics/tourism-heighlights-2010-edition-pdf-donwload-free.png`)
 
 ### Sidebar
 
  - [x] Replicate the current one
  - [x] Add youtube channel link
- - [ ] Ads
+ - [x] Ads
 
 ### Other Pages
 
