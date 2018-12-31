@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.WindowsAzure.Storage;
 using Tugberk.Persistance.Abstractions;
 using Tugberk.Persistance.SqlServer;
 using Tugberk.Persistance.SqlServer.Stores;
@@ -51,12 +54,21 @@ namespace Tugberk.Web
             });
 
             services.AddSingleton<IEmailSender, NoOpEmailSender>();
-            services.AddSingleton<IImageStorage, LocalImageStorage>();
             services.AddScoped<IPostsStore, PostsSqlServerStore>();
             services.AddScoped<ITagsStore, TagsSqlServerStore>();
             services.Configure<BlogSettings>(_configuration.GetSection("BlogSettings"));
             services.Configure<GoogleReCaptchaSettings>(_configuration.GetSection("GoogleReCaptcha"));
             services.Configure<GoogleAnalyticsSettings>(_configuration.GetSection("GoogleAnalytics"));
+            services.Configure<AzureBlobStorageSettings>(_configuration.GetSection("ImageStorage").GetSection("AzureBlobStorage"));
+
+            services.AddScoped<IImageStorage>(sp => 
+            {
+                var blobStorageSettings = sp.GetService<IOptions<AzureBlobStorageSettings>>();
+
+                return blobStorageSettings.Value.IsAzureBlobStorageEnabled()
+                    ? new AzureBlobStorageImageStorage(CloudStorageAccount.Parse(blobStorageSettings.Value.ConnectionString).CreateCloudBlobClient()) as IImageStorage
+                    : new LocalImageStorage(sp.GetService<ILogger<LocalImageStorage>>());
+            });
 
             services.AddMvc();
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
