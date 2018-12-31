@@ -4,4 +4,10 @@ namespace Tugberk.Web
     {
         public string DisqusProjectName { get; set; }
     }
+
+    public static class BlogSettingsExtensions
+    {
+        public static bool IsDisqusEnabled(this BlogSettings blogSettings) =>
+            blogSettings.DisqusProjectName != null;
+    }
 }
