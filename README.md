@@ -121,3 +121,4 @@ Theme here is to provide the management portal.
  - [How to add reCAPTCHA to your .NET Core MVC project](https://retifrav.github.io/blog/2017/08/23/dotnet-core-mvc-recaptcha/)
  - [HttpClientFactory in ASP.NET Core 2.1 (Part 1)](https://www.stevejgordon.co.uk/introduction-to-httpclientfactory-aspnetcore)
  - [Route constraint reference](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-2.2#route-constraint-reference)
+ - [URL Rewriting Middleware in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/url-rewriting?view=aspnetcore-2.2)

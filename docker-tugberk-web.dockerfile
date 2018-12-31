@@ -21,6 +21,7 @@ COPY ./src/Tugberk.Domain/Tugberk.Domain.csproj /app/Tugberk.Domain/
 WORKDIR /app/
 RUN dotnet --info
 RUN dotnet restore Tugberk.Web/Tugberk.Web.csproj
+ADD ./src/Tugberk.Web/wwwroot /app/Tugberk.Web/wwwroot/
 ADD ./src/ /app/
 COPY --from=build-deps /app-temp/wwwroot/node_modules /app/Tugberk.Web/wwwroot/node_modules
 
