@@ -116,3 +116,7 @@ ul.labeled-list li a {
     color: #333333 !important;
     display: inline-block;
 }
+
+.ad-inner {
+    display: inline-block;
+}
