@@ -1,3 +1,4 @@
+@using Tugberk.Web.Controllers
 @using Tugberk.Domain
 @model Post
 
@@ -27,10 +28,12 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12 post-tags-holder">
             @foreach(var tag in Model.Tags) 
             {
-                <span class="badge badge-primary">@tag.Name</span>
+                <a href="@Url.Action(nameof(PostsController.GetByTag), "Posts", new { tagSlug = tag.Slugs.First(x => x.IsDefault).Path })">
+                    <span class="badge badge-primary">@tag.Name</span>
+                </a>
             }
         </div>
     </div>

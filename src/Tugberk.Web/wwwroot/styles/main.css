@@ -79,6 +79,10 @@ div[role=main] {
     margin-top: 0;
 }
 
+.post-holder .post-tags-holder a:hover {
+    text-decoration: none;
+}
+
 .about-holder div.row, .speaking-holder div.row {
     margin-top: 10px;
 }
