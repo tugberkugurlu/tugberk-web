@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -76,7 +78,16 @@ namespace Tugberk.Web.Controllers
 
             using(var stream = firstFile.OpenReadStream())
             {
-                var result = await _imageStorage.SaveImage(stream, firstFile.FileName);
+                var originalFileName = firstFile.FileName;
+                var extension = Path.GetExtension(originalFileName);
+                var fileName = string.Concat(DateTime.UtcNow.ToString("yyyyMMddHHmmss"), 
+                    "-", 
+                    Guid.NewGuid().ToString("D"),
+                    "-",
+                    originalFileName.Substring(0, originalFileName.Length - extension.Length),
+                    extension);
+
+                var result = await _imageStorage.SaveImage(stream, fileName);
 
                 return Json(new 
                 { 
