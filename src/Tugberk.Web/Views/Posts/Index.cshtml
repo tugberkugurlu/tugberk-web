@@ -2,7 +2,21 @@
 @inject IOptions<BlogSettings> BlogSettings
 @model Post
 
+@{
+    ViewBag.Tags = Model.Tags.Select(tag => tag.Name).ToArray();
+}
+
 @await Html.PartialAsync("Post", Model)
+
+<div class="d-none d-md-block">
+    <hr />
+    <div class="row">
+        <div class="col" style="text-align: center;">
+            <div class="ad-inner" data-type="ad" data-publisher="lqm.tugberkugurlu.site" data-zone="ron" data-format="728x90" data-tags="@Uri.EscapeDataString(string.Join(",", Model.Tags.Select(tag => tag.Name)))"></div>
+        </div>
+    </div>
+    <hr />
+</div>
 
 @if (BlogSettings.Value.IsDisqusEnabled())
 {

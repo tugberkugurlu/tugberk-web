@@ -1,5 +1,26 @@
+@{
+    var tags = ViewBag.Tags as string[];
+}
+
 <div class="right-side-holder">
     <div class="row d-block d-md-none">
+        <div class="col">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            @if (tags != null)
+            {
+                <div class="ad-inner" data-type="ad" data-publisher="lqm.tugberkugurlu.site" data-zone="ron" data-format="300x250" data-tags="@Uri.EscapeDataString(string.Join(",", tags))"></div>
+            }
+            else
+            {
+                <div class="ad-inner" data-type="ad" data-publisher="lqm.tugberkugurlu.site" data-zone="ron" data-format="300x250"></div>
+            }
+        </div>
+    </div>
+    <div class="row">
         <div class="col">
             <hr />
         </div>
@@ -41,7 +62,62 @@
     </div>
     <div class="row">
         <div class="col">
+            @if (tags != null)
+            {
+                <div class="ad-inner" data-type="ad" data-publisher="lqm.tugberkugurlu.site" data-zone="ron" data-format="300x250" data-tags="@Uri.EscapeDataString(string.Join(",", tags))"></div>
+            }
+            else
+            {
+                <div class="ad-inner" data-type="ad" data-publisher="lqm.tugberkugurlu.site" data-zone="ron" data-format="300x250"></div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             @await Component.InvokeAsync("TagsCloud")
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- tgbrk_responsive_2 -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-4310648294454189"
+                 data-ad-slot="4456073593"
+                 data-ad-format="auto"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- tgbrk_responsive -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-4310648294454189"
+                 data-ad-slot="3956545990"
+                 data-ad-format="auto"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
     </div>
 </div>
