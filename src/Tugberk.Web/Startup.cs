@@ -78,6 +78,9 @@ namespace Tugberk.Web
         [SuppressMessage("ReSharper", "UnusedMember.Global", Justification = "Invoked by ASP.NET Core hosting layer")]
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+#if RELEASE
+            app.UseRewriter(new RewriteOptions().AddRedirectToWwwPermanent());
+#endif
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -86,10 +89,6 @@ namespace Tugberk.Web
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseMvcWithDefaultRoute();
-
-#if RELEASE
-            app.UseRewriter(new RewriteOptions().AddRedirectToWwwPermanent());
-#endif
             
             MigrateAndEnsureDataIsSeeded(app);
         }
