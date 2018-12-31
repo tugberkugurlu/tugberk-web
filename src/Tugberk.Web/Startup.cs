@@ -4,6 +4,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -86,6 +87,10 @@ namespace Tugberk.Web
             app.UseAuthentication();
             app.UseMvcWithDefaultRoute();
 
+#if RELEASE
+            app.UseRewriter(new RewriteOptions().AddRedirectToWwwPermanent());
+#endif
+            
             MigrateAndEnsureDataIsSeeded(app);
         }
 
