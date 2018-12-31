@@ -14,6 +14,7 @@ namespace Tugberk.Persistance.Abstractions
         Task<IReadOnlyCollection<Post>> GetApprovedPostsByTag(string tagSlug, int skip, int take);
         Task<Paginated<Post>> GetLatestApprovedPosts(int skip, int take);
         Task<Paginated<Post>> GetLatestApprovedPosts(string tagSlug, int skip, int take);
+        Task<Paginated<Post>> GetLatestApprovedPosts(int month, int year, int skip, int take);
 
         Task<Post> CreatePost(NewPostCommand newPostCommand);
     }

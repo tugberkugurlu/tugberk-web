@@ -1,10 +1,10 @@
-﻿@using Tugberk.Web.Controllers
-@model TagPageViewModel
+@using Tugberk.Web.Controllers
+@model MonthYearPageViewModel
 
 <div class="row">
     <div class="col">
         <div class="alert alert-info">
-            Filtered by Tag (@Model.TagSlug)
+            Filtered by Month (@Model.Month) and Year (@Model.Year)
         </div>
     </div>
 </div>
@@ -23,7 +23,7 @@
                 @if (Model.PaginatedPostsResult.HasPrevious)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action(nameof(PostsController.GetByTag), "Posts", new { tagSlug = Model.TagSlug, page = Model.CurrentPage - 1 })">Previous</a>
+                        <a class="page-link" href="@Url.Action(nameof(PostsController.GetByYearMonth), "Posts", new { month = Model.Month, year = Model.Year, page = Model.CurrentPage - 1 })">Previous</a>
                     </li>
                 }
                 else
@@ -42,7 +42,7 @@
                 @if (Model.PaginatedPostsResult.HasNext)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action(nameof(PostsController.GetByTag), "Posts", new { tagSlug = Model.TagSlug, page = Model.CurrentPage + 1 })">Next</a>
+                        <a class="page-link" href="@Url.Action(nameof(PostsController.GetByYearMonth), "Posts", new { month = Model.Month, year = Model.Year, page = Model.CurrentPage + 1 })">Next</a>
                     </li>
                 }
                 else

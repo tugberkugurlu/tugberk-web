@@ -50,25 +50,7 @@ namespace Tugberk.Persistance.SqlServer.Stores
             var postsQuery = CreateBasePostQuery()
                 .Where(x => x.ApprovalStatus == ApprovalStatusEntity.Approved);
 
-            var posts = await postsQuery
-                .Skip(skip)
-                .Take(take)
-                .ToListAsync();
-
-            var totalCount = await postsQuery.CountAsync();
-
-            // TODO: This is obviously not great but EF sucks and was not able to generate the correct query to get this out from SQL Server. Fix this or cache.
-            var userIds = posts.Select(x => x.CreatedBy.Id).Distinct(StringComparer.InvariantCultureIgnoreCase);
-            var claims = await _blogDbContext.UserClaims
-                .Where(x => userIds.Any(id => x.UserId == id))
-                .ToListAsync();
-
-            var result = new ReadOnlyCollection<Post>(posts.Select(x =>
-                x.ToDomainModel(claims
-                    .Where(c => c.UserId.Equals(x.CreatedBy.Id, StringComparison.InvariantCultureIgnoreCase))
-                    .Select(cl => new Claim(cl.ClaimType, cl.ClaimValue)))).ToList());
-
-            return new Paginated<Post>(result, skip, totalCount);
+            return await EvaluateQuery(skip, take, postsQuery);
         }
 
         public async Task<Paginated<Post>> GetLatestApprovedPosts(string tagSlug, int skip, int take)
@@ -78,25 +60,19 @@ namespace Tugberk.Persistance.SqlServer.Stores
                 .Where(x => x.ApprovalStatus == ApprovalStatusEntity.Approved)
                 .Where(x => x.Tags.Any(t => t.Tag.Slug == tagSlug));
 
-            var posts = await postsQuery
-                .Skip(skip)
-                .Take(take)
-                .ToListAsync();
+            return await EvaluateQuery(skip, take, postsQuery);
+        }
 
-            var totalCount = await postsQuery.CountAsync();
+        public async Task<Paginated<Post>> GetLatestApprovedPosts(int month, int year, int skip, int take)
+        {
+            var startDate = new DateTime(year, month, 1, 0, 0, 0, DateTimeKind.Utc);
+            var endDate = new DateTime(month == 12 ? year + 1 : year, month == 12 ? 1 : month + 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-            // TODO: This is obviously not great but EF sucks and was not able to generate the correct query to get this out from SQL Server. Fix this or cache.
-            var userIds = posts.Select(x => x.CreatedBy.Id).Distinct(StringComparer.InvariantCultureIgnoreCase);
-            var claims = await _blogDbContext.UserClaims
-                .Where(x => userIds.Any(id => x.UserId == id))
-                .ToListAsync();
-
-            var result = new ReadOnlyCollection<Post>(posts.Select(x =>
-                x.ToDomainModel(claims
-                    .Where(c => c.UserId.Equals(x.CreatedBy.Id, StringComparison.InvariantCultureIgnoreCase))
-                    .Select(cl => new Claim(cl.ClaimType, cl.ClaimValue)))).ToList());
-
-            return new Paginated<Post>(result, skip, totalCount);
+            var postsQuery = CreateBasePostQuery()
+                .Where(x => x.ApprovalStatus == ApprovalStatusEntity.Approved)
+                .Where(x => x.CreatedOnUtc >= startDate && x.CreatedOnUtc < endDate);
+            
+            return await EvaluateQuery(skip, take, postsQuery);
         }
 
         public async Task<Post> CreatePost(NewPostCommand newPostCommand)
@@ -139,6 +115,29 @@ namespace Tugberk.Persistance.SqlServer.Stores
             return postEntity.ToDomainModel(claims);
         }
 
+        private async Task<Paginated<Post>> EvaluateQuery(int skip, int take, IQueryable<PostEntity> postsQuery)
+        {
+            var posts = await postsQuery
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
+
+            var totalCount = await postsQuery.CountAsync();
+
+            // TODO: This is obviously not great but EF sucks and was not able to generate the correct query to get this out from SQL Server. Fix this or cache.
+            var userIds = posts.Select(x => x.CreatedBy.Id).Distinct(StringComparer.InvariantCultureIgnoreCase);
+            var claims = await _blogDbContext.UserClaims
+                .Where(x => userIds.Any(id => x.UserId == id))
+                .ToListAsync();
+
+            var result = new ReadOnlyCollection<Post>(posts.Select(x =>
+                x.ToDomainModel(claims
+                    .Where(c => c.UserId.Equals(x.CreatedBy.Id, StringComparison.InvariantCultureIgnoreCase))
+                    .Select(cl => new Claim(cl.ClaimType, cl.ClaimValue)))).ToList());
+
+            return new Paginated<Post>(result, skip, totalCount);
+        }
+        
         private async Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPost(Expression<Func<PostEntity, bool>> predicate)
         {        
             var postEntity = await CreateBasePostQuery().FirstOrDefaultAsync(predicate);

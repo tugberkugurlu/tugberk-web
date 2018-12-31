@@ -35,6 +35,27 @@ namespace Tugberk.Web.Controllers
         public string TagSlug { get; }
         public Paginated<Post> PaginatedPostsResult { get; }
     }
+    
+    public class MonthYearPageViewModel
+    {
+        public MonthYearPageViewModel(int currentPage, int month, int year, Paginated<Post> paginatedPostsResult)
+        {
+            if (currentPage < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(currentPage));
+            }
+
+            CurrentPage = currentPage;
+            Month = month;
+            Year = year;
+            PaginatedPostsResult = paginatedPostsResult ?? throw new ArgumentNullException(nameof(paginatedPostsResult));
+        }
+
+        public int CurrentPage { get; }
+        public int Month { get; }
+        public int Year { get; }
+        public Paginated<Post> PaginatedPostsResult { get; }
+    }
 
     public class PostsController : Controller
     {
@@ -89,12 +110,39 @@ namespace Tugberk.Web.Controllers
 
             var result = await _postsStore.GetLatestApprovedPosts(tagSlug, skip, take);
 
-            if (page > 0 && result.Items.Count == 0)
+            if (result.Items.Count == 0)
             {
                 return NotFound();
             }
 
             return View(new TagPageViewModel(page, tagSlug, result));
+        }
+        
+        [HttpGet("archive/{month:int:min(1):max(12)}/{year:int}")]
+        public async Task<IActionResult> GetByYearMonth(int month, int year, int page)
+        {
+            if (year < DateTime.MinValue.Year || year > DateTime.MaxValue.Year)
+            {
+                _logger.LogWarning("The year value '{Year}' is out of range", year);
+                return NotFound();
+            }
+            
+            if (page < 0)
+            {
+                return NotFound();
+            }
+            
+            int skip = 5 * page;
+            int take = 5;
+            
+            var result = await _postsStore.GetLatestApprovedPosts(month, year, skip, take);
+
+            if (result.Items.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return View(new MonthYearPageViewModel(page, month, year, result));
         }
 
         private TwitterCardContent ConstructTwitterCardContent(Post post)

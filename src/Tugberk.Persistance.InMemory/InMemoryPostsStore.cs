@@ -63,6 +63,11 @@ namespace Tugberk.Persistance.InMemory
             throw new NotImplementedException();
         }
 
+        public Task<Paginated<Post>> GetLatestApprovedPosts(int month, int year, int skip, int take)
+        {
+            throw new NotImplementedException();
+        }
+
         private static Post GetSamplePost1()
         {
             const string path = "sample-post-html-1.txt";
