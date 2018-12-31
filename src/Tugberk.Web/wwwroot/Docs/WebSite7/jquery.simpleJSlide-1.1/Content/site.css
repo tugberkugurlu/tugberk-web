@@ -1,0 +1,8 @@
+﻿.funcBtn{text-decoration:underline;cursor:pointer;color:Blue;}
+#notificationContainer{padding:0 0 0 10px;}
+img{border-color:Gray;border-width:2px;border-style:Solid;}
+.simpleJSlide{border:1px solid gray; padding:20px;height:300px;}
+.clearFix{clear:both;}
+#thumbContainer{float:right;}
+#thumbContainer img{cursor:pointer;}
+#mainImageContainer{float:left;}
