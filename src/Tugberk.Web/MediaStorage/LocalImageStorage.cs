@@ -19,10 +19,10 @@ namespace Tugberk.Web.MediaStorage
             var imagePath = LocalImagesPathProvider.GetRandomImagePath(nameWithExtension);
             var fileName = Path.GetFileName(imagePath);
 
-            _logger.LogInformation("Saving {baseFileName} under {imagePath}", 
+            _logger.LogInformation("Saving {baseFileName} under {imagePath}",
                 nameWithExtension, imagePath);
 
-            using(var fileStream = File.Open(imagePath, FileMode.CreateNew))
+            using (var fileStream = File.Open(imagePath, FileMode.CreateNew))
             {
                 await content.CopyToAsync(fileStream);
             }
