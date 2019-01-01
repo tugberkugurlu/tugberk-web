@@ -102,26 +102,5 @@
           function _dmFollowup(file) { if (typeof DMAds === 'undefined') _dmBootstrap('cdn2.DeveloperMedia.com/a.min.js'); }
           (function () { _dmBootstrap('cdn1.DeveloperMedia.com/a.min.js'); setTimeout(_dmFollowup, 2000); })();
       </script>
-        <script>
-            $(document).ready(function() {
-                // Old blog posts have the image paths in a random casing. Who knows why ¯\_(ツ)_/¯
-                // However, linux has a case sensitive file system. To get around this, all the files and folders are lowercased.
-                // Here, we are changing all the URLs to be lowercase, too
-                $(".post-holder a").each(function(i) {
-                    var anchorRef = $(this);
-                    var link = anchorRef.attr("href");
-                    if(link.toLowerCase().indexOf('/content/images/') !== -1) {
-                        anchorRef.attr("href", link.toLowerCase());
-                    }
-                });
-                $(".post-holder img").each(function(i) {
-                    var imgRef = $(this);
-                    var link = imgRef.attr("src");
-                    if(link.toLowerCase().indexOf('/content/images/') !== -1) {
-                        imgRef.attr("src", link.toLowerCase());
-                    }
-                });
-            });
-        </script>
   </body>
 </html>

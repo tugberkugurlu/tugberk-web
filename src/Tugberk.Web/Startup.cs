@@ -1,8 +1,10 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Routing;
@@ -81,6 +83,8 @@ namespace Tugberk.Web
 #if RELEASE
             app.UseRewriter(new RewriteOptions().AddRedirectToWwwPermanent());
 #endif
+            UseLegacyBlogImagesRedirector(app);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -91,6 +95,33 @@ namespace Tugberk.Web
             app.UseMvcWithDefaultRoute();
             
             MigrateAndEnsureDataIsSeeded(app);
+        }
+
+        private static void UseLegacyBlogImagesRedirector(IApplicationBuilder app)
+        {
+            app.Use((context, next) =>
+            {
+                const string legacyImagesRootPath = "/content/images";
+                var isMatch = context.Request.Path.StartsWithSegments(new PathString(legacyImagesRootPath),
+                    StringComparison.InvariantCultureIgnoreCase);
+
+                if (isMatch)
+                {
+                    var fullPath = context.Request.Path.ToUriComponent();
+                    var path = fullPath.Substring(legacyImagesRootPath.Length,
+                        fullPath.Length - legacyImagesRootPath.Length);
+
+                    Console.WriteLine(path);
+
+                    const string newUriPrefix = "https://tugberkugurlu.blob.core.windows.net/bloggyimages/legacy-blog-images/images";
+                    var newUri = $"{newUriPrefix}{path}";
+                    context.Response.Redirect(newUri, true);
+
+                    return Task.CompletedTask;
+                }
+
+                return next.Invoke();
+            });
         }
 
         private void MigrateAndEnsureDataIsSeeded(IApplicationBuilder app)
