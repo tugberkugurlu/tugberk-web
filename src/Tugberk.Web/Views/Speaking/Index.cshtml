@@ -1,6 +1,19 @@
+@using Tugberk.Web.Models
+@using Tugberk.Web.Controllers
 @{
+    var title = "Tugberk Ugurlu Public Speaking Engagements";
+    var description = "Tugberk speaks at conferences on technical leadership, software architecture, lean software development, Microsoft Azure and .NET.";
+
     Layout = "_Layout";
-    ViewBag.PageTitle = "Tugberk speaks at conferences on technical leadership, software architecture, lean software development, Microsoft Azure and .NET.";
+    ViewBag.PageTitle = title;
+    ViewBag.PageDescription = description;
+    ViewBag.TwitterCard = new TwitterCardContent(
+        title,
+        Url.AbsoluteAction(nameof(SpeakingController.Index), "Speaking"),
+        description,
+        $"{Context.Request.Scheme}://{Context.Request.Host}/images/tugberk-ugurlu-speaker-sub-header-2.jpg",
+        HardcodedConstants.BlogTwitterHandle,
+        HardcodedConstants.BlogTwitterHandle);
 }
 
 <div class="speaking-holder">

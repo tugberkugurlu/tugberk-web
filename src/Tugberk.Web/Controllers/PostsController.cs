@@ -153,8 +153,8 @@ namespace Tugberk.Web.Controllers
                 post.GeneratePostAbsoluteUrl(),
                 !string.IsNullOrWhiteSpace(post.Abstract) ? post.Abstract : null,
                 postImageUrl,
-                "@tourismgeek",
-                "@tourismgeek");
+                HardcodedConstants.BlogTwitterHandle,
+                HardcodedConstants.BlogTwitterHandle);
         }
 
         private string ExtractPostImageUrl(Post post)
