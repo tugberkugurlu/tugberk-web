@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tugberk.Domain", "src\Tugbe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tugberk.Persistance.SqlServer", "src\Tugberk.Persistance.SqlServer\Tugberk.Persistance.SqlServer.csproj", "{698D9861-173A-4F53-9E1F-D47A7B98CC84}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tugberk.Persistance.Abstractions", "src\Tugberk.Persistance.Abstractions\Tugberk.Persistance.Abstractions.csproj", "{60DB6F26-B50F-46C4-8953-2C5F85E1BE26}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tugberk.Persistance.InMemory", "src\Tugberk.Persistance.InMemory\Tugberk.Persistance.InMemory.csproj", "{588A1CB8-4765-45B6-B17D-619872B1E696}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tugberk.Web.OldBlogMigrator", "src\Tugberk.Web.OldBlogMigrator\Tugberk.Web.OldBlogMigrator.csproj", "{6D14C263-6825-4034-90AD-95790D491692}"
@@ -75,18 +73,6 @@ Global
 		{698D9861-173A-4F53-9E1F-D47A7B98CC84}.Release|x64.Build.0 = Release|Any CPU
 		{698D9861-173A-4F53-9E1F-D47A7B98CC84}.Release|x86.ActiveCfg = Release|Any CPU
 		{698D9861-173A-4F53-9E1F-D47A7B98CC84}.Release|x86.Build.0 = Release|Any CPU
-		{60DB6F26-B50F-46C4-8953-2C5F85E1BE26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60DB6F26-B50F-46C4-8953-2C5F85E1BE26}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60DB6F26-B50F-46C4-8953-2C5F85E1BE26}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{60DB6F26-B50F-46C4-8953-2C5F85E1BE26}.Debug|x64.Build.0 = Debug|Any CPU
-		{60DB6F26-B50F-46C4-8953-2C5F85E1BE26}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{60DB6F26-B50F-46C4-8953-2C5F85E1BE26}.Debug|x86.Build.0 = Debug|Any CPU
-		{60DB6F26-B50F-46C4-8953-2C5F85E1BE26}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60DB6F26-B50F-46C4-8953-2C5F85E1BE26}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60DB6F26-B50F-46C4-8953-2C5F85E1BE26}.Release|x64.ActiveCfg = Release|Any CPU
-		{60DB6F26-B50F-46C4-8953-2C5F85E1BE26}.Release|x64.Build.0 = Release|Any CPU
-		{60DB6F26-B50F-46C4-8953-2C5F85E1BE26}.Release|x86.ActiveCfg = Release|Any CPU
-		{60DB6F26-B50F-46C4-8953-2C5F85E1BE26}.Release|x86.Build.0 = Release|Any CPU
 		{588A1CB8-4765-45B6-B17D-619872B1E696}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{588A1CB8-4765-45B6-B17D-619872B1E696}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{588A1CB8-4765-45B6-B17D-619872B1E696}.Debug|x64.ActiveCfg = Debug|Any CPU

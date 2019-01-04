@@ -1,7 +1,6 @@
 using System;
-using Tugberk.Domain;
 
-namespace Tugberk.Persistance.Abstractions
+namespace Tugberk.Domain.Persistence
 {
     public class FoundByNonDefaultSlugResult<TModel> : FoundResult<TModel> where TModel : class
     {

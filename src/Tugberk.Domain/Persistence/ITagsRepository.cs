@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Tugberk.Domain;
 
-namespace Tugberk.Persistance.Abstractions
+namespace Tugberk.Domain.Persistence
 {
     public interface ITagsRepository
     {

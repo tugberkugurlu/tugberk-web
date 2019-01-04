@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tugberk.Domain;
 using Tugberk.Domain.Commands;
-using Tugberk.Persistance.Abstractions;
+using Tugberk.Domain.Persistence;
 using Tugberk.Web.MediaStorage;
 using Tugberk.Web.Models;
 

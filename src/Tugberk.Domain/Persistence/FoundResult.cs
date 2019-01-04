@@ -1,6 +1,6 @@
 using System;
 
-namespace Tugberk.Persistance.Abstractions
+namespace Tugberk.Domain.Persistence
 {
     public class FoundResult<TModel> : Result where TModel : class
     {

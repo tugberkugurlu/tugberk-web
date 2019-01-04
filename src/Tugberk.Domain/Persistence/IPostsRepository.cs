@@ -2,10 +2,9 @@
 using System.Threading.Tasks;
 using OneOf;
 using Optional;
-using Tugberk.Domain;
 using Tugberk.Domain.Commands;
 
-namespace Tugberk.Persistance.Abstractions
+namespace Tugberk.Domain.Persistence
 {
     public interface IPostsRepository
     {

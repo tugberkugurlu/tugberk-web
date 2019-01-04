@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
-using Tugberk.Persistance.Abstractions;
+using Tugberk.Domain.Persistence;
 using Tugberk.Persistance.SqlServer;
 using Tugberk.Persistance.SqlServer.Stores;
 using Tugberk.Web.MediaStorage;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Tugberk.Domain;
-using Tugberk.Persistance.Abstractions;
+using Tugberk.Domain.Persistence;
 
 namespace Tugberk.Persistance.SqlServer.Stores
 {

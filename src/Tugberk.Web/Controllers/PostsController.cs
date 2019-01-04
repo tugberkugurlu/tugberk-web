@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc;
 using Tugberk.Domain;
-using Tugberk.Persistance.Abstractions;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using Tugberk.Domain.Persistence;
 using Tugberk.Web.Models;
 
 namespace Tugberk.Web.Controllers

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Tugberk.Persistance.Abstractions;
+using Tugberk.Domain.Persistence;
 using Tugberk.Web.Models;
 
 namespace Tugberk.Web.Controllers

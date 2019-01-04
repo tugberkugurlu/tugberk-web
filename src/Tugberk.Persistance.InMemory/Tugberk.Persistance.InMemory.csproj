@@ -3,7 +3,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tugberk.Persistance.Abstractions\Tugberk.Persistance.Abstractions.csproj" />
     <ProjectReference Include="..\Tugberk.Domain\Tugberk.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>

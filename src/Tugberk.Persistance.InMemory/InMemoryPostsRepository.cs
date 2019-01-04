@@ -9,7 +9,7 @@ using OneOf;
 using Optional;
 using Tugberk.Domain;
 using Tugberk.Domain.Commands;
-using Tugberk.Persistance.Abstractions;
+using Tugberk.Domain.Persistence;
 
 namespace Tugberk.Persistance.InMemory
 {

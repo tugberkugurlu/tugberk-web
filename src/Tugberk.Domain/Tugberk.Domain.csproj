@@ -1,7 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OneOf" Version="2.1.117" />
+    <PackageReference Include="Optional" Version="4.0.0" />
+  </ItemGroup>
 
 </Project>

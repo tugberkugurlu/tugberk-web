@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Tugberk.Persistance.Abstractions;
+using Tugberk.Domain.Persistence;
 using WilderMinds.RssSyndication;
 
 namespace Tugberk.Web.Controllers

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Tugberk.Persistance.Abstractions;
+using Tugberk.Domain.Persistence;
 using Tugberk.Web.Controllers;
 
 namespace Tugberk.Web.ViewComponents

@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\Tugberk.Persistance.Abstractions\Tugberk.Persistance.Abstractions.csproj" />
     <ProjectReference Include="..\Tugberk.Domain\Tugberk.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>

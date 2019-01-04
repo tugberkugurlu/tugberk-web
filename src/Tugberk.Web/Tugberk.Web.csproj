@@ -17,7 +17,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tugberk.Domain\Tugberk.Domain.csproj" />
-    <ProjectReference Include="..\Tugberk.Persistance.Abstractions\Tugberk.Persistance.Abstractions.csproj" />
     <ProjectReference Include="..\Tugberk.Persistance.InMemory\Tugberk.Persistance.InMemory.csproj" />
     <ProjectReference Include="..\Tugberk.Persistance.SqlServer\Tugberk.Persistance.SqlServer.csproj" />
   </ItemGroup>

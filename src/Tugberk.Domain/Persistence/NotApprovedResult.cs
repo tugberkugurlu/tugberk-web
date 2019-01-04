@@ -1,4 +1,4 @@
-namespace Tugberk.Persistance.Abstractions
+namespace Tugberk.Domain.Persistence
 {
     public class NotApprovedResult<TModel> : FoundResult<TModel> where TModel : class
     {
