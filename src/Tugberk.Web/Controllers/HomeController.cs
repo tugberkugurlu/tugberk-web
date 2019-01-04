@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Tugberk.Domain.ReadSide;
 using Tugberk.Domain.ReadSide.Queries;
 using Tugberk.Web.Models;
 

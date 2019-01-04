@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using OneOf;
 using Optional;
-using Tugberk.Domain.Persistence;
 using Tugberk.Domain.ReadSide.ReadModels;
 
 namespace Tugberk.Domain.ReadSide.Queries

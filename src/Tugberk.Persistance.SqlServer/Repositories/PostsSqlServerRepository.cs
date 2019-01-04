@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OneOf;
 using Optional;
-using Tugberk.Domain;
 using Tugberk.Domain.Commands;
 using Tugberk.Domain.Persistence;
 using Tugberk.Domain.ReadSide;

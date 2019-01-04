@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Tugberk.Domain.ReadSide;
 using Tugberk.Domain.ReadSide.Queries;
 using WilderMinds.RssSyndication;
 

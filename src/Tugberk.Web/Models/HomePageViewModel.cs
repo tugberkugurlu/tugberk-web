@@ -1,5 +1,4 @@
 using System;
-using Tugberk.Domain;
 using Tugberk.Domain.ReadSide.ReadModels;
 
 namespace Tugberk.Web.Models
