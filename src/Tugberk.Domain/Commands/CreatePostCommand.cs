@@ -24,5 +24,11 @@ namespace Tugberk.Domain.Commands
          public bool Approved { get; }
          public string Slug { get; }
          public IReadOnlyCollection<string> Tags { get; }
+
+         public class User
+         {
+             public string Id { get; set; }
+             public string Name { get; set; }
+         }
     }
  }

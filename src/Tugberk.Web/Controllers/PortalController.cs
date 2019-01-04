@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tugberk.Domain;
 using Tugberk.Domain.Commands;
 using Tugberk.Domain.Persistence;
 using Tugberk.Web.MediaStorage;
@@ -37,13 +36,13 @@ namespace Tugberk.Web.Controllers
         {
             if(ModelState.IsValid)
             {
-                User currentUser = GetCurrentUser();
+                var currentUser = GetCurrentUser();
 
                 var command = new CreatePostCommand(requestModel.Title,
                     requestModel.Abstract,
                     requestModel.Content,
                     HttpContext.Connection?.RemoteIpAddress?.ToString() ?? "127.0.0.1",
-                    currentUser,
+                    currentUser, 
                     Enumerable.Empty<string>().ToList().AsReadOnly(),
                     true);
 
@@ -94,13 +93,13 @@ namespace Tugberk.Web.Controllers
             }
         }
 
-        private User GetCurrentUser()
+        private CreatePostCommand.User GetCurrentUser()
         {
             var id = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
             var name = User.Claims.First(x => x.Type == ClaimTypes.Name).Value;
             var surname = User.Claims.First(x => x.Type == ClaimTypes.Surname).Value;
 
-            return new User
+            return new CreatePostCommand.User
             {
                 Id = id,
                 Name = $"{name} {surname}"

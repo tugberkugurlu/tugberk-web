@@ -55,7 +55,7 @@ namespace Tugberk.Web
                         post.Abstract,
                         post.Content,
                         post.CreationRecord.IpAddress,
-                        new User { Id = defaultUser.Id, Name = defaultUser.UserName },
+                        new CreatePostCommand.User { Id = defaultUser.Id, Name = defaultUser.UserName },
                         post.Tags.Select(x => x.Name).ToList().AsReadOnly(),
                         true);
                     
