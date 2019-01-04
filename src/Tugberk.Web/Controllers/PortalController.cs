@@ -42,8 +42,6 @@ namespace Tugberk.Web.Controllers
                 var command = new CreatePostCommand(requestModel.Title,
                     requestModel.Abstract,
                     requestModel.Content,
-                    "en-US",
-                    PostFormat.Html,
                     HttpContext.Connection?.RemoteIpAddress?.ToString() ?? "127.0.0.1",
                     currentUser,
                     Enumerable.Empty<string>().ToList().AsReadOnly(),

@@ -54,8 +54,6 @@ namespace Tugberk.Web
                     var newPostCommand = new CreatePostCommand(post.Title,
                         post.Abstract,
                         post.Content,
-                        post.Language,
-                        post.Format,
                         post.CreationRecord.IpAddress,
                         new User { Id = defaultUser.Id, Name = defaultUser.UserName },
                         post.Tags.Select(x => x.Name).ToList().AsReadOnly(),
