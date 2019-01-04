@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
 using Tugberk.Domain.Persistence;
+using Tugberk.Domain.Queries;
 using Tugberk.Persistance.SqlServer;
 using Tugberk.Persistance.SqlServer.Stores;
 using Tugberk.Web.MediaStorage;
@@ -57,7 +57,13 @@ namespace Tugberk.Web
             });
 
             services.AddSingleton<IEmailSender, NoOpEmailSender>();
+
             services.AddScoped<IPostsRepository, PostsSqlServerRepository>();
+            services.AddScoped<IApprovedPostsByIdQuery, PostsSqlServerRepository>();
+            services.AddScoped<IApprovedPostsBySlugQuery, PostsSqlServerRepository>();
+            services.AddScoped<IApprovedPostsByTagQuery, PostsSqlServerRepository>();
+            services.AddScoped<ILatestApprovedPostsQuery, PostsSqlServerRepository>();
+
             services.AddScoped<ITagsRepository, TagsSqlServerRepository>();
             services.Configure<BlogSettings>(_configuration.GetSection("BlogSettings"));
             services.Configure<GoogleReCaptchaSettings>(_configuration.GetSection("GoogleReCaptcha"));

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tugberk.Domain;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using Tugberk.Domain.Persistence;
+using Tugberk.Domain.Queries;
 using Tugberk.Web.Models;
 
 namespace Tugberk.Web.Controllers
@@ -59,19 +59,21 @@ namespace Tugberk.Web.Controllers
 
     public class PostsController : Controller
     {
-        private readonly IPostsRepository _postsRepository;
+        private readonly ILatestApprovedPostsQuery _latestApprovedPostsQuery;
+        private readonly IApprovedPostsBySlugQuery _approvedPostsBySlugQuery;
         private readonly ILogger<PostsController> _logger;
 
-        public PostsController(IPostsRepository postsRepository, ILogger<PostsController> logger)
+        public PostsController(ILatestApprovedPostsQuery latestApprovedPostsQuery, IApprovedPostsBySlugQuery approvedPostsBySlugQuery, ILogger<PostsController> logger)
         {
-            _postsRepository = postsRepository ?? throw new ArgumentNullException(nameof(postsRepository));
+            _latestApprovedPostsQuery = latestApprovedPostsQuery ?? throw new ArgumentNullException(nameof(latestApprovedPostsQuery));
+            _approvedPostsBySlugQuery = approvedPostsBySlugQuery ?? throw new ArgumentNullException(nameof(approvedPostsBySlugQuery));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet("archive/{slug}")]
         public async Task<IActionResult> Index(string slug)
         {
-            var result = await _postsRepository.FindApprovedPostBySlug(slug);
+            var result = await _approvedPostsBySlugQuery.FindApprovedPostBySlug(slug);
 
             return result.Match<IActionResult>(
                 some => 
@@ -108,7 +110,7 @@ namespace Tugberk.Web.Controllers
             int skip = 5 * page;
             int take = 5;
 
-            var result = await _postsRepository.GetLatestApprovedPosts(tagSlug, skip, take);
+            var result = await _latestApprovedPostsQuery.GetLatestApprovedPosts(tagSlug, skip, take);
 
             if (result.Items.Count == 0)
             {
@@ -135,7 +137,7 @@ namespace Tugberk.Web.Controllers
             int skip = 5 * page;
             int take = 5;
             
-            var result = await _postsRepository.GetLatestApprovedPosts(month, year, skip, take);
+            var result = await _latestApprovedPostsQuery.GetLatestApprovedPosts(month, year, skip, take);
 
             if (result.Items.Count == 0)
             {

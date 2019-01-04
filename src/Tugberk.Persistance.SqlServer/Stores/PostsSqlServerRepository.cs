@@ -11,10 +11,14 @@ using Optional;
 using Tugberk.Domain;
 using Tugberk.Domain.Commands;
 using Tugberk.Domain.Persistence;
+using Tugberk.Domain.Queries;
 
 namespace Tugberk.Persistance.SqlServer.Stores
 {
-    public class PostsSqlServerRepository : IPostsRepository
+    public class PostsSqlServerRepository : 
+        IPostsRepository, IApprovedPostsByIdQuery,
+        IApprovedPostsBySlugQuery, IApprovedPostsByTagQuery,
+        ILatestApprovedPostsQuery
     {
         private readonly BlogDbContext _blogDbContext;
 
