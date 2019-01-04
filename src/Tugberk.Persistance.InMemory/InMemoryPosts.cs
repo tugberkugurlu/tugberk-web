@@ -1,86 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using OneOf;
-using Optional;
-using Tugberk.Domain;
-using Tugberk.Domain.Commands;
-using Tugberk.Domain.Persistence;
-using Tugberk.Domain.ReadSide;
+using Tugberk.Domain.ReadSide.ReadModels;
 
 namespace Tugberk.Persistance.InMemory
 {
-    public class InMemoryPostsRepository : IPostsRepository
+    public class InMemoryPosts
     {
-        public Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostById(string id) 
+        public Task<Paginated<PostReadModel>> GetLatestApprovedPosts(int skip, int take)
         {
-            var post = GetSamplePost1();
-
-            return Task.FromResult(
-                Option.Some<OneOf<Post, NotApprovedResult<Post>>>(post)
-            );
-        }
-
-        public async Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostBySlug(string postSlug) 
-        {
-            var post = (await GetLatestApprovedPosts(0, Int32.MaxValue))
-                .Items
-                .FirstOrDefault(x => x.Slugs.Any(s => s.Path.Equals(postSlug, StringComparison.OrdinalIgnoreCase)));
-
-            if(post != null) 
-            {
-                var result = post.IsApproved ? 
-                    OneOf<Post, NotApprovedResult<Post>>.FromT0(post) :
-                    OneOf<Post, NotApprovedResult<Post>>.FromT1(new NotApprovedResult<Post>(post));
-
-                return Option.Some<OneOf<Post, NotApprovedResult<Post>>>(result);
-            }
-            else 
-            {
-                return Option.None<OneOf<Post, NotApprovedResult<Post>>>();
-            }
-        }
-
-        public Task<IReadOnlyCollection<Post>> GetApprovedPostsByTag(string tagSlug, int skip, int take) 
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Paginated<Post>> GetLatestApprovedPosts(int skip, int take)
-        {
-            return Task.FromResult(new Paginated<Post>(new[]
+            return Task.FromResult(new Paginated<PostReadModel>(new[]
             {
                 GetSamplePost1(),
                 GetSamplePost2()
             }, skip, 2));
         }
 
-        public Task<Paginated<Post>> GetLatestApprovedPosts(string tagSlug, int skip, int take)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Paginated<Post>> GetLatestApprovedPosts(int month, int year, int skip, int take)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static Post GetSamplePost1()
+        private static PostReadModel GetSamplePost1()
         {
             const string path = "sample-post-html-1.txt";
             string content = GetPostContent(path);
 
-            var user = new User
+            var user = new UserReadModel
             {
                 Id = "djidiweh",
                 Name = "Tugberk Ugurlu"
             };
 
-            var samplePost = new Post
+            var samplePost = new PostReadModel
             {
                 Id = "ydy982d",
                 Title = "Defining What Good Looks Like for a Software Engineer",
@@ -90,15 +39,15 @@ namespace Tugberk.Persistance.InMemory
                 Authors = (new[] {user}),
                 CommentStatusActions = new[]
                 {
-                    new CommentStatusActionRecord
+                    new CommentStatusActionRecordReadModel
                     {
-                        Status = CommentableStatus.Enabled,
+                        Status = CommentableStatusReadModel.Enabled,
                         RecordedBy = user,
                         RecordedOn = DateTime.UtcNow
                     }
                 },
-                ApprovalStatus = ApprovalStatus.Approved,
-                CreationRecord = new ChangeRecord
+                ApprovalStatus = ApprovalStatusReadModel.Approved,
+                CreationRecord = new ChangeRecordReadModel
                 {
                     RecordedBy = user,
                     RecordedOn = DateTime.UtcNow,
@@ -106,7 +55,7 @@ namespace Tugberk.Persistance.InMemory
                 },
                 Slugs = new[]
                 {
-                    new Slug
+                    new SlugReadModel
                     {
                         Path = "defining-what-good-looks-like-for-a-software-engineer",
                         IsDefault = true,
@@ -115,12 +64,12 @@ namespace Tugberk.Persistance.InMemory
                 },
                 Tags = new[]
                 {
-                    new Tag
+                    new TagReadModel
                     {
                         Name = "Software Engineer",
                         Slugs = new[]
                         {
-                            new Slug
+                            new SlugReadModel
                             {
                                 Path = "software-engineer",
                                 IsDefault = true,
@@ -129,12 +78,12 @@ namespace Tugberk.Persistance.InMemory
                         }
                     },
 
-                    new Tag
+                    new TagReadModel
                     {
                         Name = "Software Development",
                         Slugs = new[]
                         {
-                            new Slug
+                            new SlugReadModel
                             {
                                 Path = "software-development",
                                 IsDefault = true,
@@ -148,18 +97,18 @@ namespace Tugberk.Persistance.InMemory
             return samplePost;
         }
 
-        private static Post GetSamplePost2()
+        private static PostReadModel GetSamplePost2()
         {
             const string path = "sample-post-html-2.txt";
             string content = GetPostContent(path);
 
-            var user = new User
+            var user = new UserReadModel
             {
                 Id = "djidiweh",
                 Name = "Tugberk Ugurlu"
             };
 
-            var samplePost = new Post
+            var samplePost = new PostReadModel
             {
                 Id = "y9h9huj9u",
                 Title = "ASP.NET Core Authentication in a Load Balanced Environment with HAProxy and Redis",
@@ -169,15 +118,15 @@ namespace Tugberk.Persistance.InMemory
                 Authors = new[] {user},
                 CommentStatusActions = new[]
                 {
-                    new CommentStatusActionRecord
+                    new CommentStatusActionRecordReadModel
                     {
-                        Status = CommentableStatus.Enabled,
+                        Status = CommentableStatusReadModel.Enabled,
                         RecordedBy = user,
                         RecordedOn = DateTime.UtcNow
                     }
                 },
-                ApprovalStatus = ApprovalStatus.Approved,
-                CreationRecord = new ChangeRecord
+                ApprovalStatus = ApprovalStatusReadModel.Approved,
+                CreationRecord = new ChangeRecordReadModel
                 {
                     RecordedBy = user,
                     RecordedOn = DateTime.UtcNow,
@@ -185,7 +134,7 @@ namespace Tugberk.Persistance.InMemory
                 },
                 Slugs = new[]
                 {
-                    new Slug
+                    new SlugReadModel
                     {
                         Path = "asp-net-core-authentication-in-a-load-balanced-environment-with-haproxy-and-redis",
                         IsDefault = true,
@@ -194,12 +143,12 @@ namespace Tugberk.Persistance.InMemory
                 },
                 Tags = new[]
                 {
-                    new Tag
+                    new TagReadModel
                     {
                         Name = "ASP.NET Core",
                         Slugs = new[]
                         {
-                            new Slug
+                            new SlugReadModel
                             {
                                 Path = "asp-net-core",
                                 IsDefault = true,
@@ -208,12 +157,12 @@ namespace Tugberk.Persistance.InMemory
                         }
                     },
 
-                    new Tag
+                    new TagReadModel
                     {
                         Name = "ASP.NET",
                         Slugs = new[]
                         {
-                            new Slug
+                            new SlugReadModel
                             {
                                 Path = "asp-net",
                                 IsDefault = true,
@@ -222,12 +171,12 @@ namespace Tugberk.Persistance.InMemory
                         }
                     },
 
-                    new Tag
+                    new TagReadModel
                     {
                         Name = "Security",
                         Slugs = new[]
                         {
-                            new Slug
+                            new SlugReadModel
                             {
                                 Path = "security",
                                 IsDefault = true,
@@ -236,12 +185,12 @@ namespace Tugberk.Persistance.InMemory
                         }
                     },
 
-                    new Tag
+                    new TagReadModel
                     {
                         Name = "HTTP",
                         Slugs = new[]
                         {
-                            new Slug
+                            new SlugReadModel
                             {
                                 Path = "http",
                                 IsDefault = true,
@@ -250,12 +199,12 @@ namespace Tugberk.Persistance.InMemory
                         }
                     },
 
-                    new Tag
+                    new TagReadModel
                     {
                         Name = "Docker",
                         Slugs = new[]
                         {
-                            new Slug
+                            new SlugReadModel
                             {
                                 Path = "docker",
                                 IsDefault = true,
@@ -276,11 +225,6 @@ namespace Tugberk.Persistance.InMemory
             var fullPath = Path.Combine(directory, path);
 
             return File.ReadAllText(fullPath, Encoding.UTF8);
-        }
-
-        public Task<Post> CreatePost(CreatePostCommand createPostCommand)
-        {
-            throw new NotImplementedException();
         }
     }
 }

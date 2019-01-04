@@ -4,13 +4,14 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Tugberk.Domain;
+using Tugberk.Domain.ReadSide.ReadModels;
 
 namespace Tugberk.Persistance.SqlServer.Repositories
 {
     public static class DomainModelExtensions 
     {
-        public static User ToDomainModel(this IdentityUser user, IEnumerable<Claim> authorClaims) => 
-            new User
+        public static UserReadModel ToDomainModel(this IdentityUser user, IEnumerable<Claim> authorClaims) => 
+            new UserReadModel
             {
                 Id = user.Id,
                 Name = GetName(authorClaims)

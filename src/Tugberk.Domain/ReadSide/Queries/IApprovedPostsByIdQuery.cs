@@ -2,11 +2,12 @@
 using OneOf;
 using Optional;
 using Tugberk.Domain.Persistence;
+using Tugberk.Domain.ReadSide.ReadModels;
 
 namespace Tugberk.Domain.ReadSide.Queries
 {
     public interface IApprovedPostsByIdQuery
     {
-        Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostById(string id);
+        Task<Option<OneOf<PostReadModel, NotApprovedResult<PostReadModel>>>> FindApprovedPostById(string id);
     }
 }

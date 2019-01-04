@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Tugberk.Domain
+namespace Tugberk.Domain.ReadSide.ReadModels
 {
     public class Paginated<T>
     {

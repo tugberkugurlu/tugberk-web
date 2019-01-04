@@ -1,6 +1,7 @@
 @using Tugberk.Domain
+@using Tugberk.Domain.ReadSide.ReadModels
 @inject IOptions<BlogSettings> BlogSettings
-@model Post
+@model Tugberk.Domain.ReadSide.ReadModels.PostReadModel
 
 @{
     ViewBag.Tags = Model.Tags.Select(tag => tag.Name).ToArray();

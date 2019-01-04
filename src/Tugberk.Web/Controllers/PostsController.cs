@@ -2,11 +2,10 @@ using System;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc;
-using Tugberk.Domain;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using Tugberk.Domain.ReadSide;
 using Tugberk.Domain.ReadSide.Queries;
+using Tugberk.Domain.ReadSide.ReadModels;
 using Tugberk.Web.Models;
 
 namespace Tugberk.Web.Controllers
@@ -20,7 +19,7 @@ namespace Tugberk.Web.Controllers
 
     public class TagPageViewModel
     {
-        public TagPageViewModel(int currentPage, string tagSlug, Paginated<Post> paginatedPostsResult)
+        public TagPageViewModel(int currentPage, string tagSlug, Paginated<PostReadModel> paginatedPostsResult)
         {
             if (currentPage < 0)
             {
@@ -34,12 +33,12 @@ namespace Tugberk.Web.Controllers
 
         public int CurrentPage { get; }
         public string TagSlug { get; }
-        public Paginated<Post> PaginatedPostsResult { get; }
+        public Paginated<PostReadModel> PaginatedPostsResult { get; }
     }
     
     public class MonthYearPageViewModel
     {
-        public MonthYearPageViewModel(int currentPage, int month, int year, Paginated<Post> paginatedPostsResult)
+        public MonthYearPageViewModel(int currentPage, int month, int year, Paginated<PostReadModel> paginatedPostsResult)
         {
             if (currentPage < 0)
             {
@@ -55,7 +54,7 @@ namespace Tugberk.Web.Controllers
         public int CurrentPage { get; }
         public int Month { get; }
         public int Year { get; }
-        public Paginated<Post> PaginatedPostsResult { get; }
+        public Paginated<PostReadModel> PaginatedPostsResult { get; }
     }
 
     public class PostsController : Controller
@@ -148,7 +147,7 @@ namespace Tugberk.Web.Controllers
             return View(new MonthYearPageViewModel(page, month, year, result));
         }
 
-        private TwitterCardContent ConstructTwitterCardContent(Post post)
+        private TwitterCardContent ConstructTwitterCardContent(PostReadModel post)
         {
             var postImageUrl = ExtractPostImageUrl(post);
             return new TwitterCardContent(
@@ -160,7 +159,7 @@ namespace Tugberk.Web.Controllers
                 HardcodedConstants.BlogTwitterHandle);
         }
 
-        private string ExtractPostImageUrl(Post post)
+        private string ExtractPostImageUrl(PostReadModel post)
         {
             try
             {

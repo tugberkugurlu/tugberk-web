@@ -3,7 +3,6 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Tugberk.Domain;
 using Tugberk.Domain.Commands;
 using Tugberk.Persistance.InMemory;
 using Tugberk.Persistance.SqlServer;
@@ -33,7 +32,7 @@ namespace Tugberk.Web
 
             if(!context.Posts.AnyAsync().Result) 
             {
-                var inMemoryPostStore = new InMemoryPostsRepository();
+                var inMemoryPostStore = new InMemoryPosts();
                 var store = new PostsSqlServerRepository(context);
                 var result = inMemoryPostStore.GetLatestApprovedPosts(0, 100).Result;
                 var tags = result.Items.SelectMany(x => x.Tags);

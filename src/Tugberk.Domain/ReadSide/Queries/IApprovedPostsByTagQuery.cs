@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Tugberk.Domain.ReadSide.ReadModels;
 
 namespace Tugberk.Domain.ReadSide.Queries
 {
     public interface IApprovedPostsByTagQuery
     {
-        Task<IReadOnlyCollection<Post>> GetApprovedPostsByTag(string tagSlug, int skip, int take);
+        Task<IReadOnlyCollection<PostReadModel>> GetApprovedPostsByTag(string tagSlug, int skip, int take);
     }
 }

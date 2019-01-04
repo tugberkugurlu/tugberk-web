@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Tugberk.Domain;
+using Tugberk.Domain.ReadSide.ReadModels;
 
 namespace Tugberk.Persistance.SqlServer.Repositories
 {
@@ -10,15 +11,15 @@ namespace Tugberk.Persistance.SqlServer.Repositories
         // TODO: Add authors projection in its real form, not just out of createdby
         // TODO: Add CommentStatusActionRecord projection
         // TODO: Add ApprovalStatusActionRecord projection
-        public static Post ToDomainModel(this PostEntity postEntity, IEnumerable<Claim> authorClaims) 
+        public static PostReadModel ToReadModel(this PostEntity postEntity, IEnumerable<Claim> authorClaims) 
         {
             var createdBy = postEntity.CreatedBy.ToDomainModel(authorClaims);
-            var slugs = postEntity.Slugs.Select(x => x.ToDomainModel()).ToList().AsReadOnly();
+            var slugs = postEntity.Slugs.Select(x => x.ToReadModel()).ToList().AsReadOnly();
             var tags = postEntity.Tags
                 .Where(x => x.Tag != null) // it comes up null sometimes, no clue why as it's 'ThenInclude'd
-                .Select(x => x.ToDomainModel()).ToList().AsReadOnly();
+                .Select(x => x.ToReadModel()).ToList().AsReadOnly();
 
-            return new Post 
+            return new PostReadModel 
             {
                 Id = postEntity.Id.ToString(),
                 Language = postEntity.Language,
@@ -27,9 +28,9 @@ namespace Tugberk.Persistance.SqlServer.Repositories
                 Content = postEntity.Content,
                 Slugs = slugs,
                 Tags = tags,
-                Authors = new List<User> { createdBy }.AsReadOnly(),
+                Authors = new List<UserReadModel> { createdBy }.AsReadOnly(),
                 ApprovalStatus = postEntity.ApprovalStatus.ToDomainModel(),
-                CreationRecord = new ChangeRecord 
+                CreationRecord = new ChangeRecordReadModel 
                 {
                     RecordedBy = createdBy,
                     RecordedOn = postEntity.CreatedOnUtc,
@@ -38,20 +39,23 @@ namespace Tugberk.Persistance.SqlServer.Repositories
             };
         }
         
-        public static Tag ToDomainModel(this PostTagEntity tagEntity)
+        public static TagReadModel ToReadModel(this PostTagEntity tagEntity)
         {
             var tagName = tagEntity.Tag.Name;
             var tagSlug = tagEntity.Tag.Slug;
 
-            return new Tag
+            return new TagReadModel
             {
                 Name = tagName,
-                Slugs = new List<Slug> {new Slug {Path = tagSlug, IsDefault = true}}
+                Slugs = new List<SlugReadModel>
+                {
+                    new SlugReadModel { Path = tagSlug, IsDefault = true}
+                }
             };
         }
 
-        public static Slug ToDomainModel(this PostSlugEntity slugEntity) =>
-            new Slug 
+        public static SlugReadModel ToReadModel(this PostSlugEntity slugEntity) =>
+            new SlugReadModel
             {
                 Path = slugEntity.Path,
                 IsDefault = slugEntity.IsDefault,

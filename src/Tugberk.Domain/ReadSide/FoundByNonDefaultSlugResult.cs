@@ -1,14 +1,15 @@
 using System;
+using Tugberk.Domain.ReadSide.ReadModels;
 
 namespace Tugberk.Domain.ReadSide
 {
     public class FoundByNonDefaultSlugResult<TModel> : FoundResult<TModel> where TModel : class
     {
-        public FoundByNonDefaultSlugResult(TModel model, Slug defaultSlug) : base(model)
+        public FoundByNonDefaultSlugResult(TModel model, SlugReadModel defaultSlug) : base(model)
         {
             DefaultSlug = defaultSlug ?? throw new ArgumentNullException(nameof(defaultSlug));
         }
 
-        public Slug DefaultSlug { get; }
+        public SlugReadModel DefaultSlug { get; }
     }
 }

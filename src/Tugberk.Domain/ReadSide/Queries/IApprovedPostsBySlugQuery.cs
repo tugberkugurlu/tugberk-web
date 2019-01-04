@@ -2,11 +2,12 @@
 using OneOf;
 using Optional;
 using Tugberk.Domain.Persistence;
+using Tugberk.Domain.ReadSide.ReadModels;
 
 namespace Tugberk.Domain.ReadSide.Queries
 {
     public interface IApprovedPostsBySlugQuery
     {
-        Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostBySlug(string postSlug);
+        Task<Option<OneOf<PostReadModel, NotApprovedResult<PostReadModel>>>> FindApprovedPostBySlug(string postSlug);
     }
 }

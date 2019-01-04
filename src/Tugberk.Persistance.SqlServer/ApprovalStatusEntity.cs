@@ -1,5 +1,6 @@
 using System;
 using Tugberk.Domain;
+using Tugberk.Domain.ReadSide.ReadModels;
 
 namespace Tugberk.Persistance.SqlServer
 {
@@ -11,14 +12,14 @@ namespace Tugberk.Persistance.SqlServer
 
     public static class ApprovalStatusEntityExtensions 
     {
-        public static ApprovalStatusEntity ToEntityModel(this ApprovalStatus approvalStatus) 
+        public static ApprovalStatusEntity ToEntityModel(this ApprovalStatusReadModel approvalStatus) 
         {
             switch (approvalStatus)
             {
-                case ApprovalStatus.Disapproved:
+                case ApprovalStatusReadModel.Disapproved:
                     return ApprovalStatusEntity.Disapproved;
 
-                case ApprovalStatus.Approved:
+                case ApprovalStatusReadModel.Approved:
                     return ApprovalStatusEntity.Approved;
 
                 default:
@@ -26,15 +27,15 @@ namespace Tugberk.Persistance.SqlServer
             }
         }
 
-        public static ApprovalStatus ToDomainModel(this ApprovalStatusEntity approvalStatusEntity) 
+        public static ApprovalStatusReadModel ToDomainModel(this ApprovalStatusEntity approvalStatusEntity) 
         {
             switch (approvalStatusEntity)
             {
                 case ApprovalStatusEntity.Disapproved:
-                    return ApprovalStatus.Disapproved;
+                    return ApprovalStatusReadModel.Disapproved;
 
                 case ApprovalStatusEntity.Approved:
-                    return ApprovalStatus.Approved;
+                    return ApprovalStatusReadModel.Approved;
 
                 default:
                     throw new NotSupportedException();

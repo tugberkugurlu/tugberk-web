@@ -1,6 +1,6 @@
-namespace Tugberk.Domain
+namespace Tugberk.Domain.ReadSide.ReadModels
 {
-    public class User 
+    public class UserReadModel 
     {
         public string Id { get; set; }
         public string Name { get; set; }

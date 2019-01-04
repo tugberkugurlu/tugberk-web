@@ -13,6 +13,7 @@ using Tugberk.Domain.Commands;
 using Tugberk.Domain.Persistence;
 using Tugberk.Domain.ReadSide;
 using Tugberk.Domain.ReadSide.Queries;
+using Tugberk.Domain.ReadSide.ReadModels;
 
 namespace Tugberk.Persistance.SqlServer.Repositories
 {
@@ -28,7 +29,7 @@ namespace Tugberk.Persistance.SqlServer.Repositories
             _blogDbContext = blogDbContext ?? throw new ArgumentNullException(nameof(blogDbContext));
         }
 
-        public Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostById(string id)
+        public Task<Option<OneOf<PostReadModel, NotApprovedResult<PostReadModel>>>> FindApprovedPostById(string id)
         {
             if (id == null) throw new ArgumentNullException(nameof(id));
 
@@ -37,19 +38,19 @@ namespace Tugberk.Persistance.SqlServer.Repositories
             return FindApprovedPost(x => x.Id == guid);
         }
 
-        public Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostBySlug(string postSlug)
+        public Task<Option<OneOf<PostReadModel, NotApprovedResult<PostReadModel>>>> FindApprovedPostBySlug(string postSlug)
         {
             if (postSlug == null) throw new ArgumentNullException(nameof(postSlug));
 
             return FindApprovedPost(x => x.Slugs.Any(s => s.Path == postSlug));
         }
 
-        public Task<IReadOnlyCollection<Post>> GetApprovedPostsByTag(string tagSlug, int skip, int take)
+        public Task<IReadOnlyCollection<PostReadModel>> GetApprovedPostsByTag(string tagSlug, int skip, int take)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Paginated<Post>> GetLatestApprovedPosts(int skip, int take)
+        public async Task<Paginated<PostReadModel>> GetLatestApprovedPosts(int skip, int take)
         {
             // TODO: This query sucks, most of this query is evaluated locally and performance is at the bottom!
             var postsQuery = CreateBasePostQuery()
@@ -58,7 +59,7 @@ namespace Tugberk.Persistance.SqlServer.Repositories
             return await EvaluateQuery(skip, take, postsQuery);
         }
 
-        public async Task<Paginated<Post>> GetLatestApprovedPosts(string tagSlug, int skip, int take)
+        public async Task<Paginated<PostReadModel>> GetLatestApprovedPosts(string tagSlug, int skip, int take)
         {
             // TODO: This query sucks, most of this query is evaluated locally and performance is at the bottom!
             var postsQuery = CreateBasePostQuery()
@@ -68,7 +69,7 @@ namespace Tugberk.Persistance.SqlServer.Repositories
             return await EvaluateQuery(skip, take, postsQuery);
         }
 
-        public async Task<Paginated<Post>> GetLatestApprovedPosts(int month, int year, int skip, int take)
+        public async Task<Paginated<PostReadModel>> GetLatestApprovedPosts(int month, int year, int skip, int take)
         {
             var startDate = new DateTime(year, month, 1, 0, 0, 0, DateTimeKind.Utc);
             var endDate = new DateTime(month == 12 ? year + 1 : year, month == 12 ? 1 : month + 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -80,7 +81,7 @@ namespace Tugberk.Persistance.SqlServer.Repositories
             return await EvaluateQuery(skip, take, postsQuery);
         }
 
-        public async Task<Post> CreatePost(CreatePostCommand createPostCommand)
+        public async Task<PostReadModel> CreatePost(CreatePostCommand createPostCommand)
         {
             var authorId = createPostCommand.CreatedBy.Id;
             var createdBy = await _blogDbContext.Users.SingleOrDefaultAsync(x => x.Id == authorId);
@@ -117,10 +118,10 @@ namespace Tugberk.Persistance.SqlServer.Repositories
             await _blogDbContext.AddAsync(postEntity);
             await _blogDbContext.SaveChangesAsync();
 
-            return postEntity.ToDomainModel(claims);
+            return postEntity.ToReadModel(claims);
         }
 
-        private async Task<Paginated<Post>> EvaluateQuery(int skip, int take, IQueryable<PostEntity> postsQuery)
+        private async Task<Paginated<PostReadModel>> EvaluateQuery(int skip, int take, IQueryable<PostEntity> postsQuery)
         {
             var posts = await postsQuery
                 .Skip(skip)
@@ -135,29 +136,29 @@ namespace Tugberk.Persistance.SqlServer.Repositories
                 .Where(x => userIds.Any(id => x.UserId == id))
                 .ToListAsync();
 
-            var result = new ReadOnlyCollection<Post>(posts.Select(x =>
-                x.ToDomainModel(claims
+            var result = new ReadOnlyCollection<PostReadModel>(posts.Select(x =>
+                x.ToReadModel(claims
                     .Where(c => c.UserId.Equals(x.CreatedBy.Id, StringComparison.InvariantCultureIgnoreCase))
                     .Select(cl => new Claim(cl.ClaimType, cl.ClaimValue)))).ToList());
 
-            return new Paginated<Post>(result, skip, totalCount);
+            return new Paginated<PostReadModel>(result, skip, totalCount);
         }
         
-        private async Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPost(Expression<Func<PostEntity, bool>> predicate)
+        private async Task<Option<OneOf<PostReadModel, NotApprovedResult<PostReadModel>>>> FindApprovedPost(Expression<Func<PostEntity, bool>> predicate)
         {        
             var postEntity = await CreateBasePostQuery().FirstOrDefaultAsync(predicate);
 
             if (postEntity == null)
             {
-                return Option.None<OneOf<Post, NotApprovedResult<Post>>>();
+                return Option.None<OneOf<PostReadModel, NotApprovedResult<PostReadModel>>>();
             }
             else
             {
                 var claims = await GetCreatorClaims(postEntity.CreatedBy.Id);
-                var post = postEntity.ToDomainModel(claims);
+                var post = postEntity.ToReadModel(claims);
                 var result = post.IsApproved ? 
-                    OneOf<Post, NotApprovedResult<Post>>.FromT0(post) :
-                    OneOf<Post, NotApprovedResult<Post>>.FromT1(new NotApprovedResult<Post>(post));
+                    OneOf<PostReadModel, NotApprovedResult<PostReadModel>>.FromT0(post) :
+                    OneOf<PostReadModel, NotApprovedResult<PostReadModel>>.FromT1(new NotApprovedResult<PostReadModel>(post));
 
                 return Option.Some(result);
             }
