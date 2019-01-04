@@ -80,7 +80,7 @@ namespace Tugberk.Persistance.SqlServer.Repositories
             return await EvaluateQuery(skip, take, postsQuery);
         }
 
-        public async Task<PostReadModel> CreatePost(CreatePostCommand createPostCommand)
+        public async Task CreatePost(CreatePostCommand createPostCommand)
         {
             var authorId = createPostCommand.CreatedBy.Id;
             var createdBy = await _blogDbContext.Users.SingleOrDefaultAsync(x => x.Id == authorId);
@@ -116,8 +116,6 @@ namespace Tugberk.Persistance.SqlServer.Repositories
 
             await _blogDbContext.AddAsync(postEntity);
             await _blogDbContext.SaveChangesAsync();
-
-            return postEntity.ToReadModel(claims);
         }
 
         private async Task<Paginated<PostReadModel>> EvaluateQuery(int skip, int take, IQueryable<PostEntity> postsQuery)
