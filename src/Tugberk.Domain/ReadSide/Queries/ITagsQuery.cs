@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Tugberk.Domain.Queries.ReadModels;
+using Tugberk.Domain.ReadSide.ReadModels;
 
-namespace Tugberk.Domain.Queries
+namespace Tugberk.Domain.ReadSide.Queries
 {
     public interface ITagsQuery
     {

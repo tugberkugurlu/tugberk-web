@@ -1,6 +1,6 @@
 using System;
 
-namespace Tugberk.Domain.Queries.ReadModels
+namespace Tugberk.Domain.ReadSide.ReadModels
 {
     public class SlugReadModel
     {

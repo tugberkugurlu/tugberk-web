@@ -11,7 +11,8 @@ using Optional;
 using Tugberk.Domain;
 using Tugberk.Domain.Commands;
 using Tugberk.Domain.Persistence;
-using Tugberk.Domain.Queries;
+using Tugberk.Domain.ReadSide;
+using Tugberk.Domain.ReadSide.Queries;
 
 namespace Tugberk.Persistance.SqlServer.Stores
 {

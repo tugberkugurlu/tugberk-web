@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Tugberk.Domain.Queries
+namespace Tugberk.Domain.ReadSide.Queries
 {
     public interface ILatestApprovedPostsQuery
     {

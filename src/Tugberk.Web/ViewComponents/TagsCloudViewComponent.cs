@@ -3,7 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Tugberk.Domain.Persistence;
-using Tugberk.Domain.Queries;
+using Tugberk.Domain.ReadSide;
+using Tugberk.Domain.ReadSide.Queries;
 using Tugberk.Web.Controllers;
 
 namespace Tugberk.Web.ViewComponents

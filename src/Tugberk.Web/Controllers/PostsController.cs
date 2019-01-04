@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Tugberk.Domain;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using Tugberk.Domain.Queries;
+using Tugberk.Domain.ReadSide;
+using Tugberk.Domain.ReadSide.Queries;
 using Tugberk.Web.Models;
 
 namespace Tugberk.Web.Controllers

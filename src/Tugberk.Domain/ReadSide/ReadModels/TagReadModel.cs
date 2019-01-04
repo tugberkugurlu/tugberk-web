@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Tugberk.Domain.Queries.ReadModels
+namespace Tugberk.Domain.ReadSide.ReadModels
 {
     public class TagReadModel
     {

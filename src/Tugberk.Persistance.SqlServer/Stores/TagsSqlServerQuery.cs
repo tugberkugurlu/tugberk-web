@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Tugberk.Domain.Queries;
-using Tugberk.Domain.Queries.ReadModels;
+using Tugberk.Domain.ReadSide;
+using Tugberk.Domain.ReadSide.Queries;
+using Tugberk.Domain.ReadSide.ReadModels;
 
 namespace Tugberk.Persistance.SqlServer.Stores
 {

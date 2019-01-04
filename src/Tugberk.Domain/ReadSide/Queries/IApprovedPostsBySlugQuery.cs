@@ -3,7 +3,7 @@ using OneOf;
 using Optional;
 using Tugberk.Domain.Persistence;
 
-namespace Tugberk.Domain.Queries
+namespace Tugberk.Domain.ReadSide.Queries
 {
     public interface IApprovedPostsBySlugQuery
     {
