@@ -8,7 +8,7 @@ namespace Tugberk.Web
     {
         public static string GeneratePostAbsoluteUrl(this PostReadModel post)
         {
-            return String.Format(HardcodedConstants.BlogPostUriFormat, post.DefaultSlug.Path);
+            return string.Format(HardcodedConstants.BlogPostUriFormat, post.DefaultSlug.Path);
         }
     }
 }
