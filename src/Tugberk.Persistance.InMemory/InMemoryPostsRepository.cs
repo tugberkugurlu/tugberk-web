@@ -74,75 +74,72 @@ namespace Tugberk.Persistance.InMemory
             const string path = "sample-post-html-1.txt";
             string content = GetPostContent(path);
 
-            var samplePost = new Post();
-            samplePost.Id = "ydy982d";
-            samplePost.Title = "Defining What Good Looks Like for a Software Engineer";
-            samplePost.Abstract = "What does good look like for a software engineer? This is a question you might be asking frequently to yourself and I tried to share my thoughts on the topic with this blog post.";
-            samplePost.Language = "en-US";
-            samplePost.Content = content;
             var user = new User
             {
                 Id = "djidiweh",
                 Name = "Tugberk Ugurlu"
             };
 
-            samplePost.Authors = (new[] { user });
-
-            samplePost.CommentStatusActions = new[]
+            var samplePost = new Post
             {
-                new CommentStatusActionRecord
+                Id = "ydy982d",
+                Title = "Defining What Good Looks Like for a Software Engineer",
+                Abstract = "What does good look like for a software engineer? This is a question you might be asking frequently to yourself and I tried to share my thoughts on the topic with this blog post.",
+                Language = "en-US",
+                Content = content,
+                Authors = (new[] {user}),
+                CommentStatusActions = new[]
                 {
-                    Status = CommentableStatus.Enabled,
-                    RecordedBy = user,
-                    RecordedOn = DateTime.UtcNow
-                }
-            };
-
-            samplePost.ApprovalStatus = ApprovalStatus.Approved;
-            
-            samplePost.CreationRecord = new ChangeRecord
-            {
-                RecordedBy = user,
-                RecordedOn = DateTime.UtcNow,
-                IpAddress = "127.0.0.1"
-            };
-
-            samplePost.Slugs = new [] 
-            {
-                new Slug 
-                {
-                    Path = "defining-what-good-looks-like-for-a-software-engineer",
-                    IsDefault = true,
-                    CreatedOn = DateTime.UtcNow
-                }
-            };
-
-            samplePost.Tags = new[]
-            {
-                new Tag
-                {
-                    Name = "Software Engineer",
-                    Slugs = new [] 
+                    new CommentStatusActionRecord
                     {
-                        new Slug 
-                        {
-                            Path = "software-engineer",
-                            IsDefault = true,
-                            CreatedOn = DateTime.UtcNow
-                        }
+                        Status = CommentableStatus.Enabled,
+                        RecordedBy = user,
+                        RecordedOn = DateTime.UtcNow
                     }
                 },
-
-                new Tag
+                ApprovalStatus = ApprovalStatus.Approved,
+                CreationRecord = new ChangeRecord
                 {
-                    Name = "Software Development",
-                    Slugs = new [] 
+                    RecordedBy = user,
+                    RecordedOn = DateTime.UtcNow,
+                    IpAddress = "127.0.0.1"
+                },
+                Slugs = new[]
+                {
+                    new Slug
                     {
-                        new Slug 
+                        Path = "defining-what-good-looks-like-for-a-software-engineer",
+                        IsDefault = true,
+                        CreatedOn = DateTime.UtcNow
+                    }
+                },
+                Tags = new[]
+                {
+                    new Tag
+                    {
+                        Name = "Software Engineer",
+                        Slugs = new[]
                         {
-                            Path = "software-development",
-                            IsDefault = true,
-                            CreatedOn = DateTime.UtcNow
+                            new Slug
+                            {
+                                Path = "software-engineer",
+                                IsDefault = true,
+                                CreatedOn = DateTime.UtcNow
+                            }
+                        }
+                    },
+
+                    new Tag
+                    {
+                        Name = "Software Development",
+                        Slugs = new[]
+                        {
+                            new Slug
+                            {
+                                Path = "software-development",
+                                IsDefault = true,
+                                CreatedOn = DateTime.UtcNow
+                            }
                         }
                     }
                 }
@@ -156,117 +153,114 @@ namespace Tugberk.Persistance.InMemory
             const string path = "sample-post-html-2.txt";
             string content = GetPostContent(path);
 
-            var samplePost = new Post();
-            samplePost.Id = "y9h9huj9u";
-            samplePost.Title = "ASP.NET Core Authentication in a Load Balanced Environment with HAProxy and Redis";
-            samplePost.Abstract = "Token based authentication is a fairly common way of authenticating a user for an HTTP application. However, handling this in a load balanced environment has always involved extra caring. In this post, I will show you how this is handled in ASP.NET Core by demonstrating it with HAProxy and Redis through the help of Docker.";
-            samplePost.Language = "en-US";
-            samplePost.Content = content;
             var user = new User
             {
                 Id = "djidiweh",
                 Name = "Tugberk Ugurlu"
             };
 
-            samplePost.Authors = (new[] { user });
-
-            samplePost.CommentStatusActions = new[]
+            var samplePost = new Post
             {
-                new CommentStatusActionRecord
+                Id = "y9h9huj9u",
+                Title = "ASP.NET Core Authentication in a Load Balanced Environment with HAProxy and Redis",
+                Abstract = "Token based authentication is a fairly common way of authenticating a user for an HTTP application. However, handling this in a load balanced environment has always involved extra caring. In this post, I will show you how this is handled in ASP.NET Core by demonstrating it with HAProxy and Redis through the help of Docker.",
+                Language = "en-US",
+                Content = content,
+                Authors = new[] {user},
+                CommentStatusActions = new[]
                 {
-                    Status = CommentableStatus.Enabled,
+                    new CommentStatusActionRecord
+                    {
+                        Status = CommentableStatus.Enabled,
+                        RecordedBy = user,
+                        RecordedOn = DateTime.UtcNow
+                    }
+                },
+                ApprovalStatus = ApprovalStatus.Approved,
+                CreationRecord = new ChangeRecord
+                {
                     RecordedBy = user,
-                    RecordedOn = DateTime.UtcNow
-                }
-            };
-
-            samplePost.ApprovalStatus = ApprovalStatus.Approved;
-
-            samplePost.CreationRecord = new ChangeRecord
-            {
-                RecordedBy = user,
-                RecordedOn = DateTime.UtcNow,
-                IpAddress = "127.0.0.1"
-            };
-
-            samplePost.Slugs = new[]
-            {
-                new Slug
+                    RecordedOn = DateTime.UtcNow,
+                    IpAddress = "127.0.0.1"
+                },
+                Slugs = new[]
                 {
-                    Path = "asp-net-core-authentication-in-a-load-balanced-environment-with-haproxy-and-redis",
-                    IsDefault = true,
-                    CreatedOn = DateTime.UtcNow
-                }
-            };
-
-            samplePost.Tags = new[]
-            {
-                new Tag
-                {
-                    Name = "ASP.NET Core",
-                    Slugs = new []
+                    new Slug
                     {
-                        new Slug
-                        {
-                            Path = "asp-net-core",
-                            IsDefault = true,
-                            CreatedOn = DateTime.UtcNow
-                        }
+                        Path = "asp-net-core-authentication-in-a-load-balanced-environment-with-haproxy-and-redis",
+                        IsDefault = true,
+                        CreatedOn = DateTime.UtcNow
                     }
                 },
-
-                new Tag
+                Tags = new[]
                 {
-                    Name = "ASP.NET",
-                    Slugs = new []
+                    new Tag
                     {
-                        new Slug
+                        Name = "ASP.NET Core",
+                        Slugs = new[]
                         {
-                            Path = "asp-net",
-                            IsDefault = true,
-                            CreatedOn = DateTime.UtcNow
+                            new Slug
+                            {
+                                Path = "asp-net-core",
+                                IsDefault = true,
+                                CreatedOn = DateTime.UtcNow
+                            }
                         }
-                    }
-                },
+                    },
 
-                new Tag
-                {
-                    Name = "Security",
-                    Slugs = new []
+                    new Tag
                     {
-                        new Slug
+                        Name = "ASP.NET",
+                        Slugs = new[]
                         {
-                            Path = "security",
-                            IsDefault = true,
-                            CreatedOn = DateTime.UtcNow
+                            new Slug
+                            {
+                                Path = "asp-net",
+                                IsDefault = true,
+                                CreatedOn = DateTime.UtcNow
+                            }
                         }
-                    }
-                },
+                    },
 
-                new Tag
-                {
-                    Name = "HTTP",
-                    Slugs = new []
+                    new Tag
                     {
-                        new Slug
+                        Name = "Security",
+                        Slugs = new[]
                         {
-                            Path = "http",
-                            IsDefault = true,
-                            CreatedOn = DateTime.UtcNow
+                            new Slug
+                            {
+                                Path = "security",
+                                IsDefault = true,
+                                CreatedOn = DateTime.UtcNow
+                            }
                         }
-                    }
-                },
+                    },
 
-                new Tag
-                {
-                    Name = "Docker",
-                    Slugs = new []
+                    new Tag
                     {
-                        new Slug
+                        Name = "HTTP",
+                        Slugs = new[]
                         {
-                            Path = "docker",
-                            IsDefault = true,
-                            CreatedOn = DateTime.UtcNow
+                            new Slug
+                            {
+                                Path = "http",
+                                IsDefault = true,
+                                CreatedOn = DateTime.UtcNow
+                            }
+                        }
+                    },
+
+                    new Tag
+                    {
+                        Name = "Docker",
+                        Slugs = new[]
+                        {
+                            new Slug
+                            {
+                                Path = "docker",
+                                IsDefault = true,
+                                CreatedOn = DateTime.UtcNow
+                            }
                         }
                     }
                 }
