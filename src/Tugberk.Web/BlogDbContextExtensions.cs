@@ -51,7 +51,7 @@ namespace Tugberk.Web
 
                 foreach (var post in result.Items)
                 {
-                    var newPostCommand = new NewPostCommand(post.Title,
+                    var newPostCommand = new CreatePostCommand(post.Title,
                         post.Abstract,
                         post.Content,
                         post.Language,

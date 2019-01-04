@@ -5,6 +5,6 @@ namespace Tugberk.Domain.Persistence
 {
     public interface IPostsRepository
     {
-        Task<Post> CreatePost(NewPostCommand newPostCommand);
+        Task<Post> CreatePost(CreatePostCommand createPostCommand);
     }
 }

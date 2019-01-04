@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace Tugberk.Domain.Commands 
  {
-     public class NewPostCommand 
+     public class CreatePostCommand 
      {
-         public NewPostCommand(string title, string @abstract, string content, string language, PostFormat format, string ipAddress, User createdBy, IReadOnlyCollection<string> tags, bool approved)
+         public CreatePostCommand(string title, string @abstract, string content, string language, PostFormat format, string ipAddress, User createdBy, IReadOnlyCollection<string> tags, bool approved)
          {
             Title = title ?? throw new System.ArgumentNullException(nameof(title));
             Abstract = @abstract ?? throw new System.ArgumentNullException(nameof(@abstract));

@@ -285,7 +285,7 @@ namespace Tugberk.Persistance.InMemory
             return File.ReadAllText(fullPath, Encoding.UTF8);
         }
 
-        public Task<Post> CreatePost(NewPostCommand newPostCommand)
+        public Task<Post> CreatePost(CreatePostCommand createPostCommand)
         {
             throw new NotImplementedException();
         }

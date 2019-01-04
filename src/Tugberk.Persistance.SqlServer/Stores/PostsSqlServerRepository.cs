@@ -80,15 +80,15 @@ namespace Tugberk.Persistance.SqlServer.Stores
             return await EvaluateQuery(skip, take, postsQuery);
         }
 
-        public async Task<Post> CreatePost(NewPostCommand newPostCommand)
+        public async Task<Post> CreatePost(CreatePostCommand createPostCommand)
         {
-            var authorId = newPostCommand.CreatedBy.Id;
+            var authorId = createPostCommand.CreatedBy.Id;
             var createdBy = await _blogDbContext.Users.SingleOrDefaultAsync(x => x.Id == authorId);
             var claims = await GetCreatorClaims(authorId);
 
             var slug = new PostSlugEntity
             {
-                Path = newPostCommand.Slug,
+                Path = createPostCommand.Slug,
                 IsDefault = true,
                 CreatedBy = createdBy,
                 CreatedOnUtc = DateTime.UtcNow
@@ -96,20 +96,20 @@ namespace Tugberk.Persistance.SqlServer.Stores
 
             var postEntity = new PostEntity
             {
-                Title = newPostCommand.Title,
-                Abstract = newPostCommand.Abstract,
-                Content = newPostCommand.Content,
-                Language = newPostCommand.Language,
-                Format = newPostCommand.Format.ToEntityModel(),
+                Title = createPostCommand.Title,
+                Abstract = createPostCommand.Abstract,
+                Content = createPostCommand.Content,
+                Language = createPostCommand.Language,
+                Format = createPostCommand.Format.ToEntityModel(),
                 CreatedBy = createdBy,
                 CreatedOnUtc = DateTime.UtcNow,
-                CreationIpAddress = newPostCommand.IPAddress,
+                CreationIpAddress = createPostCommand.IPAddress,
                 Slugs = new List<PostSlugEntity> { slug },
-                Tags = new Collection<PostTagEntity>(newPostCommand.Tags.Select(t => new PostTagEntity
+                Tags = new Collection<PostTagEntity>(createPostCommand.Tags.Select(t => new PostTagEntity
                 {
                     Tag = new TagEntity { Name = t }
                 }).ToList()),
-                ApprovalStatus = newPostCommand.Approved 
+                ApprovalStatus = createPostCommand.Approved 
                     ? ApprovalStatusEntity.Approved
                     : ApprovalStatusEntity.Disapproved
             };

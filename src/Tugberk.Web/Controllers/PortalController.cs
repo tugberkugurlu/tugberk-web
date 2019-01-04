@@ -39,7 +39,7 @@ namespace Tugberk.Web.Controllers
             {
                 User currentUser = GetCurrentUser();
 
-                var command = new NewPostCommand(requestModel.Title,
+                var command = new CreatePostCommand(requestModel.Title,
                     requestModel.Abstract,
                     requestModel.Content,
                     "en-US",
