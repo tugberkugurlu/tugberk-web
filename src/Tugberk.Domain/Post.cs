@@ -10,7 +10,6 @@ namespace Tugberk.Domain
         public string Title { get; set; }
         public string Abstract  { get; set; }
         public string Content { get; set; }
-        public PostFormat Format { get; set; }
 
         public ChangeRecord CreationRecord { get; set; }
         public IReadOnlyCollection<ChangeRecord> UpdateRecords { get; set; }

@@ -25,7 +25,6 @@ namespace Tugberk.Persistance.SqlServer.Stores
                 Title = postEntity.Title,
                 Abstract = postEntity.Abstract,
                 Content = postEntity.Content,
-                Format = postEntity.Format.ToDomainModel(),
                 Slugs = slugs,
                 Tags = tags,
                 Authors = new List<User> { createdBy }.AsReadOnly(),

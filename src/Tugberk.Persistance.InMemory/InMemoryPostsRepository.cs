@@ -79,7 +79,6 @@ namespace Tugberk.Persistance.InMemory
             samplePost.Title = "Defining What Good Looks Like for a Software Engineer";
             samplePost.Abstract = "What does good look like for a software engineer? This is a question you might be asking frequently to yourself and I tried to share my thoughts on the topic with this blog post.";
             samplePost.Language = "en-US";
-            samplePost.Format = PostFormat.Html;
             samplePost.Content = content;
             var user = new User
             {
@@ -162,7 +161,6 @@ namespace Tugberk.Persistance.InMemory
             samplePost.Title = "ASP.NET Core Authentication in a Load Balanced Environment with HAProxy and Redis";
             samplePost.Abstract = "Token based authentication is a fairly common way of authenticating a user for an HTTP application. However, handling this in a load balanced environment has always involved extra caring. In this post, I will show you how this is handled in ASP.NET Core by demonstrating it with HAProxy and Redis through the help of Docker.";
             samplePost.Language = "en-US";
-            samplePost.Format = PostFormat.Html;
             samplePost.Content = content;
             var user = new User
             {
