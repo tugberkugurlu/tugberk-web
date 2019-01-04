@@ -10,6 +10,7 @@ using Optional;
 using Tugberk.Domain;
 using Tugberk.Domain.Commands;
 using Tugberk.Domain.Persistence;
+using Tugberk.Domain.ReadSide;
 
 namespace Tugberk.Persistance.InMemory
 {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Tugberk.Domain.Persistence
+namespace Tugberk.Domain.ReadSide
 {
     public class FoundResult<TModel> : Result where TModel : class
     {

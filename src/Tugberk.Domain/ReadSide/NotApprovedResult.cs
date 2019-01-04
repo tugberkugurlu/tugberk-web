@@ -1,4 +1,6 @@
-namespace Tugberk.Domain.Persistence
+using Tugberk.Domain.Persistence;
+
+namespace Tugberk.Domain.ReadSide
 {
     public class NotApprovedResult<TModel> : FoundResult<TModel> where TModel : class
     {
