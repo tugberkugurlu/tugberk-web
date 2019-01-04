@@ -7,7 +7,7 @@ using Tugberk.Domain;
 using Tugberk.Domain.Commands;
 using Tugberk.Persistance.InMemory;
 using Tugberk.Persistance.SqlServer;
-using Tugberk.Persistance.SqlServer.Stores;
+using Tugberk.Persistance.SqlServer.Repositories;
 
 namespace Tugberk.Web
 {

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Tugberk.Persistance.SqlServer.Stores;
+using Tugberk.Persistance.SqlServer.Repositories;
 using Xunit;
 
 namespace Tugberk.Persistance.SqlServer.Tests

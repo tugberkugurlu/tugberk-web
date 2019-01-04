@@ -5,7 +5,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Tugberk.Domain;
 
-namespace Tugberk.Persistance.SqlServer.Stores
+namespace Tugberk.Persistance.SqlServer.Repositories
 {
     public static class DomainModelExtensions 
     {

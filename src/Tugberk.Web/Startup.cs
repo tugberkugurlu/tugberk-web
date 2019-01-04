@@ -17,7 +17,7 @@ using Tugberk.Domain.Persistence;
 using Tugberk.Domain.ReadSide;
 using Tugberk.Domain.ReadSide.Queries;
 using Tugberk.Persistance.SqlServer;
-using Tugberk.Persistance.SqlServer.Stores;
+using Tugberk.Persistance.SqlServer.Repositories;
 using Tugberk.Web.MediaStorage;
 using Tugberk.Web.Services;
 

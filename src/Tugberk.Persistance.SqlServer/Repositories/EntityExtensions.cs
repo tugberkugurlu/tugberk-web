@@ -3,7 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using Tugberk.Domain;
 
-namespace Tugberk.Persistance.SqlServer.Stores
+namespace Tugberk.Persistance.SqlServer.Repositories
 {
     public static class EntityExtensions 
     {

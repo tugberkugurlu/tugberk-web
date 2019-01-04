@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Tugberk.Domain.ReadSide;
 using Tugberk.Domain.ReadSide.Queries;
 using Tugberk.Domain.ReadSide.ReadModels;
 
-namespace Tugberk.Persistance.SqlServer.Stores
+namespace Tugberk.Persistance.SqlServer.Repositories
 {
     public class TagsSqlServerQuery : ITagsQuery
     {

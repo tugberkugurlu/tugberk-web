@@ -14,7 +14,7 @@ using Tugberk.Domain.Persistence;
 using Tugberk.Domain.ReadSide;
 using Tugberk.Domain.ReadSide.Queries;
 
-namespace Tugberk.Persistance.SqlServer.Stores
+namespace Tugberk.Persistance.SqlServer.Repositories
 {
     public class PostsSqlServerRepository : 
         IPostsRepository, IApprovedPostsByIdQuery,
