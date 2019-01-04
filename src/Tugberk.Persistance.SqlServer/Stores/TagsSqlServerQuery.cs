@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Tugberk.Domain;
-using Tugberk.Domain.Persistence;
+using Tugberk.Domain.Queries;
+using Tugberk.Domain.Queries.ReadModels;
 
 namespace Tugberk.Persistance.SqlServer.Stores
 {
-    public class TagsSqlServerRepository : ITagsRepository
+    public class TagsSqlServerQuery : ITagsQuery
     {
         private readonly BlogDbContext _blogDbContext;
 
-        public TagsSqlServerRepository(BlogDbContext blogDbContext)
+        public TagsSqlServerQuery(BlogDbContext blogDbContext)
         {
             _blogDbContext = blogDbContext ?? throw new ArgumentNullException(nameof(blogDbContext));
         }
 
-        public async Task<IReadOnlyCollection<Tag>> GetAll()
+        public async Task<IReadOnlyCollection<TagReadModel>> GetAll()
         {
             var tags = await _blogDbContext.Tags
                 .Select(tag => new
@@ -27,12 +27,12 @@ namespace Tugberk.Persistance.SqlServer.Stores
                     // CountOfPosts = tag.Posts.Count()
                 }).ToListAsync();
 
-            return tags.Select(x => new Tag
+            return tags.Select(x => new TagReadModel
             {
                 Name = x.Tag.Name,
                 Slugs = new[] 
                 {
-                    new Slug
+                    new SlugReadModel
                     {
                         Path = x.Tag.Slug,
                         CreatedOn = DateTime.UtcNow,

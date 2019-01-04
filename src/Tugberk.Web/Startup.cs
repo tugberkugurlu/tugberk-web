@@ -64,7 +64,7 @@ namespace Tugberk.Web
             services.AddScoped<IApprovedPostsByTagQuery, PostsSqlServerRepository>();
             services.AddScoped<ILatestApprovedPostsQuery, PostsSqlServerRepository>();
 
-            services.AddScoped<ITagsRepository, TagsSqlServerRepository>();
+            services.AddScoped<ITagsQuery, TagsSqlServerQuery>();
             services.Configure<BlogSettings>(_configuration.GetSection("BlogSettings"));
             services.Configure<GoogleReCaptchaSettings>(_configuration.GetSection("GoogleReCaptcha"));
             services.Configure<GoogleAnalyticsSettings>(_configuration.GetSection("GoogleAnalytics"));
