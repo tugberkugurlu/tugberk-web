@@ -7,11 +7,11 @@ namespace Tugberk.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IPostsStore _postsStore;
+        private readonly IPostsRepository _postsRepository;
 
-        public HomeController(IPostsStore postsStore)
+        public HomeController(IPostsRepository postsRepository)
         {
-            _postsStore = postsStore;
+            _postsRepository = postsRepository;
         }
 
         public async Task<IActionResult> Index(int page) 
@@ -24,7 +24,7 @@ namespace Tugberk.Web.Controllers
             int skip = 5 * page;
             int take = 5;
 
-            var result = await _postsStore.GetLatestApprovedPosts(skip, take);
+            var result = await _postsRepository.GetLatestApprovedPosts(skip, take);
 
             if (page > 0 && result.Items.Count == 0)
             {

@@ -8,11 +8,11 @@ using Tugberk.Persistance.Abstractions;
 
 namespace Tugberk.Persistance.SqlServer.Stores
 {
-    public class TagsSqlServerStore : ITagsStore
+    public class TagsSqlServerRepository : ITagsRepository
     {
         private readonly BlogDbContext _blogDbContext;
 
-        public TagsSqlServerStore(BlogDbContext blogDbContext)
+        public TagsSqlServerRepository(BlogDbContext blogDbContext)
         {
             _blogDbContext = blogDbContext ?? throw new ArgumentNullException(nameof(blogDbContext));
         }

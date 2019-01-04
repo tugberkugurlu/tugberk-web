@@ -13,7 +13,7 @@ using Tugberk.Persistance.Abstractions;
 
 namespace Tugberk.Persistance.InMemory
 {
-    public class InMemoryPostsStore : IPostsStore
+    public class InMemoryPostsRepository : IPostsRepository
     {
         public Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostById(string id) 
         {

@@ -59,19 +59,19 @@ namespace Tugberk.Web.Controllers
 
     public class PostsController : Controller
     {
-        private readonly IPostsStore _postsStore;
+        private readonly IPostsRepository _postsRepository;
         private readonly ILogger<PostsController> _logger;
 
-        public PostsController(IPostsStore postsStore, ILogger<PostsController> logger)
+        public PostsController(IPostsRepository postsRepository, ILogger<PostsController> logger)
         {
-            _postsStore = postsStore ?? throw new ArgumentNullException(nameof(postsStore));
+            _postsRepository = postsRepository ?? throw new ArgumentNullException(nameof(postsRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet("archive/{slug}")]
         public async Task<IActionResult> Index(string slug)
         {
-            var result = await _postsStore.FindApprovedPostBySlug(slug);
+            var result = await _postsRepository.FindApprovedPostBySlug(slug);
 
             return result.Match<IActionResult>(
                 some => 
@@ -108,7 +108,7 @@ namespace Tugberk.Web.Controllers
             int skip = 5 * page;
             int take = 5;
 
-            var result = await _postsStore.GetLatestApprovedPosts(tagSlug, skip, take);
+            var result = await _postsRepository.GetLatestApprovedPosts(tagSlug, skip, take);
 
             if (result.Items.Count == 0)
             {
@@ -135,7 +135,7 @@ namespace Tugberk.Web.Controllers
             int skip = 5 * page;
             int take = 5;
             
-            var result = await _postsStore.GetLatestApprovedPosts(month, year, skip, take);
+            var result = await _postsRepository.GetLatestApprovedPosts(month, year, skip, take);
 
             if (result.Items.Count == 0)
             {

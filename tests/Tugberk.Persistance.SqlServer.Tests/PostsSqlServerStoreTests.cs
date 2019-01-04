@@ -65,7 +65,7 @@ namespace Tugberk.Persistance.SqlServer.Tests
 
                 using (var context = provider.CreateContext())
                 {
-                    var store = new PostsSqlServerStore(context);
+                    var store = new PostsSqlServerRepository(context);
                     var result = await store.FindApprovedPostById(postId.ToString());
 
                     result.Match(

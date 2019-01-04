@@ -7,7 +7,7 @@ using Tugberk.Domain.Commands;
 
 namespace Tugberk.Persistance.Abstractions
 {
-    public interface IPostsStore
+    public interface IPostsRepository
     {
         Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostById(string id);
         Task<Option<OneOf<Post, NotApprovedResult<Post>>>> FindApprovedPostBySlug(string postSlug);

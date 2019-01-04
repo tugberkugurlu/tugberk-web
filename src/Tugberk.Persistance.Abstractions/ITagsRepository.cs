@@ -4,7 +4,7 @@ using Tugberk.Domain;
 
 namespace Tugberk.Persistance.Abstractions
 {
-    public interface ITagsStore
+    public interface ITagsRepository
     {
         Task<IReadOnlyCollection<Tag>> GetAll();
     }

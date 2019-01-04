@@ -18,12 +18,12 @@ namespace Tugberk.Web.Controllers
     public class PortalController : Controller
     {
         private readonly IImageStorage _imageStorage;
-        private readonly IPostsStore _postsStore;
+        private readonly IPostsRepository _postsRepository;
 
-        public PortalController(IImageStorage imageStorage, IPostsStore postsStore)
+        public PortalController(IImageStorage imageStorage, IPostsRepository postsRepository)
         {
             _imageStorage = imageStorage ?? throw new System.ArgumentNullException(nameof(imageStorage));
-            _postsStore = postsStore ?? throw new System.ArgumentNullException(nameof(postsStore));
+            _postsRepository = postsRepository ?? throw new System.ArgumentNullException(nameof(postsRepository));
         }
 
         public IActionResult Index() => View();
@@ -49,7 +49,7 @@ namespace Tugberk.Web.Controllers
                     Enumerable.Empty<string>().ToList().AsReadOnly(),
                     true);
 
-                await _postsStore.CreatePost(command);
+                await _postsRepository.CreatePost(command);
 
                 return RedirectToAction("Index", "Home");
             }

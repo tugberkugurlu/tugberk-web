@@ -9,16 +9,16 @@ namespace Tugberk.Web.ViewComponents
 {
     public class TagsCloudViewComponent : ViewComponent
     {
-        private readonly ITagsStore _tagsStore;
+        private readonly ITagsRepository _tagsRepository;
 
-        public TagsCloudViewComponent(ITagsStore tagsStore)
+        public TagsCloudViewComponent(ITagsRepository tagsRepository)
         {
-            _tagsStore = tagsStore ?? throw new ArgumentNullException(nameof(tagsStore));
+            _tagsRepository = tagsRepository ?? throw new ArgumentNullException(nameof(tagsRepository));
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var tags = await _tagsStore.GetAll();
+            var tags = await _tagsRepository.GetAll();
 
             return View(tags.Select(x => new TagViewModel
             {

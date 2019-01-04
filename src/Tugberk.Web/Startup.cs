@@ -57,8 +57,8 @@ namespace Tugberk.Web
             });
 
             services.AddSingleton<IEmailSender, NoOpEmailSender>();
-            services.AddScoped<IPostsStore, PostsSqlServerStore>();
-            services.AddScoped<ITagsStore, TagsSqlServerStore>();
+            services.AddScoped<IPostsRepository, PostsSqlServerRepository>();
+            services.AddScoped<ITagsRepository, TagsSqlServerRepository>();
             services.Configure<BlogSettings>(_configuration.GetSection("BlogSettings"));
             services.Configure<GoogleReCaptchaSettings>(_configuration.GetSection("GoogleReCaptcha"));
             services.Configure<GoogleAnalyticsSettings>(_configuration.GetSection("GoogleAnalytics"));

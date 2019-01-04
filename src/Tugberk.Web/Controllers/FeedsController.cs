@@ -14,13 +14,13 @@ namespace Tugberk.Web.Controllers
     public class FeedsController : Controller
     {
         const string MainRssFeedCacheKey = "main-rss";
-        private readonly IPostsStore _postsStore;
+        private readonly IPostsRepository _postsRepository;
         private readonly IMemoryCache _cache;
         private readonly ILogger<FeedsController> _logger;
 
-        public FeedsController(IPostsStore postsStore, IMemoryCache cache, ILogger<FeedsController> logger)
+        public FeedsController(IPostsRepository postsRepository, IMemoryCache cache, ILogger<FeedsController> logger)
         {
-            _postsStore = postsStore ?? throw new ArgumentNullException(nameof(postsStore));
+            _postsRepository = postsRepository ?? throw new ArgumentNullException(nameof(postsRepository));
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -42,7 +42,7 @@ namespace Tugberk.Web.Controllers
                 _logger.LogInformation("'{MainRssFeedCacheKey}' was not found in the cache, will be served cold",
                     MainRssFeedCacheKey);
 
-                var posts = await _postsStore.GetLatestApprovedPosts(0, 20);
+                var posts = await _postsRepository.GetLatestApprovedPosts(0, 20);
                 feed = new Feed
                 {
                     Title = "Tugberk Ugurlu @ the Heart of Software",

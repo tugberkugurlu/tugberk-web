@@ -33,8 +33,8 @@ namespace Tugberk.Web
 
             if(!context.Posts.AnyAsync().Result) 
             {
-                var inMemoryPostStore = new InMemoryPostsStore();
-                var store = new PostsSqlServerStore(context);
+                var inMemoryPostStore = new InMemoryPostsRepository();
+                var store = new PostsSqlServerRepository(context);
                 var result = inMemoryPostStore.GetLatestApprovedPosts(0, 100).Result;
                 var tags = result.Items.SelectMany(x => x.Tags);
 
