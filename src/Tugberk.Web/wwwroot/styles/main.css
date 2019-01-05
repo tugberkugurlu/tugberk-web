@@ -2,6 +2,16 @@
     border-radius: 0;
 }
 
+body {
+    margin-top: 0;
+}
+
+@media (min-width: 992px) { 
+    body {
+        margin-top: 5rem;
+    }
+}
+
 img {
     max-width: 100%;
     height: auto; /* see https://stackoverflow.com/a/2711996 */

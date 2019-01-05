@@ -51,12 +51,9 @@
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
 </script>
 </head>
-  <body>    
-    <nav class="navbar navbar-expand-lg navbar-light navbar-dark bg-primary">
+  <body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light navbar-dark bg-primary d-none d-lg-flex d-xl-flex">
         <a class="navbar-brand" href="/">Tugberk @@ the Heart of Software</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item @(isUnderBlogSection ? "active" : "")">
@@ -74,6 +71,42 @@
             </ul>
             @await Html.PartialAsync("_LoginPartial")
         </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-light navbar-dark bg-primary d-flex d-md-flex d-lg-none">
+        <a class="navbar-brand" href="/">Tugberk @@ the Heart of Software</a>
+        @await Html.PartialAsync("_LoginPartial")
+    </nav>
+    <nav class="navbar fixed-bottom navbar-light bg-light d-block d-md-block d-lg-none">
+        <table class="table table-borderless mb-0">
+            <tbody>
+                <tr>
+                    <td style="text-align: center;" class="p-0">
+                        <a href="@Url.Action("Index", "Home")">
+                            <div><i class="fa fa-home" aria-hidden="true"></i></div>
+                            <div>Home</div>
+                        </a>
+                    </td>
+                    <td style="text-align: center;" class="p-0">
+                        <a href="@Url.Action("Index", "Speaking")">
+                            <div><i class="fa fa-bullhorn" aria-hidden="true"></i></div>
+                            <div>Speaking</div>
+                        </a>
+                    </td>
+                    <td style="text-align: center;" class="p-0">
+                        <a href="@Url.Action("Index", "About")">
+                            <div><i class="fa fa-info" aria-hidden="true"></i></div>
+                            <div>About</div>
+                        </a>
+                    </td>
+                    <td style="text-align: center;" class="p-0">
+                        <a href="@Url.Action("Index", "Contact")">
+                            <div><i class="fa fa-envelope" aria-hidden="true"></i></div>
+                            <div>Contact</div>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </nav>
     <div role="main" class="container">
         <div class="row">
